@@ -1,0 +1,6 @@
+eclipse.preferences.version=1
+org.jboss.tools.openshift.Connection=https\://synyster90@api.preview.openshift.com
+org.jboss.tools.openshift.DeployProject=BetterBet_WAR
+org.jboss.tools.openshift.PodPath=
+org.jboss.tools.openshift.Service=bet-result@bet-results
+org.jboss.tools.openshift.SourcePath=${workspace_loc\:/BetterBet_WAR}
