@@ -16,7 +16,7 @@
 		"@angular/platform-browser": "~2.4.1",
 		"@angular/platform-browser-dynamic": "~2.4.1",
 		"@angular/router": "~3.4.1",
-		"@angular/modules": "file:../../../../../modules",
+		"@angular/modules": "file:../../../modules",
 		"core-js": "^2.4.1",
 		"rxjs": "5.0.1",
 		"zone.js": "^0.7.4",

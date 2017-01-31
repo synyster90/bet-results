@@ -7,12 +7,12 @@ import { TranslateModule, TranslateLoader, TranslateStaticLoader } from 'ng2-tra
 
 /* Directives, Components & Providers */
 import { Title } from '@angular/platform-browser';
-import { CseComponentsModule } from '@angular/modules/src/components';
-import { CseDialogsModule } from '@angular/modules/src/dialogs';
-import { CseHttpClientModule } from '@angular/modules/src/http-client';
-import { CsePipesModule } from '@angular/modules/src/pipes';
-import { CseTranslateModule } from '@angular/modules/src/translate';
-import { CseUtilsModule } from '@angular/modules/src/utils';
+import { AngularComponentsModule } from '@angular/modules/src/components';
+import { AngularDialogsModule } from '@angular/modules/src/dialogs';
+import { AngularHttpClientModule } from '@angular/modules/src/http-client';
+import { AngularPipesModule } from '@angular/modules/src/pipes';
+import { AngularTranslateModule } from '@angular/modules/src/translate';
+import { AngularUtilsModule } from '@angular/modules/src/utils';
 
 import { AppComponent } from './app.component';
 import { routing, appRoutingProviders } from './app.routes';
@@ -40,7 +40,7 @@ export function createTranslateLoader( http: Http ) {
             deps: [Http]
         }),
         routing,
-        CseComponentsModule.forRoot(), CseDialogsModule.forRoot(), CseHttpClientModule.forRoot(), CsePipesModule, CseTranslateModule, CseUtilsModule.forRoot(),
+        AngularComponentsModule.forRoot(), AngularDialogsModule.forRoot(), AngularHttpClientModule.forRoot(), AngularPipesModule, AngularTranslateModule, AngularUtilsModule.forRoot(),
         SharedModule.forRoot()
     ],
     declarations: [
