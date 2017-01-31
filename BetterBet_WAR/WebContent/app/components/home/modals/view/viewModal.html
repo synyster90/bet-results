@@ -1,0 +1,60 @@
+<div>
+	<div class="modal-header">
+		<button type="button" class="close" (click)="close()"><span>x</span></button>
+		<div class="dropdown" [ngClass]="{open: showDropdown}">
+			<button class="btn btn-default btn-xs dropdown-toggle" type="button" (click)="toggleDropdown()" (blur)="toggleDropdown()">
+				<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span> <span translate="LABEL_TEXT.ACTIONS"></span>
+			</button>
+			<ul class="dropdown-menu dropdown-menu-right">
+				<li><a (click)="editItemPopup()">
+					<span class="icon icon-edit" aria-hidden="true"></span> <span translate="BUTTON_TEXT.EDIT_TITLE"></span>
+				</a></li>
+				<li><a (click)="cloneItemPopup()">
+					<span class="icon icon-clone" aria-hidden="true"></span> <span translate="BUTTON_TEXT.CLONE_TITLE"></span>
+				</a></li>
+				<li><a (click)="deleteItemPopup()">
+					<span class="icon icon-delete" aria-hidden="true"></span> <span translate="BUTTON_TEXT.DELETE_TITLE"></span>
+				</a></li>
+			</ul>
+		</div>
+		<h3 class="modal-title panel-view-title" translate="MODAL_TEXT.TITLE_VIEW" translate-values='{"title":"Dati"}'></h3>
+	</div>
+	<div class="modal-body">
+		<div class="panel panel-default panel-view">			
+			<div class="panel-heading">
+				<div class="row row-view-info">
+					<div class="col-sm-12 col-view-info"><span>id</span>: <font color="#0079ff">{{itemInfo.id}}</font></div>
+				</div>
+			</div>
+			<div class="panel-body panel-body-custom">
+				<div class="row row-form-grid">
+					<div class="col-sm-12 col-section">
+						<div class="row row-form-entry">
+							<div class="col-sm-3 form-label">nome</div>
+							<div class="col-sm-9 form-value"><strong>{{itemInfo.first_name}}</strong></div>
+						</div>
+						<div class="row row-form-entry">
+							<div class="col-sm-3 form-label">cognome</div>
+							<div class="col-sm-9 form-value"><strong>{{itemInfo.last_name}}</strong></div>
+						</div>
+						<div class="row row-form-entry">
+							<div class="col-sm-3 form-label">email</div>
+							<div class="col-sm-9 form-value"><strong>{{itemInfo.email}}</strong></div>
+						</div>
+						<div class="row row-form-entry">
+							<div class="col-sm-3 form-label">sesso</div>
+							<div class="col-sm-9 form-value"><strong>{{itemInfo.gender}}</strong></div>
+						</div>
+						<div class="row row-form-entry">
+							<div class="col-sm-3 form-label">indirizzo ip</div>
+							<div class="col-sm-9 form-value"><strong>{{itemInfo.ip_address}}</strong></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-default" type="button" (click)="close()"><span translate="MODAL_TEXT.BUTTON_CLOSE"></span></button>
+	</div>
+</div>

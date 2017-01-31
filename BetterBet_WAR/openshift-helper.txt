@@ -1,0 +1,16 @@
+oc login https://api.preview.openshift.com --token=4lLI7ArIbnXbP0wEFTtYBx9i6yaUn9qV8yhmNPfv7do
+
+oc config view
+
+// Crea app
+oc new-app \_work\_repo\webapplication\BetterBet_WAR --image-stream="openshift/wildfly:latest"
+
+// Crea authenticazione basic per repository git
+oc secrets new-basicauth basicsecret --username=synyster90 --password=michael90
+
+// lega auth con app
+oc set build-secret --source bc/bet-results basicsecret
+
+oc start-build bc/bet-results
+
+oc deploy bc/bet-results

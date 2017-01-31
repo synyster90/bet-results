@@ -1,0 +1,66 @@
+<div class="modal-header">
+	<button type="button" class="close" (click)="close()"><span>x</span></button>
+	<h3 class="modal-title panel-view-title" translate="MODAL_TEXT.TITLE_EDIT" translate-values='{"title":"Dati"}'></h3>
+</div>
+<div class="modal-body">
+	<form name="editForm" novalidate>
+		<div class="panel panel-default panel-edit">
+			<ui-exception [exception]="httpClient.exception" exception-hidden="true"></ui-exception>
+			<div class="panel-body panel-body-custom">
+				<div class="row row-form-grid">
+					<div class="col-md-12 col-section">
+						<div class="row row-form-entry">
+							<div class="col-md-3 form-label">
+								<font color="#cc0000">*</font>id
+							</div>
+							<div class="col-md-9 form-value">
+								<input name="id" [(ngModel)]="editItem.id" class="form-input p-key-disabled" disabled />
+							</div>
+						</div>
+						<div class="row row-form-entry">
+							<div class="col-md-3 form-label">nome</div>
+							<div class="col-md-9 form-value">
+								<input name="first_name" [(ngModel)]="editItem.first_name" class="form-input" validate [model]="[editItem]" />
+							</div>
+						</div>
+						<div class="row row-form-entry">
+							<div class="col-md-3 form-label">cognome</div>
+							<div class="col-md-9 form-value">
+								<input name="last_name" [(ngModel)]="editItem.last_name" class="form-input" validate [model]="[editItem]" />
+							</div>
+						</div>
+						<div class="row row-form-entry">
+							<div class="col-md-3 form-label">email</div>
+							<div class="col-md-9 form-value">
+								<input name="email" [(ngModel)]="editItem.email" class="form-input" validate [model]="[editItem]" />
+							</div>
+						</div>
+						<div class="row row-form-entry">
+							<div class="col-md-3 form-label">sesso</div>
+							<div class="col-md-9 form-value">
+								<ui-autocomplete [ac-items]="sampleService.genderList" [ac-item-selected]="{value: editItem.gender, des: ''}"
+									(ac-item-selected-change)="editItem.gender = $event ? $event.value : ''"
+									ac-not-found="sesso errato!" ac-select-on-match="true" ac-input-name="gender" class="form-input"
+									validate [model]="[editItem]"></ui-autocomplete>
+							</div>
+						</div>
+						<div class="row row-form-entry">
+							<div class="col-md-3 form-label">indirizzo ip</div>
+							<div class="col-md-9 form-value">
+								<input name="ip_address" [(ngModel)]="editItem.ip_address" class="form-input" validate [model]="[editItem]" />
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+<div class="modal-footer">
+	<div class="row">
+		<div class="col-sm-12">
+			<button class="btn btn-default" type="button" (click)="close()"><span translate="MODAL_TEXT.BUTTON_CLOSE"></span></button>
+			<button class="btn btn-primary" type="button" (click)="save()"><span translate="MODAL_TEXT.BUTTON_SAVE"></span></button>
+		</div>
+	</div>			
+</div>

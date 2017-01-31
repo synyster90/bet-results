@@ -1,0 +1,37 @@
+<div class="modal-header">
+	<button type="button" class="close" (click)="close()"><span>x</span></button>
+	<h3 class="modal-title panel-view-title" translate="MODAL_TEXT.TITLE_APPLY_FILTER"></h3>
+</div>
+<div class="modal-body">
+	<div class="panel panel-default panel-edit">
+		<div class="panel-body panel-body-filter">
+			<div class="row row-gl-grid row-filter">
+				<div class="col-md-12">
+					<div class="row row-gl-entry" *ngFor="let filter of filtersArray">
+						<div class="col-md-12 gl-separator" *ngIf="filter.type == 'separator'">
+							<hr>
+						</div>
+						<div class="col-md-3 gl-label" *ngIf="filter.type != 'separator'" [ngClass]="{'gl-label-switch': filter.type == 'toggle'}">{{filter.name}}</div>
+						<div class="col-md-9 gl-value" *ngIf="filter.type == 'autocomplete'">
+							<ui-autocomplete [ac-items]="filter.list" [ac-search-text]="filter.searchText" [ac-item-selected]="filter.itemSelected" (ac-item-selected-change)="filter.itemSelected = $event"
+								[ac-uppercase]="filter.uppercase" ac-not-found="{{ 'AUTOCOMPLETE_ERROR.NO_ABI' | translate }}" 
+								ac-select-on-match="true" ac-no-cache="true" ac-input-name="{{filter.name}}"></ui-autocomplete>
+						</div>
+						<div class="col-md-9 gl-value" *ngIf="filter.type == 'input'">
+							<input name="{{filter.name}}" [ngModel]="filter.itemSelected?.value" (ngModelChange)="filter.itemSelected={value:$event}" class="form-gl" [ngClass]="{uppercase : filter.uppercase}" />
+						</div>
+						<div class="col-md-9 gl-value gl-value-switch" *ngIf="filter.type == 'toggle'">
+							<button type="button" (click)="filter.itemSelected.value = !filter.itemSelected.value">
+								<ui-switch [model]="filter.itemSelected.value"></ui-switch>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal-footer">
+	<button class="btn btn-default" type="button" (click)="close()"><span translate="MODAL_TEXT.BUTTON_CANCEL"></span></button>
+	<button class="btn btn-primary" type="button" (click)="confirm()"><span>Ok</span></button>
+</div>

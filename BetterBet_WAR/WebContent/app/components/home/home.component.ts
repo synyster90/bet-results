@@ -1,0 +1,156 @@
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, EventEmitter } from '@angular/core';
+import { Response } from '@angular/http';
+import { TranslateService } from 'ng2-translate/ng2-translate';
+
+import { UtilService } from '@angular/modules/src/utils';
+import { HttpClient } from '@angular/modules/src/http-client';
+import { ModalDialogService } from '@angular/modules/src/dialogs';
+
+import { SampleService } from '../../shared/service/sample.service';
+import { ViewModalCtrl } from './modals/view/viewModal';
+import { EditModalCtrl } from './modals/edit/editModal';
+import { InsertModalCtrl } from './modals/insert/insertModal';
+
+declare var $: any;
+
+@Component({
+    selector: 'home',
+    template: require('./home.html'),
+    changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class Home implements OnInit {
+    $this: Home = this
+    private exception: Object
+
+    filtered_result: Object[] = []
+    filtered: Object[] = []
+    scommesseList: Object[] = []
+
+    isFirstPage: boolean
+    isLastPage: boolean
+
+    /* Sort, Filtering & Pagination */
+    listChanged: boolean = false
+    sortType: string = '';
+    sortReverse: boolean = false;
+    filterSearch: Object = {}
+    currentPage: number = 1;
+
+    constructor(private utilService: UtilService, private modalDialogService: ModalDialogService, private sampleService: SampleService, private httpClient: HttpClient,
+        private translateService: TranslateService, private changeDetectorRef: ChangeDetectorRef) {
+        this.httpClient.exceptionPropagationEvent.subscribe(ex => {
+            this.exception = ex
+            changeDetectorRef.markForCheck()
+        })
+    }
+
+    // Generic Funtions
+    getItemData(index, callback) {
+        callback(this.filtered_result[index])
+    }
+
+    sampleElenco(paginate?: boolean) {
+        var inputParam = {};
+        this.scommesseList = this.filtered = [];
+        this.listChanged = true
+        this.changeDetectorRef.markForCheck()
+    }
+
+    sampleRefresh() {
+        this.filterSearch = {}
+        this.sortType = '';
+        this.sortReverse = false;
+        this.currentPage = 1;
+        this.isFirstPage = true;
+        this.isLastPage = false;
+        this.sampleElenco();
+    }
+
+    viewItem(index, event?) {
+        if (event)
+            $(event.target).blur();
+        var $this = this
+        this.getItemData(index, function(item) {
+            $this.modalDialogService.dialog({
+                controller: ViewModalCtrl,
+                locals: {
+                    'item': item
+                }
+            }).subscribe((response) => {
+                if (response)
+                    if (response.action == 'edit')
+                        $this.editItem(index);
+            })
+        });
+    }
+
+    editItem(index) {
+        var $this = this
+        this.getItemData(index, function(item) {
+            $this.modalDialogService.dialog({
+                controller: EditModalCtrl,
+                locals: {
+                    'item': item
+                }
+            }).subscribe((editItem) => {
+                if (editItem) {
+                    // TEST
+                    $this.scommesseList[index] = editItem
+                    $this.listChanged = true
+                    $this.changeDetectorRef.markForCheck()
+                }
+            })
+        });
+    }
+
+    addItem() {
+        this.modalDialogService.dialog({
+            controller: InsertModalCtrl
+        }).subscribe((newItem) => {
+            if (newItem) {
+                // TEST
+                this.scommesseList.unshift(newItem)
+                this.listChanged = true
+                this.changeDetectorRef.markForCheck()
+            }
+        })
+    }
+
+    getAbilOperations(): Object[] {
+        var menuOptions: Object[] = []
+
+        var optionView = {
+            icon: 'icon icon-view',
+            text: '',
+            clickEvent: new EventEmitter<number>(),
+            isActive: true
+        }
+        this.translateService.get('BUTTON_TEXT.VIEW_TITLE').subscribe(value => {
+            optionView.text = value;
+        })
+        optionView.clickEvent.subscribe(index => {
+            this.viewItem(index);
+        })
+        menuOptions.push(optionView);
+    
+        var optionEdit = {
+            icon: 'icon icon-edit',
+            text: '',
+            clickEvent: new EventEmitter<number>(),
+            isActive: true
+        }
+        this.translateService.get('BUTTON_TEXT.EDIT_TITLE').subscribe(value => {
+            optionEdit.text = value;
+        })
+        optionEdit.clickEvent.subscribe(index => {
+            this.editItem(index);
+        })
+        menuOptions.push(optionEdit);
+        
+        return menuOptions
+    }
+
+    ngOnInit() {
+        this.sampleRefresh()
+    }
+}
