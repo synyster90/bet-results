@@ -580,15 +580,10 @@ var AppComponent = (function () {
         translate.use('it');
     }
     AppComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        // Verify: WebApp in sicurezza
-        this.httpClient.srValidation(function (srData) {
-            _this.utilService.abi = srData.abi;
-            _this.httpClient.get('jsonService/menu?m=menu').subscribe(function (data) {
-                _this.utilService.setMenu(data.xxMenu);
-                _this.changeDetectorRef.markForCheck();
-            }, function (err) { });
-        });
+        //        this.httpClient.get( 'jsonService/menu?m=menu' ).subscribe( data => {
+        //            this.utilService.setMenu( data.xxMenu );
+        //            this.changeDetectorRef.markForCheck()
+        //        }, err => { })
     };
     AppComponent = __decorate([
         core_1.Component({

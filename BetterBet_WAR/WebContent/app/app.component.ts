@@ -26,14 +26,9 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit() {
-        // Verify: WebApp in sicurezza
-        this.httpClient.srValidation( srData => {
-            this.utilService.abi = srData.abi
-
-            this.httpClient.get( 'jsonService/menu?m=menu' ).subscribe( data => {
-                this.utilService.setMenu( data.xxMenu );
-                this.changeDetectorRef.markForCheck()
-            }, err => { })
-        })
+//        this.httpClient.get( 'jsonService/menu?m=menu' ).subscribe( data => {
+//            this.utilService.setMenu( data.xxMenu );
+//            this.changeDetectorRef.markForCheck()
+//        }, err => { })
     }
 }
