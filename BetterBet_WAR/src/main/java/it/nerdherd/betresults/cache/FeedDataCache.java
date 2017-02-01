@@ -1,7 +1,11 @@
 package it.nerdherd.betresults.cache;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import it.nerdherd.betresults.rest.client.DataFactoryService;
 import it.nerdherd.betresults.rest.client.Resources;
+import it.nerdherd.betresults.rest.model.BaseCompetition;
 
 public class FeedDataCache {
 	private static FeedDataCache INSTANCE = null;
@@ -15,14 +19,14 @@ public class FeedDataCache {
 		return INSTANCE;
 	}
 
-	private String competitions = null;
+	private List<BaseCompetition> competitions = new ArrayList<>();
 
 	public void loadCompetitions() {
 		competitions = DataFactoryService.getInstance().getCompetitions(Resources.COMPETITIONS_LIST);
 	}
 
-	public String getCompetitions() {
-		if (competitions == null)
+	public List<BaseCompetition> getCompetitions() {
+		if (competitions.isEmpty())
 			loadCompetitions();
 		return competitions;
 	}

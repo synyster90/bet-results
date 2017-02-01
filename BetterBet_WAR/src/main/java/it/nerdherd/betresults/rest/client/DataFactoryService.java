@@ -6,6 +6,11 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
+
+import org.codehaus.jackson.map.ObjectMapper;
+
+import it.nerdherd.betresults.rest.model.BaseCompetition;
 
 public class DataFactoryService {
 	private static final String FEED_SOURCE_BASE_URL = "http://www.goal.com/feed/";
@@ -20,7 +25,8 @@ public class DataFactoryService {
 		return INSTANCE;
 	}
 
-	public String getCompetitions(String op) throws RuntimeException {
+	public List<BaseCompetition> getCompetitions(String op) throws RuntimeException {
+		ObjectMapper mapper = new ObjectMapper();
 		HttpURLConnection conn = null;
 		try {
 			URL url = new URL(FEED_SOURCE_BASE_URL + op + "&edition=it");
@@ -37,7 +43,10 @@ public class DataFactoryService {
 			String line;
 			while ((line = br.readLine()) != null)
 				output += line;
-			return output;
+
+			List<BaseCompetition> competition = mapper.readValue(output,
+					mapper.getTypeFactory().constructCollectionType(List.class, BaseCompetition.class));
+			return competition;
 		} catch (MalformedURLException e) {
 			throw new RuntimeException(e);
 		} catch (IOException e) {
