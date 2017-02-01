@@ -2,8 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	
 	<groupId>it.synyster.betterbet</groupId>
-	<artifactId>web-application</artifactId>
+	<artifactId>bet-results</artifactId>
 	<version>1.0.0</version>
 	<packaging>war</packaging>
 
@@ -22,9 +23,7 @@
 				<version>3.0.0</version>
 				<configuration>
 					<warSourceDirectory>WebContent</warSourceDirectory>
-					<warSourceIncludes>dist/,*.html</warSourceIncludes>
-					<!-- Java EE 6 doesn't require web.xml, Maven needs to catch up! -->
-					<failOnMissingWebXml>false</failOnMissingWebXml>
+					<warSourceIncludes>dist/,*.html,WEB-INF/</warSourceIncludes>
 				</configuration>
 			</plugin>
 			<plugin>

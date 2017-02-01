@@ -1,5 +1,5 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
-import { BrowserModule }  from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { TranslateModule } from 'ng2-translate/ng2-translate';
@@ -12,9 +12,9 @@ import { AngularTranslateModule } from '@angular/modules/src/translate';
 import { AngularUtilsModule } from '@angular/modules/src/utils';
 
 import { FilterModalCtrl } from './filter/filterModal';
-import { SampleService } from './service/sample.service';
+import { ScommesseService } from './service/scommesse.service';
 
-@NgModule({
+@NgModule( {
     imports: [
         BrowserModule,
         FormsModule,
@@ -29,7 +29,7 @@ import { SampleService } from './service/sample.service';
         FilterModalCtrl
     ],
     providers: [
-        SampleService
+        ScommesseService
     ],
     entryComponents: [
         FilterModalCtrl
@@ -39,7 +39,7 @@ export class SharedModule {
     static forRoot(): ModuleWithProviders {
         return {
             ngModule: SharedModule,
-            providers: [SampleService]
+            providers: [ScommesseService]
         };
     }
 }

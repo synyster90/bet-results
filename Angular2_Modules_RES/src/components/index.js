@@ -18,7 +18,6 @@ __export(require('./side-menu/ui-app-side-menu'));
 __export(require('./switch/ui-app-switch'));
 __export(require('./table-head/ui-app-table-head'));
 __export(require('./table-pagination/ui-app-table-pagination'));
-__export(require('./top-fixed/ui-app-top-fixed'));
 __export(require('./validate/validate'));
 __export(require('./module'));
 //# sourceMappingURL=index.js.map

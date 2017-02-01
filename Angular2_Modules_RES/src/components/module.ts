@@ -7,7 +7,7 @@ import { AutosizeTextarea } from './autosize-textarea/ui-app-autosize-textarea';
 import { Codemirror } from './codemirror/ui-app-codemirror';
 import { ContextMenu, ContextMenuDropdown, ContextMenuService } from './context-menu/ui-app-context-menu';
 import { Draggable } from './draggable/ui-app-draggable';
-import { Exception, ExceptionTable } from './exception/ui-app-exception';
+import { Exception } from './exception/ui-app-exception';
 import { Overlay, OverlayService } from './overlay/ui-app-overlay';
 import { PageHeader } from './page-header/ui-app-page-header';
 import { PipeCicle } from './pipe-cicle/pipe-cicle';
@@ -18,7 +18,6 @@ import { SideMenu, SideMenuService } from './side-menu/ui-app-side-menu';
 import { Switch } from './switch/ui-app-switch';
 import { TableHead } from './table-head/ui-app-table-head';
 import { TablePagination } from './table-pagination/ui-app-table-pagination';
-import { TopFixed } from './top-fixed/ui-app-top-fixed';
 import { Validate } from './validate/validate';
 
 import { AngularTranslateModule } from '../translate/index';
@@ -30,8 +29,8 @@ import { AngularPipesModule } from '../pipes/index';
     ],
     declarations: [
         Autocomplete, AutocompleteHighlight, AutosizeTextarea, Codemirror, ContextMenu, ContextMenuDropdown,
-        Draggable, Exception, ExceptionTable, Overlay, PageHeader, PipeCicle, Popover, PopoverFilter,
-        Select, SideMenu, Switch, TableHead, TablePagination, TopFixed, Validate
+        Draggable, Exception, Overlay, PageHeader, PipeCicle, Popover, PopoverFilter,
+        Select, SideMenu, Switch, TableHead, TablePagination, Validate
     ],
     entryComponents: [
         ContextMenuDropdown, Overlay, PopoverFilter
@@ -41,8 +40,8 @@ import { AngularPipesModule } from '../pipes/index';
     ],
     exports: [
         Autocomplete, AutocompleteHighlight, AutosizeTextarea, Codemirror, ContextMenu, ContextMenuDropdown,
-        Draggable, Exception, ExceptionTable, Overlay, PageHeader, PipeCicle, Popover, PopoverFilter,
-        Select, SideMenu, Switch, TableHead, TablePagination, TopFixed, Validate
+        Draggable, Exception, Overlay, PageHeader, PipeCicle, Popover, PopoverFilter,
+        Select, SideMenu, Switch, TableHead, TablePagination, Validate
     ]
 })
 export class AngularComponentsModule {

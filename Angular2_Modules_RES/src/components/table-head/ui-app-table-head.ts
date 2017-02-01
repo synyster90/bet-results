@@ -9,7 +9,7 @@ declare var $: any;
 @Component({
     selector: 'table-head',
     template: '<div class="sort" (click)="sortClick()">'
-    + '<span translate [model]="hdName"></span> <span *ngIf="hdsorttype == hdType" [ngClass]="utilService.sortClass(hdsortreverse)"></span>'
+    + '<span translate [model]="hdName"></span> <span *ngIf="hdType && hdsorttype == hdType" [ngClass]="utilService.sortClass(hdsortreverse)"></span>'
     + '<button type="button" class="filter-btn btn btn-default btn-xs" (click)="togglePopover($event)" *ngIf="showFilter">'
     + '<span class="glyphicon glyphicon-filter" aria-hidden="true"></span></button>'
 })
@@ -40,7 +40,9 @@ export class TableHead implements AfterViewInit, OnChanges {
 
     ngAfterViewInit() {
         setTimeout(() => {
+            if(this.hdType == '') this.hdType = null
             this.showFilter = typeof this.hdfiltersearch == 'undefined' ? false : true;
+            this.changeDetectorRef.markForCheck()
         })
     }
 
@@ -95,6 +97,8 @@ export class TableHead implements AfterViewInit, OnChanges {
     }
 
     sortClick() {
+        if(this.hdType == '' || !this.hdType)
+            return;
         if (this.hdsorttype == this.hdType)
             this.hdsortreverse = !this.hdsortreverse
         else
@@ -111,7 +115,8 @@ export class TableHead implements AfterViewInit, OnChanges {
     togglePopover(event) {
         if (event)
             $(event.target).blur();
-        if (this.showFilter && $(event.target).is($('button.filter-btn', this.element.nativeElement))) {
+        if (this.showFilter && ($(event.target).is($('button.filter-btn', this.element.nativeElement)) ||
+                $(event.target).is($('span.glyphicon-filter', this.element.nativeElement)))) {
             event.stopPropagation()
             var $this = this
             setTimeout(() => {

@@ -30,7 +30,10 @@ var TableHead = (function () {
     TableHead.prototype.ngAfterViewInit = function () {
         var _this = this;
         setTimeout(function () {
+            if (_this.hdType == '')
+                _this.hdType = null;
             _this.showFilter = typeof _this.hdfiltersearch == 'undefined' ? false : true;
+            _this.changeDetectorRef.markForCheck();
         });
     };
     TableHead.prototype.ngOnChanges = function (changes) {
@@ -79,6 +82,8 @@ var TableHead = (function () {
             return '';
     };
     TableHead.prototype.sortClick = function () {
+        if (this.hdType == '' || !this.hdType)
+            return;
         if (this.hdsorttype == this.hdType)
             this.hdsortreverse = !this.hdsortreverse;
         else
@@ -94,7 +99,8 @@ var TableHead = (function () {
         var _this = this;
         if (event)
             $(event.target).blur();
-        if (this.showFilter && $(event.target).is($('button.filter-btn', this.element.nativeElement))) {
+        if (this.showFilter && ($(event.target).is($('button.filter-btn', this.element.nativeElement)) ||
+            $(event.target).is($('span.glyphicon-filter', this.element.nativeElement)))) {
             event.stopPropagation();
             var $this = this;
             setTimeout(function () {
@@ -181,7 +187,7 @@ var TableHead = (function () {
         core_1.Component({
             selector: 'table-head',
             template: '<div class="sort" (click)="sortClick()">'
-                + '<span translate [model]="hdName"></span> <span *ngIf="hdsorttype == hdType" [ngClass]="utilService.sortClass(hdsortreverse)"></span>'
+                + '<span translate [model]="hdName"></span> <span *ngIf="hdType && hdsorttype == hdType" [ngClass]="utilService.sortClass(hdsortreverse)"></span>'
                 + '<button type="button" class="filter-btn btn btn-default btn-xs" (click)="togglePopover($event)" *ngIf="showFilter">'
                 + '<span class="glyphicon glyphicon-filter" aria-hidden="true"></span></button>'
         }), 

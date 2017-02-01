@@ -6,7 +6,7 @@ import { UtilService } from '@angular/modules/src/utils';
 import { HttpClient } from '@angular/modules/src/http-client';
 import { ModalDialogService } from '@angular/modules/src/dialogs';
 
-import { SampleService } from '../../shared/service/sample.service';
+import { ScommesseService } from '../../shared/service/scommesse.service';
 import { ViewModalCtrl } from './modals/view/viewModal';
 import { EditModalCtrl } from './modals/edit/editModal';
 import { InsertModalCtrl } from './modals/insert/insertModal';
@@ -36,7 +36,7 @@ export class Home implements OnInit {
     filterSearch: Object = {}
     currentPage: number = 1;
 
-    constructor(private utilService: UtilService, private modalDialogService: ModalDialogService, private sampleService: SampleService, private httpClient: HttpClient,
+    constructor(private utilService: UtilService, private modalDialogService: ModalDialogService, private scommesseService: ScommesseService, private httpClient: HttpClient,
         private translateService: TranslateService, private changeDetectorRef: ChangeDetectorRef) {
         this.httpClient.exceptionPropagationEvent.subscribe(ex => {
             this.exception = ex

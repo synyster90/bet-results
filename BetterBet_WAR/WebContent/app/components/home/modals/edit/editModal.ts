@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { ModalDialogService } from '@angular/modules/src/dialogs';
 import { UtilService } from '@angular/modules/src/utils';
-import { SampleService } from '../../../../shared/service/sample.service';
+import { ScommesseService } from '../../../../shared/service/scommesse.service';
 import { HttpClient } from '@angular/modules/src/http-client';
 
 declare var moment: any
@@ -15,7 +15,7 @@ export class EditModalCtrl implements OnInit {
     public locals: Object;
     editItem: any
 
-    constructor(private utilService: UtilService, private sampleService: SampleService, private modalDialogService: ModalDialogService, private httpClient: HttpClient) { }
+    constructor(private utilService: UtilService, private scommesseService: ScommesseService, private modalDialogService: ModalDialogService, private httpClient: HttpClient) { }
 
     ngOnInit() {
         this.editItem = JSON.parse(JSON.stringify(this.locals['item']))
@@ -33,11 +33,8 @@ export class EditModalCtrl implements OnInit {
     };
 
     checkClose() {
-        if (this.editItem.first_name && this.editItem.first_name != this.locals['item'].first_name
-            || this.editItem.last_name && this.editItem.last_name != this.locals['item'].last_name
-            || this.editItem.email && this.editItem.email != this.locals['item'].email
-            || this.editItem.gender && this.editItem.gender != this.locals['item'].gender
-            || this.editItem.ip_address && this.editItem.ip_address != this.locals['item'].ip_address)
+        if (this.editItem.partita && this.editItem.partita != this.locals['item'].partita
+            || this.editItem.scommessa && this.editItem.scommessa != this.locals['item'].scommessa)
             return true;
         return false;
     }
@@ -57,35 +54,17 @@ export class EditModalCtrl implements OnInit {
     checkEdit() {
         var changeNotify = '';
 
-        if (this.editItem.first_name && this.editItem.first_name != '') {
-            if (this.editItem.first_name != this.locals['item'].first_name)
-                changeNotify += '<li><strong>Nome</strong>: ' + this.locals['item'].first_name + ' --> ' + this.editItem.first_name + '</li>';
+        if (this.editItem.partita && this.editItem.partita != '') {
+            if (this.editItem.partita != this.locals['item'].partita)
+                changeNotify += '<li><strong>Partita</strong>: ' + this.locals['item'].partita + ' --> ' + this.editItem.partita + '</li>';
         } else
-            changeNotify += '<li><strong>Nome</strong>: ' + this.locals['item'].first_name + ' --> null</li>';
+            changeNotify += '<li><strong>Partita</strong>: ' + this.locals['item'].partita + ' --> null</li>';
 
-        if (this.editItem.last_name && this.editItem.last_name != '') {
-            if (this.editItem.last_name != this.locals['item'].last_name)
-                changeNotify += '<li><strong>Cognome</strong>: ' + this.locals['item'].last_name + ' --> ' + this.editItem.last_name + '</li>';
+        if (this.editItem.scommessa && this.editItem.scommessa != '') {
+            if (this.editItem.scommessa != this.locals['item'].scommessa)
+                changeNotify += '<li><strong>Scommessa</strong>: ' + this.locals['item'].scommessa + ' --> ' + this.editItem.scommessa + '</li>';
         } else
-            changeNotify += '<li><strong>Cognome</strong>: ' + this.locals['item'].last_name + ' --> null</li>';
-
-        if (this.editItem.email && this.editItem.email != '') {
-            if (this.editItem.email != this.locals['item'].email)
-                changeNotify += '<li><strong>Email</strong>: ' + this.locals['item'].email + ' --> ' + this.editItem.email + '</li>';
-        } else
-            changeNotify += '<li><strong>Email</strong>: ' + this.locals['item'].email + ' --> null</li>';
-
-        if (this.editItem.gender && this.editItem.gender != '') {
-            if (this.editItem.gender != this.locals['item'].gender)
-                changeNotify += '<li><strong>Sesso</strong>: ' + this.locals['item'].gender + ' --> ' + this.editItem.gender + '</li>';
-        } else
-            changeNotify += '<li><strong>Sesso</strong>: ' + this.locals['item'].gender + ' --> null</li>';
-
-        if (this.editItem.ip_address && this.editItem.ip_address != '') {
-            if (this.editItem.ip_address != this.locals['item'].ip_address)
-                changeNotify += '<li><strong>Indirizzo IP</strong>: ' + this.locals['item'].ip_address + ' --> ' + this.editItem.ip_address + '</li>';
-        } else
-            changeNotify += '<li><strong>Indirizzo IP</strong>: ' + this.locals['item'].ip_address + ' --> null</li>';
+            changeNotify += '<li><strong>Scommessa</strong>: ' + this.locals['item'].scommessa + ' --> null</li>';
 
         return changeNotify;
     }

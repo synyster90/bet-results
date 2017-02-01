@@ -14,6 +14,5 @@ export * from './side-menu/ui-app-side-menu';
 export * from './switch/ui-app-switch';
 export * from './table-head/ui-app-table-head';
 export * from './table-pagination/ui-app-table-pagination';
-export * from './top-fixed/ui-app-top-fixed';
 export * from './validate/validate';
 export * from './module';

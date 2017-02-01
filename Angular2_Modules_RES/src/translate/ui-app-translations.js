@@ -26,8 +26,10 @@ var TranslateDirective = (function () {
         });
     }
     TranslateDirective.prototype.ngAfterViewInit = function () {
-        if (this.translateKey)
+        if (this.translateKey && this.translateKey != '')
             this.setContent(this.translateKey);
+        else if (this.model && this.model != '')
+            this.setContent(this.model);
     };
     TranslateDirective.prototype.ngOnChanges = function (changes) {
         var _this = this;

@@ -1,5 +1,5 @@
 /*!
- * CSS Stylesheet - XX SampleApp
+ * CSS Stylesheet
  * Angular2 Web Application
  */
 
@@ -56,7 +56,7 @@
 
 /*********** PageView - Header ***********/
 .row-header {
-	margin: 85px 0 17px 0;
+	margin: 15px 0 7px 0;
 }
 
 .row-header h3 {
@@ -72,16 +72,16 @@
 	-ms-user-select: none;
 	cursor: default;
 }
-home .row-header h3 {
-	text-align: right;	
+
+.row-header h3 span:not(.glyphicon) {
+	font-family: JosefinSans;
+	font-weight: lighter;
+	font-size: 34px;
 }
 
 .row-header h3 .glyphicon {
     font-size: 14px;
     opacity: 0.6;
-}
-home .row-header h3 .glyphicon {
-	margin: 3px 7px;
 }
 .row-header h3 .btn {
 	margin-top: -5px;
@@ -90,16 +90,9 @@ home .row-header h3 .glyphicon {
 .row-header h3 .icon {
 	top: -1px;
 }
-home .row-header h3 > button,
-home .row-header h3 > span {
-	float: right;	
-}
 
 .row-header > .col-page-title {
 	width: 35%;	
-}
-home .row-header > .col-page-title {
-	width: 100%;	
 }
 
 .row-header > .col-table-actions {

@@ -27,7 +27,6 @@ var ui_app_side_menu_1 = require('./side-menu/ui-app-side-menu');
 var ui_app_switch_1 = require('./switch/ui-app-switch');
 var ui_app_table_head_1 = require('./table-head/ui-app-table-head');
 var ui_app_table_pagination_1 = require('./table-pagination/ui-app-table-pagination');
-var ui_app_top_fixed_1 = require('./top-fixed/ui-app-top-fixed');
 var validate_1 = require('./validate/validate');
 var index_1 = require('../translate/index');
 var index_2 = require('../pipes/index');
@@ -47,8 +46,8 @@ var AngularComponentsModule = (function () {
             ],
             declarations: [
                 ui_app_autocomplete_1.Autocomplete, ui_app_autocomplete_1.AutocompleteHighlight, ui_app_autosize_textarea_1.AutosizeTextarea, ui_app_codemirror_1.Codemirror, ui_app_context_menu_1.ContextMenu, ui_app_context_menu_1.ContextMenuDropdown,
-                ui_app_draggable_1.Draggable, ui_app_exception_1.Exception, ui_app_exception_1.ExceptionTable, ui_app_overlay_1.Overlay, ui_app_page_header_1.PageHeader, pipe_cicle_1.PipeCicle, ui_app_popover_1.Popover, ui_app_popover_filter_1.PopoverFilter,
-                ui_app_select_1.Select, ui_app_side_menu_1.SideMenu, ui_app_switch_1.Switch, ui_app_table_head_1.TableHead, ui_app_table_pagination_1.TablePagination, ui_app_top_fixed_1.TopFixed, validate_1.Validate
+                ui_app_draggable_1.Draggable, ui_app_exception_1.Exception, ui_app_overlay_1.Overlay, ui_app_page_header_1.PageHeader, pipe_cicle_1.PipeCicle, ui_app_popover_1.Popover, ui_app_popover_filter_1.PopoverFilter,
+                ui_app_select_1.Select, ui_app_side_menu_1.SideMenu, ui_app_switch_1.Switch, ui_app_table_head_1.TableHead, ui_app_table_pagination_1.TablePagination, validate_1.Validate
             ],
             entryComponents: [
                 ui_app_context_menu_1.ContextMenuDropdown, ui_app_overlay_1.Overlay, ui_app_popover_filter_1.PopoverFilter
@@ -58,8 +57,8 @@ var AngularComponentsModule = (function () {
             ],
             exports: [
                 ui_app_autocomplete_1.Autocomplete, ui_app_autocomplete_1.AutocompleteHighlight, ui_app_autosize_textarea_1.AutosizeTextarea, ui_app_codemirror_1.Codemirror, ui_app_context_menu_1.ContextMenu, ui_app_context_menu_1.ContextMenuDropdown,
-                ui_app_draggable_1.Draggable, ui_app_exception_1.Exception, ui_app_exception_1.ExceptionTable, ui_app_overlay_1.Overlay, ui_app_page_header_1.PageHeader, pipe_cicle_1.PipeCicle, ui_app_popover_1.Popover, ui_app_popover_filter_1.PopoverFilter,
-                ui_app_select_1.Select, ui_app_side_menu_1.SideMenu, ui_app_switch_1.Switch, ui_app_table_head_1.TableHead, ui_app_table_pagination_1.TablePagination, ui_app_top_fixed_1.TopFixed, validate_1.Validate
+                ui_app_draggable_1.Draggable, ui_app_exception_1.Exception, ui_app_overlay_1.Overlay, ui_app_page_header_1.PageHeader, pipe_cicle_1.PipeCicle, ui_app_popover_1.Popover, ui_app_popover_filter_1.PopoverFilter,
+                ui_app_select_1.Select, ui_app_side_menu_1.SideMenu, ui_app_switch_1.Switch, ui_app_table_head_1.TableHead, ui_app_table_pagination_1.TablePagination, validate_1.Validate
             ]
         }), 
         __metadata('design:paramtypes', [])

@@ -13,15 +13,12 @@ module.exports = {
 		chunkFilename : '[id].[hash].chunk.js'
 	},
 
-	plugins : [ 
-		new webpack.optimize.UglifyJsPlugin({
-			compress : {
-				warnings : false
-			},
-			output : {
-				comments : false
-			}
-		}), 
-		new ExtractTextPlugin('style.[hash].css'),
-		new ForkCheckerPlugin() ]
+	plugins : [ new webpack.optimize.UglifyJsPlugin({
+		compress : {
+			warnings : false
+		},
+		output : {
+			comments : false
+		}
+	}), new ExtractTextPlugin('style.[hash].css'), new ForkCheckerPlugin() ]
 }

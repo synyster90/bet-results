@@ -1,5 +1,10 @@
 <div class="row row-header">
-	<div class="col-sm-3 col-page-title"><page-header></page-header></div>
+	<div class="col-sm-3 col-page-title">
+		<h3>
+			<span aria-hidden="true" class="glyphicon glyphicon-menu-right"></span>
+			<span>{{utilService.pageTitle.getTitle()}}</span>
+		</h3>
+	</div>
 	<div class="col-sm-9 col-table-actions">
 		<div class="item-action-group btn-group btn-group-sm" role="group" aria-label="...">
 			<button type="button" class="btn btn-default" (click)="addItem($event)" [disabled]="insertDisabled">
@@ -16,18 +21,18 @@
 	<table class="table table-bordered table-striped">
 		<thead>
 			<tr>
-				<th class="col-id col-sort"><table-head hd-name="home" [(hdcurrentpage)]="currentPage" hd-type="home" [(hdsorttype)]="sortType" 
+				<th class="col-id col-sort"><table-head hd-name="LABEL_TEXT.HOME" [(hdcurrentpage)]="currentPage" hd-type="home" [(hdsorttype)]="sortType" 
 					[(hdsortreverse)]="sortReverse" hd-filter-title="Filtra per Squadra Casa" [(hdfiltersearch)]="filterSearch"></table-head></th>
-				<th class="col-first-name col-sort"><table-head hd-name="result"></table-head></th>
-				<th class="col-last-name col-sort"><table-head hd-name="away" [(hdcurrentpage)]="currentPage" hd-type="away" [(hdsorttype)]="sortType" 
+				<th class="col-first-name col-sort"><table-head hd-name="LABEL_TEXT.RESULT"></table-head></th>
+				<th class="col-last-name col-sort"><table-head hd-name="LABEL_TEXT.AWAY" [(hdcurrentpage)]="currentPage" hd-type="away" [(hdsorttype)]="sortType" 
 					[(hdsortreverse)]="sortReverse"	hd-filter-title="Filtra per Squadra Ospite" [(hdfiltersearch)]="filterSearch"></table-head></th>
-				<th class="col-email col-sort"><table-head hd-name="time"></table-head></th>
-				<th class="col-gender col-sort"><table-head hd-name="bet"></table-head></th>
+				<th class="col-email col-sort"><table-head hd-name="LABEL_TEXT.TIME"></table-head></th>
+				<th class="col-gender col-sort"><table-head hd-name="LABEL_TEXT.BET"></table-head></th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr *ngFor="let item of scommesseList | filterSearch:$this | orderBy:sortType:sortReverse | filterPaginate:$this; let $index = index; let $last = last" 
-				pipe-cicle [pc-last]="$last" (pc-finish)="sampleService.setFilterList(filtered)"
+				pipe-cicle [pc-last]="$last" (pc-finish)="scommesseService.setFilterList(filtered)"
 				context-menu [cm-model]="getAbilOperations()" [cm-index]="$index" (click)="viewItem($index, $event)">
 				<td>{{item.home}}</td>
 				<td>{{item.result}}</td>
@@ -36,12 +41,12 @@
 				<td>{{item.bet}}</td>
 			</tr>
 			<tr *ngIf="scommesseList.length == 0 || filtered_result.length == 0">
-				<td colspan="6" class="col-no-items" translate="LABEL_TEXT.NO_RESULT"></td>
+				<td colspan="5" class="col-no-items" translate="LABEL_TEXT.NO_RESULT"></td>
 			</tr>
 		</tbody>
 		<tfoot>
 			<tr>
-				<td colspan="6" class="col-pagination">
+				<td colspan="5" class="col-pagination">
 					<div class="row">
 						<div class="col-sm-3 col-num-per-page">
 							<ui-select [select-model]="utilService.numPerPage.selected" [select-options]="utilService.numPerPage.options" 

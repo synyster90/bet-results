@@ -10,7 +10,7 @@ import '@angular/common';
 import '@angular/http';
 import '@angular/router';
 
-// CSE
+// Moduli
 import '@angular/modules/src/components';
 import '@angular/modules/src/dialogs';
 import '@angular/modules/src/http-client';

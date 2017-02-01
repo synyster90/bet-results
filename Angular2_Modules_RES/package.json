@@ -4,7 +4,7 @@
 	"author": "synyster90",
 	"version": "1.0.0",
 	"scripts": {
-		"start": "tsc -w"
+		"start": "tsc"
 	},
 	"license": "ISC",
 	"devDependencies": {
