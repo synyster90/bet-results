@@ -22,7 +22,7 @@ public class FeedDataCache {
 	}
 
 	public String getCompetitions() {
-		if (competitions != null)
+		if (competitions == null)
 			loadCompetitions();
 		return competitions;
 	}
