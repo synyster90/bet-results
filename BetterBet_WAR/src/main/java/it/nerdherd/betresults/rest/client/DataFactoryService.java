@@ -47,14 +47,9 @@ public class DataFactoryService {
 			while ((line = br.readLine()) != null)
 				output += line;
 
-			log.info("output: " + output);
-
-			String prova = "{\"competitions\": []}";
-			CompetitionList competitionProva = mapper.readValue(prova, CompetitionList.class);
-			log.info("prova mapping: " + competitionProva.getCompetitions().size());
-
-			CompetitionList competition = mapper.readValue(output, CompetitionList.class);
-			return competition;
+			CompetitionList competitionList = mapper.readValue(output, CompetitionList.class);
+			log.info("Loaded Competitions: " + competitionList.getCompetitions().size());
+			return competitionList;
 		} catch (MalformedURLException e) {
 			throw new RuntimeException(e);
 		} catch (IOException e) {
