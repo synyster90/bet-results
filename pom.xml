@@ -10,6 +10,6 @@
 	<name>Bet Results</name>
 
 	<modules>
-		<module>../BetterBet_WAR</module>
+		<module>./BetterBet_WAR</module>
 	</modules>
 </project>
