@@ -17,17 +17,14 @@ export declare class HttpClient {
     private headers;
     private count;
     constructor(http: Http, spinnerOverlayService: SpinnerOverlayService);
-    srData: Object;
-    srValidation(callback: any): void;
-    private srInit(srData);
     exception: Object;
     exceptionEvent: EventEmitter<ExceptionT>;
     exceptionPropagationEvent: EventEmitter<Object>;
     propagateException(): void;
     private interceptors;
     addInterceptor(func: any): void;
-    get(url: string): Observable<any>;
-    post(url: string, data: any): Observable<any>;
-    private doPost(url, data);
+    get(url: string): Observable<Object>;
+    post(url: string, data: any): Observable<Object>;
+    private showSpinnerOverlay();
     private hideSpinnerOverlay();
 }

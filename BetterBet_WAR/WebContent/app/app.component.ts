@@ -26,9 +26,11 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit() {
-//        this.httpClient.get( 'jsonService/menu?m=menu' ).subscribe( data => {
-//            this.utilService.setMenu( data.xxMenu );
-//            this.changeDetectorRef.markForCheck()
-//        }, err => { })
+        this.httpClient.get( 'rest/users' ).subscribe( data => {
+            console.log(data)
+            this.changeDetectorRef.markForCheck()
+        }, err => {
+            console.log(err)
+        })
     }
 }

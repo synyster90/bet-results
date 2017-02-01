@@ -34,29 +34,7 @@ var HttpClient = (function () {
         this.interceptors = [];
         this.headers = new http_1.Headers();
         this.headers.set('Content-Type', 'application/json; charset=utf-8');
-        this.headers.set('srtoken', '');
     }
-    HttpClient.prototype.srValidation = function (callback) {
-        if (sessionStorage.getItem('srData'))
-            callback(this.srInit(JSON.parse(sessionStorage.getItem('srData'))));
-        else if ($('sr-data').attr('token') != "" && $('sr-data').attr('abi') != "" && $('sr-data').attr('topurl') != "") {
-            var srData = {
-                token: $('sr-data').attr('token'),
-                abi: $('sr-data').attr('abi').trim().replace(/^0+/, ''),
-                topUrl: $('sr-data').attr('topurl')
-            };
-            sessionStorage.setItem('srData', JSON.stringify(srData));
-            callback(this.srInit(srData));
-        }
-        else
-            window.location.href = 'error.jsp?error=Token+Not+Found';
-    };
-    HttpClient.prototype.srInit = function (srData) {
-        $('sr-data').remove();
-        this.headers.set('srtoken', srData['token']);
-        this.srData = srData;
-        return srData;
-    };
     HttpClient.prototype.propagateException = function () {
         this.exceptionPropagationEvent.emit(this.exception);
         this.exception = null;
@@ -65,16 +43,9 @@ var HttpClient = (function () {
         this.interceptors.push(func);
     };
     HttpClient.prototype.get = function (url) {
-        return this.doPost(url, '{"dummy":"dummy"}');
-    };
-    HttpClient.prototype.post = function (url, data) {
-        return this.doPost(url, JSON.stringify(data));
-    };
-    HttpClient.prototype.doPost = function (url, data) {
         var _this = this;
-        this.count++;
-        this.spinnerOverlayService.showSpinnerOverlay();
-        return this.http.post(url, data, {
+        this.showSpinnerOverlay();
+        return this.http.get(url, {
             headers: this.headers
         }).map(function (res) {
             _this.hideSpinnerOverlay();
@@ -82,37 +53,64 @@ var HttpClient = (function () {
             /* Interceptors */
             for (var i = 0; i < _this.interceptors.length; i++)
                 data = _this.interceptors[i](data);
-            if (data.hasOwnProperty('bawarMsgs'))
-                if (data.bawarMsgs.length > 0) {
-                    _this.exception = data;
-                    _this.exceptionEvent.emit(new ExceptionT(false, data));
-                }
-                else
-                    _this.exception = null;
             return data;
-        }).catch(function (err) {
+        })._catch(function (err) {
             _this.hideSpinnerOverlay();
-            var data = JSON.parse(err._body);
             var returnItem = null;
-            if (err.status == 403) {
-                var errorMsg = 'Token non valido';
-                try {
-                    errorMsg = data.esito.value + ' ' + data.esito.des + ': ' + data.errMsg;
-                }
-                catch (e) { }
-                window.location.href = 'error.jsp?error=' + errorMsg;
-            }
-            else {
+            var data = null;
+            try {
+                data = JSON.parse(err._body);
                 if (data.hasOwnProperty('errResponse'))
                     returnItem = JSON.parse(data.errResponse);
-                _this.exception = data;
-                _this.exceptionEvent.emit(new ExceptionT(true, data));
             }
+            catch (ex) {
+                data = err._body;
+                returnItem = err;
+            }
+            _this.exception = data;
+            _this.exceptionEvent.emit(new ExceptionT(true, data));
             return Observable_1.Observable.throw({
                 exception: data,
                 item: returnItem
             });
         });
+    };
+    HttpClient.prototype.post = function (url, data) {
+        var _this = this;
+        this.showSpinnerOverlay();
+        return this.http.post(url, JSON.stringify(data), {
+            headers: this.headers
+        }).map(function (res) {
+            _this.hideSpinnerOverlay();
+            var data = res.json();
+            /* Interceptors */
+            for (var i = 0; i < _this.interceptors.length; i++)
+                data = _this.interceptors[i](data);
+            return data;
+        })._catch(function (err) {
+            _this.hideSpinnerOverlay();
+            var returnItem = null;
+            var data = null;
+            try {
+                data = JSON.parse(err._body);
+                if (data.hasOwnProperty('errResponse'))
+                    returnItem = JSON.parse(data.errResponse);
+            }
+            catch (ex) {
+                data = err._body;
+                returnItem = err;
+            }
+            _this.exception = data;
+            _this.exceptionEvent.emit(new ExceptionT(true, data));
+            return Observable_1.Observable.throw({
+                exception: data,
+                item: returnItem
+            });
+        });
+    };
+    HttpClient.prototype.showSpinnerOverlay = function () {
+        this.count++;
+        this.spinnerOverlayService.showSpinnerOverlay();
     };
     HttpClient.prototype.hideSpinnerOverlay = function () {
         this.count--;
