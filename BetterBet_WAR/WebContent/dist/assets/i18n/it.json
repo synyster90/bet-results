@@ -1,0 +1,60 @@
+{
+    "BUTTON_TEXT": {
+        "ADD": "Aggiungi",
+        "INSERT": "Inserisci",
+        "RELOAD": "Ricarica",
+        "SEARCH": "Cerca",
+        "FIRST": "Inizio",
+        "LAST": "Fine",
+        "PREV": "Indietro",
+        "NEXT": "Avanti",
+        "PAGE": "Pagina",
+        "CANCEL": "Annulla",
+        "EDIT_TITLE": "Modifica",
+        "VIEW_TITLE": "Visualizza"
+    },
+    "LABEL_TEXT": {
+        "ACTIONS": "Azioni",
+        "NO_RESULT": "Nessun risultato...",
+        "FROM": "da",
+        "TO": "a",
+        "ITEM_PER_PAGE": "Dati per pag.",
+        "HOME": "Casa",
+        "AWAY": "Ospiti",
+        "RESULT": "Risultato",
+        "TIME": "Minuti",
+        "BET": "Scommessa"
+    },
+    "MODAL_TEXT": {
+        "BUTTON_CLOSE": "Chiudi",
+        "BUTTON_CANCEL": "Annulla",
+        "BUTTON_EDIT": "Modifica",
+        "BUTTON_DELETE": "Elimina",
+        "BUTTON_INSERT": "Inserisci",
+        "BUTTON_SAVE": "Salva",
+        "ERROR": "Errore!",
+        "WARNING": "Attenzione!",
+        "SUCCESS": "Completato!",
+        "TITLE_VIEW": "Visualizzazione {{title}}",
+        "TITLE_EDIT": "Modifica {{title}}",
+        "TITLE_INSERT": "Inserimento {{title}}",
+        "MESSAGE_DELETE": "Eliminare l\"elemento?",
+        "MESSAGE_EDIT": "Tutte le modifiche andranno perse, continuare?",
+        "MESSAGE_INSERT_FAIL": "Inserimento fallito! controllare di aver complilato correttamente tutti i campi.",
+        "MESSAGE_EDIT_CONFIRM": "Modifiche pronte per essere applicate, si desidera continuare?",
+        "MESSAGE_INSERT_CONFIRM": "Inserimento pronto per l\"esecuzione, si desidera continuare?",
+        "MESSAGE_GENERIC_SUCCESS": "Operazione eseguita con successo.",
+        "MESSAGE_EDIT_FAIL": "Modifica fallita! controllare di aver complilato correttamente tutti i campi.",
+        "LAST_EDIT": "Ultima modifica: "
+    },
+    "AUTOCOMPLETE_ERROR": {
+        "NO_TEAM": "squadra errata."
+    },
+    "LANG_SELECT": {
+        "IT": "Italiano",
+        "EN": "Inglese",
+        "DE": "Tedesco",
+        "FR": "Francese",
+        "ES": "Spagnolo"
+    }
+}

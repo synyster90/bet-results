@@ -1,0 +1,59 @@
+{
+	"BUTTON_TEXT": {
+		"ADD": "Add",
+		"INSERT": "Insert",
+		"RELOAD": "Reload",
+		"SEARCH": "Search",
+		"FIRST": "First",
+		"LAST": "Last",
+		"PREV": "Back",
+		"NEXT": "Next",
+		"PAGE": "Page",
+		"EDIT_TITLE": "Edit",
+		"VIEW_TITLE": "View"
+	},
+	"LABEL_TEXT": {
+		"ACTIONS": "Actions",
+		"NO_RESULT": "no results...",
+		"FROM": "from",
+		"TO": "to",
+		"ITEM_PER_PAGE": "Items per Page",
+        "HOME": "Home",
+        "AWAY": "Away",
+        "RESULT": "Result",
+        "TIME": "Time",
+        "BET": "Bet"
+	},
+	"MODAL_TEXT": {
+		"BUTTON_CLOSE": "Close",
+		"BUTTON_CANCEL": "Cancel",
+		"BUTTON_EDIT": "Edit",
+		"BUTTON_DELETE": "Delete",
+		"BUTTON_INSERT": "Insert",
+		"BUTTON_SAVE": "Save",
+		"ERROR": "Error!",
+		"WARNING": "Warning!",
+		"SUCCESS": "Success!",
+		"TITLE_VIEW": "{{title}} View",
+		"TITLE_EDIT": "{{title}} Edit",
+		"TITLE_INSERT": "{{title}} Insert",
+		"MESSAGE_DELETE": "Delete element?",
+		"MESSAGE_EDIT": "All changes will be lost, continue?",
+		"MESSAGE_INSERT_FAIL": "Insert failed! check to fill all fields correctly.",
+		"MESSAGE_EDIT_CONFIRM": "Update ready to execute, do you wish to continue?",
+		"MESSAGE_INSERT_CONFIRM": "Insert ready to execute, do you wish to continue?",
+		"MESSAGE_GENERIC_SUCCESS": "Operation execution success.",
+		"MESSAGE_EDIT_FAIL": "Edit failed! check to fill all fields correctly.",
+		"LAST_EDIT": "Last edit: "
+	},
+	"AUTOCOMPLETE_ERROR": {
+		"NO_TEAM": "no team."
+	},
+	"LANG_SELECT": {
+		"IT": "Italian",
+		"EN": "English",
+		"DE": "German",
+		"FR": "French",
+		"ES": "Spanish"
+	}
+}

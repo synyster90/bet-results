@@ -4,6 +4,7 @@
 	"version": "1.0.0",
 	"scripts": {
 		"start": "webpack-dev-server --watch --inline --config webpack-config/webpack.config.js",
+		"build-dev": "webpack --config webpack-config/webpack.config.js",
 		"build-prod": "webpack -p --config webpack-config/webpack.config.js"
 	},
 	"license": "ISC",
