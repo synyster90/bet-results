@@ -2,8 +2,10 @@ package it.nerdherd.betresults.rest.model;
 
 import java.util.List;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CompetitionList {
 
 	@JsonProperty("competitions")
@@ -17,6 +19,7 @@ public class CompetitionList {
 		this.competitions = competitions;
 	}
 
+	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static class Competition {
 		private String competition_id;
 		private String title;
