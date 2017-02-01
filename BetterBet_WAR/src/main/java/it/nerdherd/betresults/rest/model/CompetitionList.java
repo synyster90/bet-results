@@ -2,11 +2,11 @@ package it.nerdherd.betresults.rest.model;
 
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import org.codehaus.jackson.annotate.JsonProperty;
 
-@XmlRootElement
 public class CompetitionList {
 
+	@JsonProperty("competitions")
 	private List<Competition> competitions;
 
 	public List<Competition> getCompetitions() {
@@ -17,9 +17,14 @@ public class CompetitionList {
 		this.competitions = competitions;
 	}
 
-	public class Competition {
+	public static class Competition {
 		private String competition_id;
 		private String title;
+
+		public Competition(@JsonProperty("competition_id") String competition_id, @JsonProperty("title") String title) {
+			this.competition_id = competition_id;
+			this.title = title;
+		}
 
 		public String getCompetition_id() {
 			return competition_id;
