@@ -9,12 +9,12 @@ public class CompetitionList {
 
 	private List<Competition> competitions;
 
-	public List<Competition> getCompetition() {
+	public List<Competition> getCompetitions() {
 		return competitions;
 	}
 
-	public void setCompetition(List<Competition> competition) {
-		competitions = competition;
+	public void setCompetitions(List<Competition> competitions) {
+		this.competitions = competitions;
 	}
 
 	public class Competition {

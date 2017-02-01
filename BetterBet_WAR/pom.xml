@@ -19,6 +19,12 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.22</version>
+		</dependency>
+
 		<!-- RESTful web service: Jersey -->
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
