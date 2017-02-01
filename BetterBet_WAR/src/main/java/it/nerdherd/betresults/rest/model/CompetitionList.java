@@ -5,29 +5,21 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class BaseCompetition {
+public class CompetitionList {
 
-	private List<Competition> Competition;
+	private List<Competition> competitions;
 
 	public List<Competition> getCompetition() {
-		return Competition;
+		return competitions;
 	}
 
 	public void setCompetition(List<Competition> competition) {
-		Competition = competition;
+		competitions = competition;
 	}
 
 	public class Competition {
 		private String competition_id;
-		private String name;
-
-		public String getName() {
-			return name;
-		}
-
-		public void setName(String name) {
-			this.name = name;
-		}
+		private String title;
 
 		public String getCompetition_id() {
 			return competition_id;
@@ -35,6 +27,14 @@ public class BaseCompetition {
 
 		public void setCompetition_id(String competition_id) {
 			this.competition_id = competition_id;
+		}
+
+		public String getTitle() {
+			return title;
+		}
+
+		public void setTitle(String title) {
+			this.title = title;
 		}
 	}
 }
