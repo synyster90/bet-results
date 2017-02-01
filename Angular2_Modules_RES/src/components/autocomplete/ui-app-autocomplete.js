@@ -80,13 +80,6 @@ var Autocomplete = (function () {
                 if (typeof _this.acSearchText == 'undefined' || _this.acSearchText == '' && !_this.isListOpen)
                     _this.showAutocompleteList();
             });
-            $('input', _this.element.nativeElement).on('blur', function (event) {
-                if (_this.isListOpen)
-                    if (!$.contains($('div.ui-autocomplete-list', _this.element.nativeElement)[0], $(':focus')[0]) && !$(':focus').hasClass('autocomplete-toggle'))
-                        _this.hideAutocompleteList();
-                    else
-                        $('input', _this.element.nativeElement).focus();
-            });
             _this.acItemSelectedChange.subscribe(function (newItem) {
                 if (newItem) {
                     _this.hideAutocompleteList();
@@ -128,6 +121,18 @@ var Autocomplete = (function () {
             _this.acSearchTextChange.subscribe(function (newSearchText) {
                 _this.filter(newSearchText);
             });
+            setTimeout(function () {
+                $(document).on('click', function (event) {
+                    if (!$(event.target).is($(_this.element.nativeElement))) {
+                        $(document).off('click');
+                        if (_this.isListOpen)
+                            if (!$.contains($('div.ui-autocomplete-list', _this.element.nativeElement)[0], $(event.target)[0]) && !$(event.target).hasClass('autocomplete-toggle'))
+                                _this.hideAutocompleteList();
+                            else
+                                $('input', _this.element.nativeElement).focus();
+                    }
+                });
+            }, 300);
         });
     };
     Autocomplete.prototype.hideAutocompleteList = function () {
