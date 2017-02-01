@@ -20,7 +20,7 @@ public class DataFactoryService {
 		return INSTANCE;
 	}
 
-	public String getCompetitions(String op) {
+	public String getCompetitions(String op) throws RuntimeException {
 		HttpURLConnection conn = null;
 		try {
 			URL url = new URL(FEED_SOURCE_BASE_URL + op + "&edition=it");
@@ -39,13 +39,12 @@ public class DataFactoryService {
 				output += line;
 			return output;
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		} finally {
 			if (conn != null)
 				conn.disconnect();
 		}
-		return null;
 	}
 }
