@@ -13,16 +13,12 @@ import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
 import org.quartz.impl.StdSchedulerFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import it.nerdherd.betresults.scheduler.job.CompetitionSchedulerJob;
 
 public class JobScheduler implements ServletContextListener {
-	private static final Logger log = LoggerFactory.getLogger(JobScheduler.class);
-
-	public static final CronScheduleBuilder COMP_SCHEDULE = CronScheduleBuilder.cronSchedule("");
-	public static final CronScheduleBuilder MATCH_SCHEDULE = CronScheduleBuilder.cronSchedule("");
+	public static final CronScheduleBuilder COMP_SCHEDULE = CronScheduleBuilder.cronSchedule("0 0 4 30 1/1 ? *");
+	public static final CronScheduleBuilder MATCH_SCHEDULE = CronScheduleBuilder.cronSchedule("0 0 4 1/1 * ? *");
 
 	public static final JobKey COMP_JOB_KEY = JobKey.jobKey("competitionSchedulerJob");
 	public static final JobKey MATCH_JOB_KEY = JobKey.jobKey("matchSchedulerJob");
@@ -35,25 +31,25 @@ public class JobScheduler implements ServletContextListener {
 	@Override
 	public void contextDestroyed(ServletContextEvent arg0) {
 		try {
-			log.info("Application exit. delete Jobs.");
+			System.out.println("Application exit. delete Jobs.");
 			scheduler.deleteJob(COMP_JOB_KEY);
 			scheduler.deleteJob(MATCH_JOB_KEY);
 		} catch (SchedulerException e) {
-			log.error("error contextDestroyed: " + e.getMessage(), e);
+			System.err.println("error contextDestroyed: " + e.getMessage());
 		}
 	}
 
 	@Override
 	public void contextInitialized(ServletContextEvent arg0) {
 		try {
-			log.info("Application started. shedule Jobs.");
+			System.out.println("Application started. shedule Jobs.");
 			scheduler = new StdSchedulerFactory().getScheduler();
 			scheduler.start();
 
 			sheduleCompetitionJob();
 			sheduleMatchJob();
 		} catch (SchedulerException e) {
-			log.error("error contextInitialized: " + e.getMessage(), e);
+			System.err.println("error contextInitialized: " + e.getMessage());
 		}
 	}
 
@@ -62,7 +58,7 @@ public class JobScheduler implements ServletContextListener {
 		Trigger trigger = TriggerBuilder.newTrigger().withIdentity(COMP_TRIGGER_KEY).startNow()
 				.withSchedule(COMP_SCHEDULE).build();
 		scheduler.scheduleJob(job, trigger);
-		log.info("sheduleCompetitionJob success. with cron: " + COMP_SCHEDULE);
+		System.out.println("sheduleCompetitionJob success. with cron: " + COMP_SCHEDULE);
 	}
 
 	private void sheduleMatchJob() throws SchedulerException {
@@ -71,6 +67,6 @@ public class JobScheduler implements ServletContextListener {
 		Trigger trigger = TriggerBuilder.newTrigger().withIdentity(MATCH_TRIGGER_KEY).startNow()
 				.withSchedule(MATCH_SCHEDULE).build();
 		scheduler.scheduleJob(job, trigger);
-		log.info("sheduleMatchJob success. with cron: " + MATCH_SCHEDULE);
+		System.out.println("sheduleMatchJob success. with cron: " + MATCH_SCHEDULE);
 	}
 }

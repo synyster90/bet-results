@@ -8,14 +8,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.codehaus.jackson.map.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import it.nerdherd.betresults.rest.model.CompetitionList;
 
 public class DataFactoryService {
-	private static final Logger log = LoggerFactory.getLogger(DataFactoryService.class);
-
 	private static final String FEED_SOURCE_BASE_URL = "http://www.goal.com/feed/";
 
 	private static DataFactoryService INSTANCE = null;
@@ -49,7 +45,7 @@ public class DataFactoryService {
 				output += line;
 
 			CompetitionList competitionList = mapper.readValue(output, CompetitionList.class);
-			log.info("Loaded Competitions: " + competitionList.getCompetitions().size());
+			System.out.println("Loaded Competitions: " + competitionList.getCompetitions().size());
 			return competitionList;
 		} catch (MalformedURLException e) {
 			throw new RuntimeException(e);

@@ -6,11 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public class PropLoader {
-	private static final Logger log = LoggerFactory.getLogger(PropLoader.class);
 
 	private static PropLoader INSTANCE = null;
 
@@ -39,7 +35,7 @@ public class PropLoader {
 				propList.put(file_name, prop);
 				return prop;
 			} catch (IOException e) {
-				log.error("error loading prop file: " + file_name, e);
+				System.err.println("error loading prop file: " + file_name);
 				throw e;
 			}
 		}

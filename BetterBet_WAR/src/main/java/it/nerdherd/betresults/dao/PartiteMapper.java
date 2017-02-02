@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.Document;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
@@ -17,8 +15,6 @@ import it.nerdherd.betresults.rest.model.CompetitionList.Competition;
 import it.nerdherd.betresults.rest.model.CompetitionList.Country;
 
 public class PartiteMapper {
-	private static final Logger log = LoggerFactory.getLogger(PartiteMapper.class);
-
 	private static final String DB_NAME = "betresults";
 	private static final String DB_COLL_COMPETITIONS = "competitions";
 
@@ -43,6 +39,11 @@ public class PartiteMapper {
 		MongoClient mongoClient = MongoDBDao.getDBClient();
 		MongoDatabase db = mongoClient.getDatabase(DB_NAME);
 		MongoCollection<Document> dbColl = db.getCollection(DB_COLL_COMPETITIONS);
+
+		// Recreate competition collection
+		dbColl.drop();
+		db.createCollection(DB_COLL_COMPETITIONS);
+		dbColl = db.getCollection(DB_COLL_COMPETITIONS);
 
 		int i = 0;
 		for (Competition competition : competitions.getCompetitions()) {
