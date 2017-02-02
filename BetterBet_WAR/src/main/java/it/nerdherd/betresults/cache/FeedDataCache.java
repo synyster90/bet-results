@@ -23,7 +23,8 @@ public class FeedDataCache {
 	private CompetitionList competitions = null;
 
 	public void loadCompetitions() {
-		PartiteMapper.getDBCompetitions();
+		competitions = new CompetitionList();
+		competitions.setCompetitions(PartiteMapper.getDBCompetitions());
 	}
 
 	public CompetitionList getCompetitions() {

@@ -59,10 +59,11 @@
 			<version>2.2.1</version>
 		</dependency>
 
+		<!-- MongoDB Driver 3.2.1 -->
 		<dependency>
-			<groupId>org.mongojack</groupId>
-			<artifactId>mongojack</artifactId>
-			<version>2.6.1</version>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+			<version>3.2.1</version>
 		</dependency>
 	</dependencies>
 
