@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.httpClient.get( 'rest/users' ).subscribe( data => {
+        this.httpClient.get( 'rest/init' ).subscribe( data => {
             console.log(data)
             this.changeDetectorRef.markForCheck()
         }, err => {

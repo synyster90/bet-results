@@ -17,6 +17,7 @@ public class DataFactoryService {
 	private static final Logger log = LoggerFactory.getLogger(DataFactoryService.class);
 
 	private static final String FEED_SOURCE_BASE_URL = "http://www.goal.com/feed/";
+
 	private static DataFactoryService INSTANCE = null;
 
 	private DataFactoryService() {
@@ -28,11 +29,11 @@ public class DataFactoryService {
 		return INSTANCE;
 	}
 
-	public CompetitionList getCompetitions(String op) throws RuntimeException {
+	public CompetitionList getCompetitions() throws RuntimeException {
 		ObjectMapper mapper = new ObjectMapper();
 		HttpURLConnection conn = null;
 		try {
-			URL url = new URL(FEED_SOURCE_BASE_URL + op);
+			URL url = new URL(FEED_SOURCE_BASE_URL + "gsm/competition?edition=it&format=guest");
 			conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty("Accept", "application/json");

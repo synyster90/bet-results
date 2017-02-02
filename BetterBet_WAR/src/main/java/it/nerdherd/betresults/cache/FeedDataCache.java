@@ -1,10 +1,14 @@
 package it.nerdherd.betresults.cache;
 
-import it.nerdherd.betresults.rest.client.DataFactoryService;
-import it.nerdherd.betresults.rest.client.Resources;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import it.nerdherd.betresults.dao.PartiteMapper;
 import it.nerdherd.betresults.rest.model.CompetitionList;
 
 public class FeedDataCache {
+	private static final Logger log = LoggerFactory.getLogger(FeedDataCache.class);
+
 	private static FeedDataCache INSTANCE = null;
 
 	private FeedDataCache() {
@@ -19,7 +23,7 @@ public class FeedDataCache {
 	private CompetitionList competitions = null;
 
 	public void loadCompetitions() {
-		competitions = DataFactoryService.getInstance().getCompetitions(Resources.COMPETITIONS_LIST);
+		PartiteMapper.getDBCompetitions();
 	}
 
 	public CompetitionList getCompetitions() {
