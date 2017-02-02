@@ -21,7 +21,7 @@ public class PartiteMapper {
 	}
 
 	public static void storeDBCompetitions(CompetitionList competitions) {
-		MongoClient mongoClient = MongoJackDao.getDBClient();
+		MongoClient mongoClient = MongoDBDao.getDBClient();
 		MongoDatabase db = mongoClient.getDatabase(DB_NAME);
 		MongoCollection<Document> dbColl = db.getCollection(DB_COLL_COMPETITIONS);
 
@@ -35,7 +35,7 @@ public class PartiteMapper {
 			if (!competition.getCountry().isEmpty())
 				comp.setCountry_code(competition.getCountry().get(0).getCountryCode());
 
-			dbColl.insertOne(MongoJackDao.toDocument(DBCompetition.class, comp));
+			dbColl.insertOne(MongoDBDao.toDocument(DBCompetition.class, comp));
 			i++;
 		}
 		mongoClient.close();

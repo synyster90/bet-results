@@ -10,16 +10,18 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
 
-public class MongoJackDao {
+public class MongoDBDao {
 
 	// mongodb://<dbuser>:<dbpassword>@ds135089.mlab.com:35089/betresults
-	private static final String DB_URL = "ds135089.mlab.com:35089";
+	private static final String DB_URL = "ds135089.mlab.com";
+	private static final int DB_PORT = 35089;
+	private static final String DB_NAME = "betresults";
 	private static final String DB_USER = "admin";
 	private static final char[] DB_PASSWORD = "7a5fe7be311576c3514571959f6789c9".toCharArray();
 
 	public static MongoClient getDBClient() {
-		MongoCredential credential = MongoCredential.createCredential(DB_USER, DB_URL, DB_PASSWORD);
-		return new MongoClient(new ServerAddress(), Arrays.asList(credential));
+		MongoCredential credential = MongoCredential.createCredential(DB_USER, DB_NAME, DB_PASSWORD);
+		return new MongoClient(new ServerAddress(DB_URL, DB_PORT), Arrays.asList(credential));
 	}
 
 	public static <T> T fromDocument(Class<T> clazz, Document document) {
