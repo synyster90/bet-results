@@ -217,7 +217,6 @@ public class PartiteMapper {
 			System.out.println("Stored " + matchesList.getMatches().size() + " matches in DB for competition "
 					+ comp.getCompetition_id());
 			PartiteMapper.storeDBMatches(matchesList);
-			break;
 		}
 		System.out.println(
 				"	BET RESULTS - updateDBMatches FINISH.. in " + (System.currentTimeMillis() - start_time) + "ms");
