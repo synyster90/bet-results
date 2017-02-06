@@ -68,6 +68,7 @@ public class DataFactoryService {
 		try {
 			URL url = new URL(FEED_SOURCE_BASE_URL + "gsm/competition-fixtures?competitionId=" + competition_id
 					+ "&format=guest");
+			System.out.println("	BET RESULTS - goal.com request " + url);
 			conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty("Accept", "application/json");
