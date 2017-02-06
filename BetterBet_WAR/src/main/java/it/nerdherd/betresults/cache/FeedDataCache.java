@@ -1,12 +1,16 @@
 package it.nerdherd.betresults.cache;
 
+import java.util.List;
+
 import it.nerdherd.betresults.dao.PartiteMapper;
-import it.nerdherd.betresults.rest.model.CompetitionList;
+import it.nerdherd.betresults.rest.model.PartiteJson.Competition;
+import it.nerdherd.betresults.rest.model.PartiteJson.Matches;
 
 public class FeedDataCache {
 	private static FeedDataCache INSTANCE = null;
 
 	private FeedDataCache() {
+		PartiteMapper.checkForUpdate();
 	}
 
 	public static FeedDataCache getInstance() {
@@ -15,16 +19,27 @@ public class FeedDataCache {
 		return INSTANCE;
 	}
 
-	private CompetitionList competitions = null;
+	private List<Competition> competitions = null;
+
+	private List<Matches> matches = null;
 
 	public void loadCompetitions() {
-		competitions = new CompetitionList();
-		competitions.setCompetitions(PartiteMapper.getDBCompetitions());
+		competitions = PartiteMapper.getDBCompetitions();
 	}
 
-	public CompetitionList getCompetitions() {
+	private void loadMatches() {
+		matches = PartiteMapper.getDBMatches();
+	}
+
+	public List<Competition> getCompetitions() {
 		if (competitions == null)
 			loadCompetitions();
 		return competitions;
+	}
+
+	public List<Matches> getMatches() {
+		if (matches == null)
+			loadMatches();
+		return matches;
 	}
 }

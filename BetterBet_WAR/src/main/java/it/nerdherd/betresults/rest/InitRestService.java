@@ -6,14 +6,17 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import it.nerdherd.betresults.cache.FeedDataCache;
-import it.nerdherd.betresults.rest.model.CompetitionList;
+import it.nerdherd.betresults.rest.model.PartiteJson;
 
 @Path("/init")
 public class InitRestService {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public CompetitionList getCompetitionList() {
-		return FeedDataCache.getInstance().getCompetitions();
+	public PartiteJson getCompetitionList() {
+		PartiteJson response = new PartiteJson();
+		response.setCompetitions(FeedDataCache.getInstance().getCompetitions());
+		response.setMatches(FeedDataCache.getInstance().getMatches());
+		return response;
 	}
 }

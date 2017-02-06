@@ -9,7 +9,9 @@ import java.net.URL;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-import it.nerdherd.betresults.rest.model.CompetitionList;
+import it.nerdherd.betresults.dao.PartiteMapper;
+import it.nerdherd.betresults.rest.model.PartiteJson;
+import it.nerdherd.betresults.rest.model.PartiteJson.Matches;
 
 public class DataFactoryService {
 	private static final String FEED_SOURCE_BASE_URL = "http://www.goal.com/feed/";
@@ -25,7 +27,7 @@ public class DataFactoryService {
 		return INSTANCE;
 	}
 
-	public CompetitionList getCompetitions() throws RuntimeException {
+	public PartiteJson getCompetitions() throws RuntimeException {
 		ObjectMapper mapper = new ObjectMapper();
 		HttpURLConnection conn = null;
 		try {
@@ -44,9 +46,59 @@ public class DataFactoryService {
 			while ((line = br.readLine()) != null)
 				output += line;
 
-			CompetitionList competitionList = mapper.readValue(output, CompetitionList.class);
+			PartiteJson competitionList = mapper.readValue(output, PartiteJson.class);
 			System.out.println("Loaded Competitions: " + competitionList.getCompetitions().size());
 			return competitionList;
+		} catch (MalformedURLException e) {
+			throw new RuntimeException(e);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null)
+				conn.disconnect();
+		}
+	}
+
+	public PartiteJson getMatches(String competition_id) {
+		ObjectMapper mapper = new ObjectMapper();
+		HttpURLConnection conn = null;
+		try {
+			URL url = new URL(FEED_SOURCE_BASE_URL + "gsm/competition-fixtures?competitionId=" + competition_id
+					+ "&format=guest");
+			conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("GET");
+			conn.setRequestProperty("Accept", "application/json");
+
+			if (conn.getResponseCode() != 200)
+				throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+
+			BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+
+			String output = "";
+			String line;
+			while ((line = br.readLine()) != null)
+				output += line;
+
+			// Rimuovo parte iniziale e finale inutile
+			output.replaceAll(".*Matches", "{\"Matches");
+			output.replaceAll("}]}]}]", "");
+
+			PartiteJson matchesList = mapper.readValue(output, PartiteJson.class);
+
+			// filtro match correnti
+			long now = System.currentTimeMillis() / 1000;
+			long tre_giorni_fa = now - (PartiteMapper.MILLIS_PER_DAY * 4);
+			long fra_giorni_fa = now + (PartiteMapper.MILLIS_PER_DAY * 4);
+			for (Matches match : matchesList.getMatches()) {
+				if (Long.valueOf(match.getDate_time_utc_moment()) >= tre_giorni_fa
+						&& Long.valueOf(match.getDate_time_utc_moment()) <= fra_giorni_fa)
+					match.setCompetition_id(competition_id);
+				else
+					matchesList.getMatches().remove(match);
+			}
+
+			System.out.println("Loaded Matches: " + matchesList.getMatches().size());
+			return matchesList;
 		} catch (MalformedURLException e) {
 			throw new RuntimeException(e);
 		} catch (IOException e) {
