@@ -68,7 +68,6 @@ public class DataFactoryService {
 		try {
 			URL url = new URL(FEED_SOURCE_BASE_URL + "gsm/competition-fixtures?competitionId=" + competition_id
 					+ "&format=guest");
-			System.out.println("	BET RESULTS - goal.com request " + url);
 			conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty("Accept", "application/json");
@@ -82,6 +81,7 @@ public class DataFactoryService {
 			String line;
 			while ((line = br.readLine()) != null)
 				output += line;
+			System.out.println("	BET RESULTS - goal.com response " + output);
 
 			// Rimuovo parte iniziale e finale inutile
 			output = output.replaceAll(".*Matches", "{\"Matches");
