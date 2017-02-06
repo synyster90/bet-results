@@ -84,12 +84,13 @@ public class DataFactoryService {
 
 			// Rimuovo parte iniziale e finale inutile
 			output = output.replaceFirst(".*,\"Matches", "{\"Matches");
-			System.out.println("	BET RESULTS - goal.com return string after matches " + output);
 			output = output.replaceFirst("}]}]}]", "");
 
 			PartiteJson matchesList = mapper.readValue(output, PartiteJson.class);
 
 			// filtro match correnti
+
+			System.out.println("	BET RESULTS - matchesList before filter " + matchesList.getMatches().size());
 			long now = System.currentTimeMillis() / 1000;
 			long tre_giorni_fa = now - (PartiteMapper.MILLIS_PER_DAY * 4);
 			long fra_giorni_fa = now + (PartiteMapper.MILLIS_PER_DAY * 4);
@@ -100,6 +101,7 @@ public class DataFactoryService {
 				else
 					matchesList.getMatches().remove(match);
 			}
+			System.out.println("	BET RESULTS - matchesList after filter " + matchesList.getMatches().size());
 
 			System.out.println("	BET RESULTS - goal.com Loaded Matches: " + matchesList.getMatches().size());
 			return matchesList;
