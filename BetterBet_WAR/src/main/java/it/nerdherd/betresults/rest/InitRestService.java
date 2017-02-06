@@ -14,6 +14,7 @@ public class InitRestService {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public PartiteJson getCompetitionList() {
+		System.out.println("getCompetitionList REST API");
 		PartiteJson response = new PartiteJson();
 		response.setCompetitions(FeedDataCache.getInstance().getCompetitions());
 		response.setMatches(FeedDataCache.getInstance().getMatches());
