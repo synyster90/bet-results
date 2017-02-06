@@ -6,10 +6,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Calendar;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-import it.nerdherd.betresults.dao.PartiteMapper;
 import it.nerdherd.betresults.rest.model.PartiteJson;
 import it.nerdherd.betresults.rest.model.PartiteJson.Matches;
 
@@ -89,10 +89,14 @@ public class DataFactoryService {
 			PartiteJson matchesList = mapper.readValue(output, PartiteJson.class);
 
 			// filtro match correnti
+			Calendar cal_tre_giorni_fa = Calendar.getInstance();
+			cal_tre_giorni_fa.add(Calendar.DAY_OF_YEAR, -3);
+			long tre_giorni_fa = cal_tre_giorni_fa.getTimeInMillis();
 
-			long now = System.currentTimeMillis();
-			long tre_giorni_fa = now - (PartiteMapper.MILLIS_PER_DAY * 4);
-			long fra_giorni_fa = now + (PartiteMapper.MILLIS_PER_DAY * 4);
+			Calendar cal_fra_giorni_fa = Calendar.getInstance();
+			cal_fra_giorni_fa.add(Calendar.DAY_OF_YEAR, 3);
+			long fra_giorni_fa = cal_fra_giorni_fa.getTimeInMillis();
+
 			for (Matches match : matchesList.getMatches()) {
 				System.out.println("	BET RESULTS - matchesList ts check ");
 				System.out.println(
