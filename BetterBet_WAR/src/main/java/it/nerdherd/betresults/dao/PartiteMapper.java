@@ -76,7 +76,7 @@ public class PartiteMapper {
 			}
 		} else {
 			PartiteMapper.updateDBMatches();
-			PartiteMapper.insertLastUpdate(DB_COLL_MATCHES, curr_timestamp);
+			// PartiteMapper.insertLastUpdate(DB_COLL_MATCHES, curr_timestamp);
 		}
 		System.out.println("	BET RESULTS - checkForMatchesUpdate FINE.");
 	}
@@ -217,6 +217,7 @@ public class PartiteMapper {
 			System.out.println("Stored " + matchesList.getMatches().size() + " matches in DB for competition "
 					+ comp.getCompetition_id());
 			PartiteMapper.storeDBMatches(matchesList);
+			break;
 		}
 		System.out.println(
 				"	BET RESULTS - updateDBMatches FINISH.. in " + (System.currentTimeMillis() - start_time) + "ms");
