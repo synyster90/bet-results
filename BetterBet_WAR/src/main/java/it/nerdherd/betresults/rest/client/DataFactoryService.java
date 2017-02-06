@@ -90,19 +90,21 @@ public class DataFactoryService {
 
 			// filtro match correnti
 
-			System.out.println("	BET RESULTS - matchesList before filter " + matchesList.getMatches().size());
 			long now = System.currentTimeMillis() / 1000;
 			long tre_giorni_fa = now - (PartiteMapper.MILLIS_PER_DAY * 4);
 			long fra_giorni_fa = now + (PartiteMapper.MILLIS_PER_DAY * 4);
 			for (Matches match : matchesList.getMatches()) {
+				System.out.println("	BET RESULTS - matchesList ts check ");
+				System.out.println(
+						"	BET RESULTS - Date_time_utc_moment " + Long.valueOf(match.getDate_time_utc_moment()));
+				System.out.println("	BET RESULTS - tre_giorni_fa " + tre_giorni_fa);
+				System.out.println("	BET RESULTS - fra_giorni_fa " + fra_giorni_fa);
 				if (Long.valueOf(match.getDate_time_utc_moment()) >= tre_giorni_fa
 						&& Long.valueOf(match.getDate_time_utc_moment()) <= fra_giorni_fa)
 					match.setCompetition_id(competition_id);
 				else
 					matchesList.getMatches().remove(match);
 			}
-			System.out.println("	BET RESULTS - matchesList after filter " + matchesList.getMatches().size());
-
 			System.out.println("	BET RESULTS - goal.com Loaded Matches: " + matchesList.getMatches().size());
 			return matchesList;
 		} catch (MalformedURLException e) {
