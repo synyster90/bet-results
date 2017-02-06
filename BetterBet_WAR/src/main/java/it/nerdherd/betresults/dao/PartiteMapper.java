@@ -177,6 +177,11 @@ public class PartiteMapper {
 		MongoDatabase db = mongoClient.getDatabase(DB_NAME);
 		MongoCollection<Document> dbCollMatches = db.getCollection(DB_COLL_MATCHES);
 
+		// Recreate competition collection
+		dbCollMatches.drop();
+		db.createCollection(DB_COLL_MATCHES);
+		dbCollMatches = db.getCollection(DB_COLL_MATCHES);
+
 		for (Matches match : matches.getMatches()) {
 			DBMatch matchDB = new DBMatch();
 			matchDB.setId(match.getMatch_id());

@@ -83,9 +83,9 @@ public class DataFactoryService {
 				output += line;
 
 			// Rimuovo parte iniziale e finale inutile
-			output = output.replaceAll(".*,\"Matches", "{\"Matches");
+			output = output.replaceFirst(".*,\"Matches", "{\"Matches");
 			System.out.println("	BET RESULTS - goal.com return string after matches " + output);
-			output = output.replaceAll("}]}]}]", "");
+			output = output.replaceFirst("}]}]}]", "");
 
 			PartiteJson matchesList = mapper.readValue(output, PartiteJson.class);
 
