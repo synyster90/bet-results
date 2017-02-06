@@ -90,7 +90,7 @@ public class DataFactoryService {
 
 			// filtro match correnti
 
-			long now = System.currentTimeMillis() / 1000;
+			long now = System.currentTimeMillis();
 			long tre_giorni_fa = now - (PartiteMapper.MILLIS_PER_DAY * 4);
 			long fra_giorni_fa = now + (PartiteMapper.MILLIS_PER_DAY * 4);
 			for (Matches match : matchesList.getMatches()) {
