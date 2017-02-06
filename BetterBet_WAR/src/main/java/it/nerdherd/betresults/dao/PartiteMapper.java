@@ -28,6 +28,7 @@ public class PartiteMapper {
 	public final static long MILLIS_PER_MONTH = 30 * MILLIS_PER_DAY;
 
 	public static void checkForUpdate() {
+		System.out.println("	BET RESULTS - checkForUpdate");
 		MongoClient mongoClient = MongoDBDao.getDBClient();
 		MongoDatabase db = mongoClient.getDatabase(DB_NAME);
 		MongoCollection<Document> dbColl = db.getCollection(DB_COLL_APP_STATS);
@@ -35,12 +36,14 @@ public class PartiteMapper {
 
 		PartiteMapper.checkForCompetitionsUpdate(app_stats);
 		PartiteMapper.checkForMatchesUpdate(app_stats);
+		System.out.println("	BET RESULTS - checkForUpdate FINE.");
 
 		mongoClient.close();
 	}
 
 	private static void checkForCompetitionsUpdate(FindIterable<Document> app_stats) {
 		long curr_timestamp = System.currentTimeMillis();
+		System.out.println("	BET RESULTS - checkForCompetitionsUpdate START...");
 
 		BasicDBObject filter = new BasicDBObject();
 		filter.put("type", DB_COLL_COMPETITIONS);
@@ -55,10 +58,12 @@ public class PartiteMapper {
 			PartiteMapper.updateDBCompetitions();
 			PartiteMapper.insertLastUpdate(DB_COLL_COMPETITIONS, curr_timestamp);
 		}
+		System.out.println("	BET RESULTS - checkForCompetitionsUpdate FINE.");
 	}
 
 	private static void checkForMatchesUpdate(FindIterable<Document> app_stats) {
 		long curr_timestamp = System.currentTimeMillis();
+		System.out.println("	BET RESULTS - checkForMatchesUpdate START...");
 
 		BasicDBObject filter = new BasicDBObject();
 		filter.put("type", DB_COLL_MATCHES);
@@ -73,6 +78,7 @@ public class PartiteMapper {
 			PartiteMapper.updateDBMatches();
 			PartiteMapper.insertLastUpdate(DB_COLL_MATCHES, curr_timestamp);
 		}
+		System.out.println("	BET RESULTS - checkForMatchesUpdate FINE.");
 	}
 
 	public static void insertLastUpdate(String type, long timestamp) {
@@ -103,6 +109,7 @@ public class PartiteMapper {
 	}
 
 	public static List<Competition> getDBCompetitions() {
+		System.out.println("	BET RESULTS - getDBCompetitions START...");
 		List<Competition> competitionsList = new ArrayList<>();
 		MongoClient mongoClient = MongoDBDao.getDBClient();
 		MongoDatabase db = mongoClient.getDatabase(DB_NAME);
@@ -117,10 +124,12 @@ public class PartiteMapper {
 			competitionsList.add(comp);
 		}
 		mongoClient.close();
+		System.out.println("	BET RESULTS - getDBCompetitions END.");
 		return competitionsList;
 	}
 
 	public static void storeDBCompetitions(PartiteJson competitions) {
+		System.out.println("	BET RESULTS - storeDBCompetitions START...");
 		MongoClient mongoClient = MongoDBDao.getDBClient();
 		MongoDatabase db = mongoClient.getDatabase(DB_NAME);
 		MongoCollection<Document> dbCollCompetitions = db.getCollection(DB_COLL_COMPETITIONS);
@@ -139,10 +148,12 @@ public class PartiteMapper {
 
 			dbCollCompetitions.insertOne(MongoDBDao.toDocument(DBCompetition.class, comp));
 		}
+		System.out.println("	BET RESULTS - storeDBCompetitions END.");
 		mongoClient.close();
 	}
 
 	public static List<Matches> getDBMatches() {
+		System.out.println("	BET RESULTS - getDBMatches START...");
 		List<Matches> matchesList = new ArrayList<>();
 		MongoClient mongoClient = MongoDBDao.getDBClient();
 		MongoDatabase db = mongoClient.getDatabase(DB_NAME);
@@ -155,11 +166,13 @@ public class PartiteMapper {
 					matchDB.getTeam_B_title());
 			matchesList.add(match);
 		}
+		System.out.println("	BET RESULTS - getDBMatches END.");
 		mongoClient.close();
 		return matchesList;
 	}
 
 	public static void storeDBMatches(PartiteJson matches) {
+		System.out.println("	BET RESULTS - storeDBMatches START...");
 		MongoClient mongoClient = MongoDBDao.getDBClient();
 		MongoDatabase db = mongoClient.getDatabase(DB_NAME);
 		MongoCollection<Document> dbCollMatches = db.getCollection(DB_COLL_MATCHES);
@@ -176,6 +189,7 @@ public class PartiteMapper {
 
 			dbCollMatches.insertOne(MongoDBDao.toDocument(DBMatch.class, matchDB));
 		}
+		System.out.println("	BET RESULTS - storeDBMatches END.");
 		mongoClient.close();
 	}
 
@@ -194,7 +208,8 @@ public class PartiteMapper {
 		List<Competition> competitions = PartiteMapper.getDBCompetitions();
 		for (Competition comp : competitions) {
 			PartiteJson matchesList = DataFactoryService.getInstance().getMatches(comp.getCompetition_id());
-			System.out.println("Stored " + matchesList.getMatches().size() + " matches in DB");
+			System.out.println("Stored " + matchesList.getMatches().size() + " matches in DB for competition "
+					+ comp.getCompetition_id());
 			PartiteMapper.storeDBMatches(matchesList);
 		}
 		System.out.println("updateDBMatches FINISH.. in " + (System.currentTimeMillis() - start_time) + "ms");
