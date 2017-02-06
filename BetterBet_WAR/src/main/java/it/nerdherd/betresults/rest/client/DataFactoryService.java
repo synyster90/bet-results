@@ -81,12 +81,11 @@ public class DataFactoryService {
 			String line;
 			while ((line = br.readLine()) != null)
 				output += line;
-			System.out.println("	BET RESULTS - goal.com response " + output);
 
 			// Rimuovo parte iniziale e finale inutile
 			output = output.replaceAll(".*Matches", "{\"Matches");
+			System.out.println("	BET RESULTS - goal.com return string after matches " + output);
 			output = output.replaceAll("}]}]}]", "");
-			System.out.println("	BET RESULTS - goal.com return string json " + output);
 
 			PartiteJson matchesList = mapper.readValue(output, PartiteJson.class);
 
