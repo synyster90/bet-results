@@ -28,6 +28,7 @@ public class DataFactoryService {
 	}
 
 	public PartiteJson getCompetitions() throws RuntimeException {
+		System.out.println("	BET RESULTS - goal.com getCompetitions START.. ");
 		ObjectMapper mapper = new ObjectMapper();
 		HttpURLConnection conn = null;
 		try {
@@ -47,7 +48,8 @@ public class DataFactoryService {
 				output += line;
 
 			PartiteJson competitionList = mapper.readValue(output, PartiteJson.class);
-			System.out.println("Loaded Competitions: " + competitionList.getCompetitions().size());
+			System.out.println(
+					"	BET RESULTS - goal.com Loaded Competitions: " + competitionList.getCompetitions().size());
 			return competitionList;
 		} catch (MalformedURLException e) {
 			throw new RuntimeException(e);
@@ -60,6 +62,7 @@ public class DataFactoryService {
 	}
 
 	public PartiteJson getMatches(String competition_id) {
+		System.out.println("	BET RESULTS - goal.com getMatches START.. ");
 		ObjectMapper mapper = new ObjectMapper();
 		HttpURLConnection conn = null;
 		try {
@@ -80,8 +83,9 @@ public class DataFactoryService {
 				output += line;
 
 			// Rimuovo parte iniziale e finale inutile
-			output.replaceAll(".*Matches", "{\"Matches");
-			output.replaceAll("}]}]}]", "");
+			output = output.replaceAll(".*Matches", "{\"Matches");
+			output = output.replaceAll("}]}]}]", "");
+			System.out.println("	BET RESULTS - goal.com return string json " + output);
 
 			PartiteJson matchesList = mapper.readValue(output, PartiteJson.class);
 
@@ -97,7 +101,7 @@ public class DataFactoryService {
 					matchesList.getMatches().remove(match);
 			}
 
-			System.out.println("Loaded Matches: " + matchesList.getMatches().size());
+			System.out.println("	BET RESULTS - goal.com Loaded Matches: " + matchesList.getMatches().size());
 			return matchesList;
 		} catch (MalformedURLException e) {
 			throw new RuntimeException(e);

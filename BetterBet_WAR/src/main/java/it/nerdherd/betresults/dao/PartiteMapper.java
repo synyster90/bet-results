@@ -195,16 +195,17 @@ public class PartiteMapper {
 
 	public static void updateDBCompetitions() {
 		long start_time = System.currentTimeMillis();
-		System.out.println("competitionsUpdate START.. " + new Date().toString());
+		System.out.println("	BET RESULTS - competitionsUpdate START.. " + new Date().toString());
 		PartiteJson competitions = DataFactoryService.getInstance().getCompetitions();
 		System.out.println("Stored " + competitions.getCompetitions().size() + " competitions in DB");
 		PartiteMapper.storeDBCompetitions(competitions);
-		System.out.println("competitionsUpdate FINISH.. in " + (System.currentTimeMillis() - start_time) + "ms");
+		System.out.println(
+				"	BET RESULTS - competitionsUpdate FINISH.. in " + (System.currentTimeMillis() - start_time) + "ms");
 	}
 
 	public static void updateDBMatches() {
 		long start_time = System.currentTimeMillis();
-		System.out.println("updateDBMatches START.. " + new Date().toString());
+		System.out.println("	BET RESULTS - updateDBMatches START.. " + new Date().toString());
 		List<Competition> competitions = PartiteMapper.getDBCompetitions();
 		for (Competition comp : competitions) {
 			PartiteJson matchesList = DataFactoryService.getInstance().getMatches(comp.getCompetition_id());
@@ -212,7 +213,8 @@ public class PartiteMapper {
 					+ comp.getCompetition_id());
 			PartiteMapper.storeDBMatches(matchesList);
 		}
-		System.out.println("updateDBMatches FINISH.. in " + (System.currentTimeMillis() - start_time) + "ms");
+		System.out.println(
+				"	BET RESULTS - updateDBMatches FINISH.. in " + (System.currentTimeMillis() - start_time) + "ms");
 
 	}
 }
