@@ -89,11 +89,15 @@ public class DataFactoryService {
 			PartiteJson matchesList = mapper.readValue(output, PartiteJson.class);
 
 			// filtro match correnti
+			long currentTimestamp = Math.round(System.currentTimeMillis() / 1000);
+
 			Calendar cal_tre_giorni_fa = Calendar.getInstance();
+			cal_tre_giorni_fa.setTimeInMillis(currentTimestamp);
 			cal_tre_giorni_fa.add(Calendar.DAY_OF_YEAR, -3);
 			long tre_giorni_fa = cal_tre_giorni_fa.getTimeInMillis();
 
 			Calendar cal_fra_giorni_fa = Calendar.getInstance();
+			cal_tre_giorni_fa.setTimeInMillis(currentTimestamp);
 			cal_fra_giorni_fa.add(Calendar.DAY_OF_YEAR, 3);
 			long fra_giorni_fa = cal_fra_giorni_fa.getTimeInMillis();
 
