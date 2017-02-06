@@ -7,7 +7,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Calendar;
-import java.util.Iterator;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -98,16 +97,16 @@ public class DataFactoryService {
 			cal_fra_giorni_fa.add(Calendar.DAY_OF_YEAR, 3);
 			long fra_giorni_fa = Math.round(cal_fra_giorni_fa.getTimeInMillis() / 1000);
 
-			for (Iterator<Matches> iterator = matchesList.getMatches().iterator(); iterator.hasNext();) {
-				Matches match = iterator.next();
+			PartiteJson filteredMatchesList = new PartiteJson();
+			for (Matches match : matchesList.getMatches())
 				if (Long.valueOf(match.getDate_time_utc_moment()) >= tre_giorni_fa
-						&& Long.valueOf(match.getDate_time_utc_moment()) <= fra_giorni_fa)
+						&& Long.valueOf(match.getDate_time_utc_moment()) <= fra_giorni_fa) {
 					match.setCompetition_id(competition_id);
-				else
-					iterator.remove();
-			}
-			System.out.println("	BET RESULTS - goal.com Loaded Matches: " + matchesList.getMatches().size());
-			return matchesList;
+					filteredMatchesList.getMatches().add(match);
+				}
+			System.out.println("	BET RESULTS - goal.com Loaded Matches filtered by date: "
+					+ filteredMatchesList.getMatches().size());
+			return filteredMatchesList;
 		} catch (MalformedURLException e) {
 			throw new RuntimeException(e);
 		} catch (IOException e) {

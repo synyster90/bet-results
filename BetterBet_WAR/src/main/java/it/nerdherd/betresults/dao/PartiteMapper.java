@@ -76,7 +76,7 @@ public class PartiteMapper {
 			}
 		} else {
 			PartiteMapper.updateDBMatches();
-			// PartiteMapper.insertLastUpdate(DB_COLL_MATCHES, curr_timestamp);
+			PartiteMapper.insertLastUpdate(DB_COLL_MATCHES, curr_timestamp);
 		}
 		System.out.println("	BET RESULTS - checkForMatchesUpdate FINE.");
 	}

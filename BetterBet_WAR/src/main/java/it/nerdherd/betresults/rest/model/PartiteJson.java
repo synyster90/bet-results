@@ -1,5 +1,6 @@
 package it.nerdherd.betresults.rest.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
@@ -9,10 +10,10 @@ import org.codehaus.jackson.annotate.JsonProperty;
 public class PartiteJson {
 
 	@JsonProperty("competitions")
-	private List<Competition> competitions;
+	private List<Competition> competitions = new ArrayList<>();
 
 	@JsonProperty("Matches")
-	private List<Matches> matches;
+	private List<Matches> matches = new ArrayList<>();
 
 	public List<Competition> getCompetitions() {
 		return competitions;
