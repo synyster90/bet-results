@@ -4,12 +4,15 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import it.nerdherd.betresults.dao.PartiteMapper;
+
 public class MatchSchedulerJob implements Job {
 
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
-		// TODO Auto-generated method stub
-
+		System.out.println("matchSchedulerJob START.. ");
+		PartiteMapper.updateDBMatches();
+		System.out.println("matchSchedulerJob FINISH.");
 	}
 
 }
