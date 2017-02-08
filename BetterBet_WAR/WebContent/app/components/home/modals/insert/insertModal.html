@@ -13,18 +13,16 @@
 							<div class="col-md-3 form-label">competizione</div>
 							<div class="col-md-9 form-value">
 								<ui-autocomplete [ac-items]="scommesseService.competitionsMap" (ac-item-selected-change)="onCompetitionChange($event)"
-									[ac-item-selected]="{value: insertItem.competition?.id, des: insertItem.competition?.title}"
-									ac-not-found="competizione inserita errata!" ac-select-on-match="true" ac-input-name="competizione" class="form-input"
-									validate [model]="[insertItem]"></ui-autocomplete>
+									[ac-item-selected]="{value: insertItem.competition, des: ''}" ac-not-found="competizione inserita errata!"
+									ac-select-on-match="true" ac-input-name="competizione" class="form-input" validate [model]="[insertItem]"></ui-autocomplete>
 							</div>
 						</div>
 						<div class="row row-form-entry">
 							<div class="col-md-3 form-label">partita</div>
 							<div class="col-md-9 form-value">
 								<ui-autocomplete [ac-items]="filterMatches" (ac-item-selected-change)="insertItem.match = $event ? $event.value : ''"
-									[ac-item-selected]="{value: insertItem.match, des: ''}"
-									ac-not-found="partita inserita errata!" ac-select-on-match="true" ac-input-name="match" class="form-input"
-									validate [model]="[insertItem]"></ui-autocomplete>
+									[ac-item-selected]="{value: insertItem.match, des: ''}" ac-not-found="partita inserita errata!"
+									ac-select-on-match="true" ac-input-name="match" class="form-input" validate [model]="[insertItem]"></ui-autocomplete>
 							</div>
 						</div>
 						<div class="row row-form-entry">

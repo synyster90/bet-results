@@ -47,7 +47,7 @@ module.exports = webpackMerge(advancedConfig, {
 			test : /\.css$/,
 			use : ExtractTextPlugin.extract({
 				fallback : 'style-loader',
-				loader : 'css-loader?sourceMap'
+				use : 'css-loader?sourceMap'
 			})
 		}, {
 			test : /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,

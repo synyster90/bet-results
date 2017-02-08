@@ -19,13 +19,23 @@ export class InsertModalCtrl implements OnInit {
     constructor(private utilService: UtilService, private scommesseService: ScommesseService, private modalDialogService: ModalDialogService, private httpClient: HttpClient) { }
 
     ngOnInit() {
-        this.insertItem = { "id": "", "competition": {}, "match": {}, "scommessa": "" }
+        this.insertItem = { "id": "", "competition": "", "match": "", "scommessa": "" }
     }
     
     onCompetitionChange(competitionSelect) {
         if(competitionSelect) {
             this.insertItem.competition = competitionSelect
-            console.log(competitionSelect)
+            for(var i = 0; i < this.scommesseService.matches.length; i++) {
+                if(this.scommesseService.matches[i]['competition_id'] == competitionSelect.des)
+                    this.filterMatches.push({
+                        value: this.scommesseService.matches[i]['match_id'],
+                        des: this.scommesseService.matches[i]['team_A_title'] + ' - ' + this.scommesseService.matches[i]['team_B_title']
+                    })
+            }
+        } else {
+            this.filterMatches = []
+            this.insertItem.competition = null
+            this.insertItem.match = null
         }
         
     }

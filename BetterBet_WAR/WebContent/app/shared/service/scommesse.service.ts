@@ -34,17 +34,8 @@ export class ScommesseService {
     public competitionsToMap(array) {
         return array.map(function(item) {
             return {
-                value: item.competition_id,
-                des: item.title
-            };
-        });
-    };
-
-    public matchesToMap(array) {
-        return array.map(function(item) {
-            return {
-                value: item.match_id,
-                des: item.team_A_title + ' - ' + item.team_B_title
+                value: item.title,
+                des: item.competition_id
             };
         });
     };
