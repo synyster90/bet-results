@@ -14,11 +14,20 @@ declare var moment: any
 export class InsertModalCtrl implements OnInit {
     public locals: Object;
     insertItem: any
+    filterMatches: any = []
 
     constructor(private utilService: UtilService, private scommesseService: ScommesseService, private modalDialogService: ModalDialogService, private httpClient: HttpClient) { }
 
     ngOnInit() {
-        this.insertItem = { "id": "", "partita": "", "scommessa": "" }
+        this.insertItem = { "id": "", "competition": {}, "match": {}, "scommessa": "" }
+    }
+    
+    onCompetitionChange(competitionSelect) {
+        if(competitionSelect) {
+            this.insertItem.competition = competitionSelect
+            console.log(competitionSelect)
+        }
+        
     }
 
     close() {

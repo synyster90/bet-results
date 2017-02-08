@@ -27,20 +27,6 @@ public class PartiteMapper {
 	public final static long MILLIS_PER_DAY = 24 * 60 * 60 * 1000L;
 	public final static long MILLIS_PER_MONTH = 30 * MILLIS_PER_DAY;
 
-	public static void checkForUpdate() {
-		System.out.println("	BET RESULTS - checkForUpdate");
-		MongoClient mongoClient = MongoDBDao.getDBClient();
-		MongoDatabase db = mongoClient.getDatabase(DB_NAME);
-		MongoCollection<Document> dbColl = db.getCollection(DB_COLL_APP_STATS);
-		FindIterable<Document> app_stats = dbColl.find();
-
-		PartiteMapper.checkForCompetitionsUpdate(app_stats);
-		PartiteMapper.checkForMatchesUpdate(app_stats);
-		System.out.println("	BET RESULTS - checkForUpdate FINE.");
-
-		mongoClient.close();
-	}
-
 	private static void checkForCompetitionsUpdate(FindIterable<Document> app_stats) {
 		long curr_timestamp = System.currentTimeMillis();
 		System.out.println("	BET RESULTS - checkForCompetitionsUpdate START...");
@@ -81,29 +67,16 @@ public class PartiteMapper {
 		System.out.println("	BET RESULTS - checkForMatchesUpdate FINE.");
 	}
 
-	public static void insertLastUpdate(String type, long timestamp) {
+	public static void checkForUpdate() {
+		System.out.println("	BET RESULTS - checkForUpdate");
 		MongoClient mongoClient = MongoDBDao.getDBClient();
 		MongoDatabase db = mongoClient.getDatabase(DB_NAME);
+		MongoCollection<Document> dbColl = db.getCollection(DB_COLL_APP_STATS);
+		FindIterable<Document> app_stats = dbColl.find();
 
-		MongoCollection<Document> dbCollAppStats = db.getCollection(DB_COLL_APP_STATS);
-		Document last_update = new Document();
-		last_update.put("type", type);
-		last_update.put("last_update", timestamp);
-		dbCollAppStats.insertOne(last_update);
-
-		mongoClient.close();
-	}
-
-	public static void updateLastUpdate(String type, long timestamp) {
-		MongoClient mongoClient = MongoDBDao.getDBClient();
-		MongoDatabase db = mongoClient.getDatabase(DB_NAME);
-
-		MongoCollection<Document> dbCollAppStats = db.getCollection(DB_COLL_APP_STATS);
-		BasicDBObject filter = new BasicDBObject();
-		filter.put("type", type);
-		BasicDBObject new_lastupdate_value = new BasicDBObject();
-		new_lastupdate_value.put("last_update", timestamp);
-		dbCollAppStats.updateOne(filter, new_lastupdate_value);
+		PartiteMapper.checkForCompetitionsUpdate(app_stats);
+		PartiteMapper.checkForMatchesUpdate(app_stats);
+		System.out.println("	BET RESULTS - checkForUpdate FINE.");
 
 		mongoClient.close();
 	}
@@ -128,6 +101,38 @@ public class PartiteMapper {
 		return competitionsList;
 	}
 
+	public static List<Matches> getDBMatches() {
+		System.out.println("	BET RESULTS - getDBMatches START...");
+		List<Matches> matchesList = new ArrayList<>();
+		MongoClient mongoClient = MongoDBDao.getDBClient();
+		MongoDatabase db = mongoClient.getDatabase(DB_NAME);
+		MongoCollection<Document> dbColl = db.getCollection(DB_COLL_MATCHES);
+		FindIterable<Document> matches = dbColl.find();
+		for (Document matchDoc : matches) {
+			DBMatch matchDB = MongoDBDao.fromDocument(DBMatch.class, matchDoc);
+			Matches match = new Matches(matchDB.getCompetition_id(), matchDB.getId(), matchDB.getDate_time_utc_moment(),
+					matchDB.getTeam_A_id(), matchDB.getTeam_A_title(), matchDB.getTeam_B_id(),
+					matchDB.getTeam_B_title());
+			matchesList.add(match);
+		}
+		System.out.println("	BET RESULTS - getDBMatches END.");
+		mongoClient.close();
+		return matchesList;
+	}
+
+	public static void insertLastUpdate(String type, long timestamp) {
+		MongoClient mongoClient = MongoDBDao.getDBClient();
+		MongoDatabase db = mongoClient.getDatabase(DB_NAME);
+
+		MongoCollection<Document> dbCollAppStats = db.getCollection(DB_COLL_APP_STATS);
+		Document last_update = new Document();
+		last_update.put("type", type);
+		last_update.put("last_update", timestamp);
+		dbCollAppStats.insertOne(last_update);
+
+		mongoClient.close();
+	}
+
 	public static void storeDBCompetitions(PartiteJson competitions) {
 		System.out.println("	BET RESULTS - storeDBCompetitions START...");
 		MongoClient mongoClient = MongoDBDao.getDBClient();
@@ -150,25 +155,6 @@ public class PartiteMapper {
 		}
 		System.out.println("	BET RESULTS - storeDBCompetitions END.");
 		mongoClient.close();
-	}
-
-	public static List<Matches> getDBMatches() {
-		System.out.println("	BET RESULTS - getDBMatches START...");
-		List<Matches> matchesList = new ArrayList<>();
-		MongoClient mongoClient = MongoDBDao.getDBClient();
-		MongoDatabase db = mongoClient.getDatabase(DB_NAME);
-		MongoCollection<Document> dbColl = db.getCollection(DB_COLL_MATCHES);
-		FindIterable<Document> matches = dbColl.find();
-		for (Document matchDoc : matches) {
-			DBMatch matchDB = MongoDBDao.fromDocument(DBMatch.class, matchDoc);
-			Matches match = new Matches(matchDB.getId(), matchDB.getCompetition_id(), matchDB.getDate_time_utc_moment(),
-					matchDB.getTeam_A_id(), matchDB.getTeam_A_title(), matchDB.getTeam_B_id(),
-					matchDB.getTeam_B_title());
-			matchesList.add(match);
-		}
-		System.out.println("	BET RESULTS - getDBMatches END.");
-		mongoClient.close();
-		return matchesList;
 	}
 
 	public static void storeDBMatches(PartiteJson matches) {
@@ -214,7 +200,7 @@ public class PartiteMapper {
 		dbCollMatches.drop();
 		db.createCollection(DB_COLL_MATCHES);
 		mongoClient.close();
-		
+
 		for (Competition comp : competitions) {
 			PartiteJson matchesList = DataFactoryService.getInstance().getMatches(comp.getCompetition_id());
 			System.out.println("Stored " + matchesList.getMatches().size() + " matches in DB for competition "
@@ -224,5 +210,19 @@ public class PartiteMapper {
 		System.out.println(
 				"	BET RESULTS - updateDBMatches FINISH.. in " + (System.currentTimeMillis() - start_time) + "ms");
 
+	}
+
+	public static void updateLastUpdate(String type, long timestamp) {
+		MongoClient mongoClient = MongoDBDao.getDBClient();
+		MongoDatabase db = mongoClient.getDatabase(DB_NAME);
+
+		MongoCollection<Document> dbCollAppStats = db.getCollection(DB_COLL_APP_STATS);
+		BasicDBObject filter = new BasicDBObject();
+		filter.put("type", type);
+		BasicDBObject new_lastupdate_value = new BasicDBObject();
+		new_lastupdate_value.put("last_update", timestamp);
+		dbCollAppStats.updateOne(filter, new_lastupdate_value);
+
+		mongoClient.close();
 	}
 }

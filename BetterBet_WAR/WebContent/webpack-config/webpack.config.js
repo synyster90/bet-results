@@ -36,27 +36,27 @@ module.exports = webpackMerge(advancedConfig, {
 	module : {
 		rules : [ {
 			test : /\.ts$/,
-			loader : 'awesome-typescript-loader'
+			use : 'awesome-typescript-loader'
 		}, {
 			test : /\.html$/,
-			loader : 'html-loader?minimize=false'
+			use : 'html-loader?minimize=false'
 		}, {
 			test : /\.json$/,
-			loader : 'json-loader'
+			use : 'json-loader'
 		}, {
 			test : /\.css$/,
-			loader : ExtractTextPlugin.extract({
-				fallbackLoader : 'style-loader',
+			use : ExtractTextPlugin.extract({
+				fallback : 'style-loader',
 				loader : 'css-loader?sourceMap'
 			})
 		}, {
 			test : /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
 			exclude : root('node_modules'),
-			loader : 'file-loader?name=assets/[path][name].[ext]&context=app/assets/'
+			use : 'file-loader?name=assets/[path][name].[ext]&context=app/assets/'
 		}, {
 			test : /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
 			include : root('node_modules'),
-			loader : 'file-loader?name=assets/[path][name].[ext]&context=node_modules/'
+			use : 'file-loader?name=assets/[path][name].[ext]&context=node_modules/'
 		} ]
 	},
 

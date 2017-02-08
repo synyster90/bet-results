@@ -8,6 +8,8 @@ import { SideMenuService } from '@angular/modules/src/components';
 import { UtilService } from '@angular/modules/src/utils';
 import { HttpClient } from '@angular/modules/src/http-client';
 
+import { ScommesseService } from './shared/service/scommesse.service';
+
 declare var $: any;
 
 @Component( {
@@ -17,20 +19,27 @@ declare var $: any;
 })
 export class AppComponent implements OnInit {
     constructor( private router: Router, private httpClient: HttpClient, private location: Location, private utilService: UtilService,
-        private sideMenuService: SideMenuService, private changeDetectorRef: ChangeDetectorRef, private viewContainerRef: ViewContainerRef, translate: TranslateService ) {
+        private sideMenuService: SideMenuService, private changeDetectorRef: ChangeDetectorRef, private viewContainerRef: ViewContainerRef, translate: TranslateService,
+        private scommesseService: ScommesseService ) {
         /* App Settings */
         utilService.APP_TITLE = 'Bet Results'
 
-        translate.setDefaultLang('en');
-        translate.use('it');
+        translate.setDefaultLang( 'en' );
+        translate.use( 'it' );
     }
 
     ngOnInit() {
-        this.httpClient.get( 'rest/init' ).subscribe( data => {
-            console.log(data)
+        this.httpClient.get( 'rest/init' ).subscribe( (data: any) => {
+            console.log( data )
+            this.scommesseService.competitions = data.competitions;
+            this.scommesseService.matches = data.Matches;
+            
+            this.scommesseService.competitionsMap = this.scommesseService.competitionsToMap(data.competitions);
+            this.scommesseService.matchesMap = this.scommesseService.matchesToMap(data.Matches);
+            
             this.changeDetectorRef.markForCheck()
         }, err => {
-            console.log(err)
+            console.log( err )
         })
     }
 }

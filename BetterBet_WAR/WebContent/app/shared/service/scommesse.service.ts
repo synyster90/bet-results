@@ -8,6 +8,12 @@ declare var $: any;
 export class ScommesseService {
     constructor(private utilService: UtilService) { }
 
+    public competitions: Object[] = null
+    public matches: Object[] = null
+
+    public competitionsMap: Object[] = null
+    public matchesMap: Object[] = null
+
     public scommesseList: Object[] = this.arrayToMap(["1", "X", "2"])
     public scommesseListFilter: Object[] = null
 
@@ -24,6 +30,24 @@ export class ScommesseService {
         }
         this.scommesseListFilter = scommesseArray
     }
+
+    public competitionsToMap(array) {
+        return array.map(function(item) {
+            return {
+                value: item.competition_id,
+                des: item.title
+            };
+        });
+    };
+
+    public matchesToMap(array) {
+        return array.map(function(item) {
+            return {
+                value: item.match_id,
+                des: item.team_A_title + ' - ' + item.team_B_title
+            };
+        });
+    };
 
     // Array -> Map conversion (value, des)
     public arrayToMap(array) {
