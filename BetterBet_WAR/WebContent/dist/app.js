@@ -58,8 +58,8 @@ var ScommesseService = (function () {
     ScommesseService.prototype.competitionsToMap = function (array) {
         return array.map(function (item) {
             return {
-                value: item.title,
-                des: item.competition_id + " (" + item.country[0].displayName + ")"
+                value: item.title + " (" + item.country[0].displayName + ")",
+                des: item.competition_id
             };
         });
     };
