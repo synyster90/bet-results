@@ -555,7 +555,7 @@ var Home = (function () {
                 var itemList = {};
                 itemList.home = newItem.match.split(' - ')[0];
                 itemList.away = newItem.match.split(' - ')[1];
-                itemList.bet = newItem.scommessa.value;
+                itemList.bet = newItem.scommessa;
                 // TEST
                 _this.scommesseList.unshift(itemList);
                 _this.cookieService.put('scommessePartiteTableData', JSON.stringify(_this.scommesseList));
@@ -752,7 +752,6 @@ var InsertModalCtrl = (function () {
                         des: this.scommesseService.matches[i]['match_id']
                     });
             }
-            console.log(this.filterMatches);
         }
         else {
             this.filterMatches = [];

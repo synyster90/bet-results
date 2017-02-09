@@ -116,7 +116,7 @@ export class Home implements OnInit {
                 var itemList: any = {}
                 itemList.home = newItem.match.split(' - ')[0];
                 itemList.away = newItem.match.split(' - ')[1];
-                itemList.bet = newItem.scommessa.value;
+                itemList.bet = newItem.scommessa;
                 // TEST
                 this.scommesseList.unshift( itemList )
                 this.cookieService.put( 'scommessePartiteTableData', JSON.stringify( this.scommesseList ) );

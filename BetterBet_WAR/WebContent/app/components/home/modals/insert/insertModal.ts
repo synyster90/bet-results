@@ -40,7 +40,6 @@ export class InsertModalCtrl implements OnInit {
                         des: this.scommesseService.matches[i]['match_id']
                     })
             }
-            console.log(this.filterMatches)
         } else {
             this.filterMatches = []
             this.insertItem.competition = null
