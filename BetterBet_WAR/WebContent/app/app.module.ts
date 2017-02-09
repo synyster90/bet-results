@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpModule, Http } from '@angular/http';
 import { TranslateModule, TranslateLoader, TranslateStaticLoader } from 'ng2-translate/ng2-translate';
+import { CookieService } from 'angular2-cookie/services/cookies.service';
 
 /* Directives, Components & Providers */
 import { Title } from '@angular/platform-browser';
@@ -51,7 +52,8 @@ export function createTranslateLoader( http: Http ) {
     ],
     providers: [
         appRoutingProviders,
-        Title
+        Title,
+        CookieService
     ],
     bootstrap: [AppComponent]
 })
