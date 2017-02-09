@@ -6,7 +6,7 @@ declare var $: any;
 
 @Injectable()
 export class ScommesseService {
-    constructor(private utilService: UtilService) { }
+    constructor( private utilService: UtilService ) { }
 
     public competitions: Object[] = null
     public matches: Object[] = null
@@ -14,16 +14,16 @@ export class ScommesseService {
     public competitionsMap: Object[] = null
     public matchesMap: Object[] = null
 
-    public scommesseList: Object[] = this.arrayToMap(["1", "X", "2"])
+    public scommesseList: Object[] = this.arrayToMap( ["1", "X", "2"] )
     public scommesseListFilter: Object[] = null
 
-    public setFilterList(arraySampleElenco) {
+    public setFilterList( arraySampleElenco ) {
         var scommesseArray = []
 
-        for (var i = 0; i < arraySampleElenco.length; i++) {
-            if (arraySampleElenco[i].scommesse)
-                if (!this.utilService.alreadyExists(arraySampleElenco[i].scommesse, scommesseArray))
-                    scommesseArray.push({
+        for ( var i = 0; i < arraySampleElenco.length; i++ ) {
+            if ( arraySampleElenco[i].scommesse )
+                if ( !this.utilService.alreadyExists( arraySampleElenco[i].scommesse, scommesseArray ) )
+                    scommesseArray.push( {
                         value: arraySampleElenco[i].scommesse,
                         des: ''
                     })
@@ -31,18 +31,18 @@ export class ScommesseService {
         this.scommesseListFilter = scommesseArray
     }
 
-    public competitionsToMap(array) {
-        return array.map(function(item) {
+    public competitionsToMap( array ) {
+        return array.map( function( item ) {
             return {
                 value: item.title,
-                des: item.competition_id
+                des: item.competition_id + " (" + item.country[0].displayName + ")"
             };
         });
     };
 
     // Array -> Map conversion (value, des)
-    public arrayToMap(array) {
-        return array.map(function(item) {
+    public arrayToMap( array ) {
+        return array.map( function( item ) {
             return {
                 value: typeof item == 'string' ? item : item.value,
                 des: typeof item == 'string' ? '' : item.des
