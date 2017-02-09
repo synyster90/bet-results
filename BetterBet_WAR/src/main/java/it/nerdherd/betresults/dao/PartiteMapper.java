@@ -217,10 +217,8 @@ public class PartiteMapper {
 		MongoDatabase db = mongoClient.getDatabase(DB_NAME);
 
 		MongoCollection<Document> dbCollAppStats = db.getCollection(DB_COLL_APP_STATS);
-		BasicDBObject filter = new BasicDBObject();
-		filter.put("type", type);
-		BasicDBObject new_lastupdate_value = new BasicDBObject();
-		new_lastupdate_value.put("last_update", timestamp);
+		BasicDBObject filter = new BasicDBObject().append("type", type);
+		BasicDBObject new_lastupdate_value = new BasicDBObject().append("last_update", timestamp);
 		dbCollAppStats.updateOne(filter, new_lastupdate_value);
 
 		mongoClient.close();
