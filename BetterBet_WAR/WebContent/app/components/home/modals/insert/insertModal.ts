@@ -26,7 +26,8 @@ export class InsertModalCtrl implements OnInit {
         if ( this.cookieService.get( 'scommessePartiteTableData' ) ) {
             var scommesse: any[] = JSON.parse( this.cookieService.get( 'scommessePartiteTableData' ) );
             this.insertItem.id = scommesse[scommesse.length - 1].id + 1
-        }
+        } else
+            this.insertItem.id = 0
     }
 
     onCompetitionChange( competitionSelect ) {
@@ -39,6 +40,7 @@ export class InsertModalCtrl implements OnInit {
                         des: this.scommesseService.matches[i]['match_id']
                     })
             }
+            console.log(this.filterMatches)
         } else {
             this.filterMatches = []
             this.insertItem.competition = null
