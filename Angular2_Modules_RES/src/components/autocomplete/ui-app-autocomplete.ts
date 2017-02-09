@@ -48,7 +48,7 @@ export class AutocompleteHighlight implements OnChanges, AfterViewInit {
     + '<div class="ui-autocomplete-list" *ngIf="isListOpen"><div class="ui-autocomplete-list-container"><div class="ui-autocomplete-list-scroller">'
     + '<span *ngFor="let item of filterItems | lazyLoadFilter:20:bottomReached; let $index = index; let $last = last" (click)="select($index)"'
     + ' class="ui-autocomplete-list-item" title="{{item.des}}"><font color="#000" highlight [text]="acSearchText" full-match="acFullMatch">{{item.value}}</font>'
-    + '<font *ngIf="item.des && item.des != \'null\'"> - {{item.des}}</font></span>'
+    + '<font *ngIf="!acHideDes && item.des && item.des != \'null\'"> - {{item.des}}</font></span>'
     + '<span *ngIf="filterItems.length == 0" class="ui-autocomplete-list-item-not-found">{{acNotFound}}</span>'
     + '</div></div></div>',
     changeDetection: ChangeDetectionStrategy.OnPush
@@ -70,6 +70,7 @@ export class Autocomplete implements AfterViewInit, OnChanges {
     @Input( 'ac-items' ) acItems: Object[]
     @Input( 'ac-item-selected' ) acItemSelected: Object
     @Input( 'ac-search-text' ) acSearchText: string
+    @Input( 'ac-hide-des' ) acHideDes: boolean
 
     @Output( 'ac-item-selected-change' ) acItemSelectedChange: EventEmitter<Object> = new EventEmitter<Object>()
     @Output( 'ac-search-text-change' ) acSearchTextChange: EventEmitter<string> = new EventEmitter<string>()
@@ -81,6 +82,7 @@ export class Autocomplete implements AfterViewInit, OnChanges {
         this.acNoCache = typeof this.acNoCache == 'boolean' ? this.acNoCache : true
         this.acUppercase = typeof this.acUppercase == 'boolean' ? this.acUppercase : false
         this.acSelectOnMatch = typeof this.acSelectOnMatch == 'boolean' ? this.acSelectOnMatch : false
+        this.acHideDes = typeof this.acHideDes == 'boolean' ? this.acHideDes : true
         this.acFullMatch = typeof this.acFullMatch == 'boolean' ? this.acFullMatch : false
     }
 
@@ -141,7 +143,7 @@ export class Autocomplete implements AfterViewInit, OnChanges {
             this.acSearchTextChange.subscribe( newSearchText => {
                 this.filter( newSearchText )
             })
-            setTimeout( () => {
+            setTimeout(() => {
                 $( document ).on( 'click', event => {
                     if ( !$( event.target ).is( $( this.element.nativeElement ) ) ) {
                         $( document ).off( 'click' )
@@ -152,7 +154,7 @@ export class Autocomplete implements AfterViewInit, OnChanges {
                                 $( 'input', this.element.nativeElement ).focus()
                     }
                 })
-            }, 300)
+            }, 300 )
         })
     }
 

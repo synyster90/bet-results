@@ -65,6 +65,7 @@ var Autocomplete = (function () {
         this.acNoCache = typeof this.acNoCache == 'boolean' ? this.acNoCache : true;
         this.acUppercase = typeof this.acUppercase == 'boolean' ? this.acUppercase : false;
         this.acSelectOnMatch = typeof this.acSelectOnMatch == 'boolean' ? this.acSelectOnMatch : false;
+        this.acHideDes = typeof this.acHideDes == 'boolean' ? this.acHideDes : true;
         this.acFullMatch = typeof this.acFullMatch == 'boolean' ? this.acFullMatch : false;
     }
     Autocomplete.prototype.ngAfterViewInit = function () {
@@ -253,6 +254,10 @@ var Autocomplete = (function () {
         __metadata('design:type', String)
     ], Autocomplete.prototype, "acSearchText", void 0);
     __decorate([
+        core_1.Input('ac-hide-des'), 
+        __metadata('design:type', Boolean)
+    ], Autocomplete.prototype, "acHideDes", void 0);
+    __decorate([
         core_1.Output('ac-item-selected-change'), 
         __metadata('design:type', core_1.EventEmitter)
     ], Autocomplete.prototype, "acItemSelectedChange", void 0);
@@ -272,7 +277,7 @@ var Autocomplete = (function () {
                 + '<div class="ui-autocomplete-list" *ngIf="isListOpen"><div class="ui-autocomplete-list-container"><div class="ui-autocomplete-list-scroller">'
                 + '<span *ngFor="let item of filterItems | lazyLoadFilter:20:bottomReached; let $index = index; let $last = last" (click)="select($index)"'
                 + ' class="ui-autocomplete-list-item" title="{{item.des}}"><font color="#000" highlight [text]="acSearchText" full-match="acFullMatch">{{item.value}}</font>'
-                + '<font *ngIf="item.des && item.des != \'null\'"> - {{item.des}}</font></span>'
+                + '<font *ngIf="!acHideDes && item.des && item.des != \'null\'"> - {{item.des}}</font></span>'
                 + '<span *ngIf="filterItems.length == 0" class="ui-autocomplete-list-item-not-found">{{acNotFound}}</span>'
                 + '</div></div></div>',
             changeDetection: core_1.ChangeDetectionStrategy.OnPush

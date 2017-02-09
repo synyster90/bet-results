@@ -28,6 +28,7 @@ export declare class Autocomplete implements AfterViewInit, OnChanges {
     acItems: Object[];
     acItemSelected: Object;
     acSearchText: string;
+    acHideDes: boolean;
     acItemSelectedChange: EventEmitter<Object>;
     acSearchTextChange: EventEmitter<string>;
     acItemsChange: EventEmitter<Object[]>;
