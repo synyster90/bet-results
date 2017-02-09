@@ -28,8 +28,8 @@ export class InsertModalCtrl implements OnInit {
             for(var i = 0; i < this.scommesseService.matches.length; i++) {
                 if(this.scommesseService.matches[i]['competition_id'] == competitionSelect.des)
                     this.filterMatches.push({
-                        value: this.scommesseService.matches[i]['match_id'],
-                        des: this.scommesseService.matches[i]['team_A_title'] + ' - ' + this.scommesseService.matches[i]['team_B_title']
+                        value: this.scommesseService.matches[i]['team_A_title'] + ' - ' + this.scommesseService.matches[i]['team_B_title'],
+                        des: this.scommesseService.matches[i]['match_id']
                     })
             }
         } else {
