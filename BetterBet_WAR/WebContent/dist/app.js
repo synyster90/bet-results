@@ -531,6 +531,7 @@ var Home = (function () {
     Home.prototype.editItem = function (index) {
         var $this = this;
         this.getItemData(index, function (item) {
+            var _this = this;
             $this.modalDialogService.dialog({
                 controller: editModal_1.EditModalCtrl,
                 locals: {
@@ -540,6 +541,7 @@ var Home = (function () {
                 if (editItem) {
                     // TEST
                     $this.scommesseList[index] = editItem;
+                    _this.cookieService.put('scommessePartiteTableData', JSON.stringify(_this.scommesseList));
                     $this.listChanged = true;
                     $this.changeDetectorRef.markForCheck();
                 }
@@ -552,16 +554,17 @@ var Home = (function () {
             controller: insertModal_1.InsertModalCtrl
         }).subscribe(function (newItem) {
             if (newItem) {
-                var itemList = {};
-                itemList.id = newItem.id;
-                itemList.competition_id = newItem.competition.des;
-                itemList.match_id = newItem.match.des;
-                itemList.home = newItem.match.value.split(' - ')[0];
-                itemList.away = newItem.match.value.split(' - ')[1];
-                itemList.bet.id = newItem.scommessa.des;
-                itemList.bet.text = newItem.scommessa.value;
-                // TEST
-                _this.scommesseList.unshift(itemList);
+                _this.scommesseList.unshift({
+                    id: newItem.id,
+                    competition_id: newItem.competition.des,
+                    match_id: newItem.match.des,
+                    home: newItem.match.value.split(' - ')[0],
+                    away: newItem.match.value.split(' - ')[1],
+                    bet: {
+                        id: newItem.scommessa.des,
+                        text: newItem.scommessa.value
+                    }
+                });
                 _this.cookieService.put('scommessePartiteTableData', JSON.stringify(_this.scommesseList));
                 _this.listChanged = true;
                 _this.changeDetectorRef.markForCheck();
@@ -663,9 +666,27 @@ var EditModalCtrl = (function () {
         this.scommesseService = scommesseService;
         this.modalDialogService = modalDialogService;
         this.httpClient = httpClient;
+        this.filterMatches = [];
     }
     EditModalCtrl.prototype.ngOnInit = function () {
         this.editItem = JSON.parse(JSON.stringify(this.locals['item']));
+    };
+    EditModalCtrl.prototype.onCompetitionChange = function (competitionSelect) {
+        if (competitionSelect) {
+            this.editItem.competition = competitionSelect;
+            for (var i = 0; i < this.scommesseService.matches.length; i++) {
+                if (this.scommesseService.matches[i]['competition_id'] == competitionSelect.des)
+                    this.filterMatches.push({
+                        value: this.scommesseService.matches[i]['team_A_title'] + ' - ' + this.scommesseService.matches[i]['team_B_title'],
+                        des: this.scommesseService.matches[i]['match_id']
+                    });
+            }
+        }
+        else {
+            this.filterMatches = [];
+            this.editItem.competition = null;
+            this.editItem.match = null;
+        }
     };
     EditModalCtrl.prototype.close = function () {
         if (this.checkClose()) {
@@ -680,8 +701,9 @@ var EditModalCtrl = (function () {
     };
     ;
     EditModalCtrl.prototype.checkClose = function () {
-        if (this.editItem.partita && this.editItem.partita != this.locals['item'].partita
-            || this.editItem.scommessa && this.editItem.scommessa != this.locals['item'].scommessa)
+        if ((this.editItem.competition && this.editItem.competition.des && this.editItem.competition.des != this.locals['item'].competition.des)
+            || (this.editItem.match && this.editItem.match.des && this.editItem.match.des != this.locals['item'].match.des)
+            || (this.editItem.scommessa && this.editItem.scommessa.des && this.editItem.scommessa.des != this.locals['item'].scommessa.des))
             return true;
         return false;
     };
@@ -698,18 +720,24 @@ var EditModalCtrl = (function () {
     };
     EditModalCtrl.prototype.checkEdit = function () {
         var changeNotify = '';
-        if (this.editItem.partita && this.editItem.partita != '') {
-            if (this.editItem.partita != this.locals['item'].partita)
-                changeNotify += '<li><strong>Partita</strong>: ' + this.locals['item'].partita + ' --> ' + this.editItem.partita + '</li>';
+        if (this.editItem.competition && this.editItem.competition != '') {
+            if (this.editItem.competition.des != this.locals['item'].competition.des)
+                changeNotify += '<li><strong>Competizione</strong>: ' + this.locals['item'].competition.value + ' --> ' + this.editItem.competition.value + '</li>';
         }
         else
-            changeNotify += '<li><strong>Partita</strong>: ' + this.locals['item'].partita + ' --> null</li>';
+            changeNotify += '<li><strong>Competizione</strong>: ' + this.locals['item'].competition.value + ' --> null</li>';
+        if (this.editItem.match && this.editItem.match != '') {
+            if (this.editItem.match.des != this.locals['item'].match.des)
+                changeNotify += '<li><strong>Partita</strong>: ' + this.locals['item'].match.value + ' --> ' + this.editItem.match.value + '</li>';
+        }
+        else
+            changeNotify += '<li><strong>Partita</strong>: ' + this.locals['item'].match.value + ' --> null</li>';
         if (this.editItem.scommessa && this.editItem.scommessa != '') {
-            if (this.editItem.scommessa != this.locals['item'].scommessa)
-                changeNotify += '<li><strong>Scommessa</strong>: ' + this.locals['item'].scommessa + ' --> ' + this.editItem.scommessa + '</li>';
+            if (this.editItem.scommessa.des != this.locals['item'].scommessa.des)
+                changeNotify += '<li><strong>Scommessa</strong>: ' + this.locals['item'].scommessa.value + ' --> ' + this.editItem.scommessa.value + '</li>';
         }
         else
-            changeNotify += '<li><strong>Scommessa</strong>: ' + this.locals['item'].scommessa + ' --> null</li>';
+            changeNotify += '<li><strong>Scommessa</strong>: ' + this.locals['item'].scommessa.value + ' --> null</li>';
         return changeNotify;
     };
     EditModalCtrl = __decorate([
@@ -1164,7 +1192,7 @@ module.exports = "<div class=\"row row-header\">\r\n\t<div class=\"col-sm-3 col-
 /***/ 955:
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"modal-header\">\r\n\t<button type=\"button\" class=\"close\" (click)=\"close()\"><span>x</span></button>\r\n\t<h3 class=\"modal-title panel-view-title\" translate=\"MODAL_TEXT.TITLE_EDIT\" translate-values='{\"title\":\"Dati\"}'></h3>\r\n</div>\r\n<div class=\"modal-body\">\r\n\t<form name=\"editForm\" novalidate>\r\n\t\t<div class=\"panel panel-default panel-edit\">\r\n\t\t\t<ui-exception [exception]=\"httpClient.exception\" exception-hidden=\"true\"></ui-exception>\r\n\t\t\t<div class=\"panel-body panel-body-custom\">\r\n\t\t\t\t<div class=\"row row-form-grid\">\r\n\t\t\t\t\t<div class=\"col-md-12 col-section\">\r\n\t\t\t\t\t\t<div class=\"row row-form-entry\">\r\n\t\t\t\t\t\t\t<div class=\"col-md-3 form-label\">partita</div>\r\n\t\t\t\t\t\t\t<div class=\"col-md-9 form-value\">\r\n\t\t\t\t\t\t\t\t<ui-autocomplete [ac-items]=\"scommesseService.scommesseList\" [ac-item-selected]=\"{value: editItem.partita, des: ''}\"\r\n\t\t\t\t\t\t\t\t\t(ac-item-selected-change)=\"editItem.partita = $event ? $event.value : ''\"\r\n\t\t\t\t\t\t\t\t\tac-not-found=\"partita inserita errata!\" ac-select-on-match=\"true\" ac-input-name=\"partita\" class=\"form-input\"\r\n\t\t\t\t\t\t\t\t\tvalidate [model]=\"[editItem]\"></ui-autocomplete>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"row row-form-entry\">\r\n\t\t\t\t\t\t\t<div class=\"col-md-3 form-label\">scommessa</div>\r\n\t\t\t\t\t\t\t<div class=\"col-md-9 form-value\">\r\n\t\t\t\t\t\t\t\t<ui-autocomplete [ac-items]=\"scommesseService.scommesseList\" [ac-item-selected]=\"{value: editItem.scommessa, des: ''}\"\r\n\t\t\t\t\t\t\t\t\t(ac-item-selected-change)=\"editItem.scommessa = $event ? $event.value : ''\"\r\n\t\t\t\t\t\t\t\t\tac-not-found=\"scommessa inserita errata!\" ac-select-on-match=\"true\" ac-input-name=\"scommessa\" class=\"form-input\"\r\n\t\t\t\t\t\t\t\t\tvalidate [model]=\"[editItem]\"></ui-autocomplete>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t</form>\r\n</div>\r\n<div class=\"modal-footer\">\r\n\t<div class=\"row\">\r\n\t\t<div class=\"col-sm-12\">\r\n\t\t\t<button class=\"btn btn-default\" type=\"button\" (click)=\"close()\"><span translate=\"MODAL_TEXT.BUTTON_CLOSE\"></span></button>\r\n\t\t\t<button class=\"btn btn-primary\" type=\"button\" (click)=\"save()\"><span translate=\"MODAL_TEXT.BUTTON_SAVE\"></span></button>\r\n\t\t</div>\r\n\t</div>\t\t\t\r\n</div>";
+module.exports = "<div class=\"modal-header\">\r\n\t<button type=\"button\" class=\"close\" (click)=\"close()\"><span>x</span></button>\r\n\t<h3 class=\"modal-title panel-view-title\" translate=\"MODAL_TEXT.TITLE_EDIT\" translate-values='{\"title\":\"Dati\"}'></h3>\r\n</div>\r\n<div class=\"modal-body\">\r\n\t<form name=\"editForm\" novalidate>\r\n\t\t<div class=\"panel panel-default panel-edit\">\r\n\t\t\t<ui-exception [exception]=\"httpClient.exception\" exception-hidden=\"true\"></ui-exception>\r\n\t\t\t<div class=\"panel-body panel-body-custom\">\r\n\t\t\t\t<div class=\"row row-form-grid\">\r\n\t\t\t\t\t<div class=\"col-md-12 col-section\">\r\n\t\t\t\t\t\t<div class=\"row row-form-entry\">\r\n\t\t\t\t\t\t\t<div class=\"col-md-3 form-label\">competizione</div>\r\n\t\t\t\t\t\t\t<div class=\"col-md-9 form-value\">\r\n\t\t\t\t\t\t\t\t<ui-autocomplete [ac-items]=\"scommesseService.competitionsMap\" (ac-item-selected-change)=\"onCompetitionChange($event)\"\r\n\t\t\t\t\t\t\t\t\t[ac-item-selected]=\"editItem.competition\" ac-not-found=\"competizione inserita errata!\" ac-hide-des=\"true\"\r\n\t\t\t\t\t\t\t\t\tac-select-on-match=\"true\" ac-input-name=\"competizione\" class=\"form-input\" validate [model]=\"[editItem]\"></ui-autocomplete>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"row row-form-entry\">\r\n\t\t\t\t\t\t\t<div class=\"col-md-3 form-label\">partita</div>\r\n\t\t\t\t\t\t\t<div class=\"col-md-9 form-value\">\r\n\t\t\t\t\t\t\t\t<ui-autocomplete [ac-items]=\"filterMatches\" (ac-item-selected-change)=\"editItem.match = $event ? $event : ''\"\r\n\t\t\t\t\t\t\t\t\t[ac-item-selected]=\"editItem.match\" ac-not-found=\"partita inserita errata!\" ac-hide-des=\"true\"\r\n\t\t\t\t\t\t\t\t\tac-select-on-match=\"true\" ac-input-name=\"match\" class=\"form-input\" validate [model]=\"[editItem]\"></ui-autocomplete>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"row row-form-entry\">\r\n\t\t\t\t\t\t\t<div class=\"col-md-3 form-label\">scommessa</div>\r\n\t\t\t\t\t\t\t<div class=\"col-md-9 form-value\">\r\n\t\t\t\t\t\t\t\t<ui-autocomplete [ac-items]=\"scommesseService.scommesseList\" [ac-item-selected]=\"editItem.scommessa\"\r\n\t\t\t\t\t\t\t\t\t(ac-item-selected-change)=\"editItem.scommessa = $event ? $event : ''\" ac-hide-des=\"true\"\r\n\t\t\t\t\t\t\t\t\tac-not-found=\"scommessa inserita errata!\" ac-select-on-match=\"true\" ac-input-name=\"scommessa\" class=\"form-input\"\r\n\t\t\t\t\t\t\t\t\tvalidate [model]=\"[editItem]\"></ui-autocomplete>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t</form>\r\n</div>\r\n<div class=\"modal-footer\">\r\n\t<div class=\"row\">\r\n\t\t<div class=\"col-sm-12\">\r\n\t\t\t<button class=\"btn btn-default\" type=\"button\" (click)=\"close()\"><span translate=\"MODAL_TEXT.BUTTON_CLOSE\"></span></button>\r\n\t\t\t<button class=\"btn btn-primary\" type=\"button\" (click)=\"save()\"><span translate=\"MODAL_TEXT.BUTTON_SAVE\"></span></button>\r\n\t\t</div>\r\n\t</div>\t\t\t\r\n</div>";
 
 /***/ }),
 
@@ -1178,7 +1206,7 @@ module.exports = "<div class=\"modal-header\">\r\n\t<button type=\"button\" clas
 /***/ 957:
 /***/ (function(module, exports) {
 
-module.exports = "<div>\r\n\t<div class=\"modal-header\">\r\n\t\t<button type=\"button\" class=\"close\" (click)=\"close()\"><span>x</span></button>\r\n\t\t<div class=\"dropdown\" [ngClass]=\"{open: showDropdown}\">\r\n\t\t\t<button class=\"btn btn-default btn-xs dropdown-toggle\" type=\"button\" (click)=\"toggleDropdown()\" (blur)=\"toggleDropdown()\">\r\n\t\t\t\t<span class=\"glyphicon glyphicon-menu-down\" aria-hidden=\"true\"></span> <span translate=\"LABEL_TEXT.ACTIONS\"></span>\r\n\t\t\t</button>\r\n\t\t\t<ul class=\"dropdown-menu dropdown-menu-right\">\r\n\t\t\t\t<li><a (click)=\"editItemPopup()\">\r\n\t\t\t\t\t<span class=\"icon icon-edit\" aria-hidden=\"true\"></span> <span translate=\"BUTTON_TEXT.EDIT_TITLE\"></span>\r\n\t\t\t\t</a></li>\r\n\t\t\t</ul>\r\n\t\t</div>\r\n\t\t<h3 class=\"modal-title panel-view-title\" translate=\"MODAL_TEXT.TITLE_VIEW\" translate-values='{\"title\":\"Dati\"}'></h3>\r\n\t</div>\r\n\t<div class=\"modal-body\">\r\n\t\t<div class=\"panel panel-default panel-view\">\t\t\t\r\n\t\t\t<div class=\"panel-body panel-body-custom\">\r\n\t\t\t\t<div class=\"row row-form-grid\">\r\n\t\t\t\t\t<div class=\"col-sm-12 col-section\">\r\n\t\t\t\t\t\t<div class=\"row row-form-entry\">\r\n\t\t\t\t\t\t\t<div class=\"col-sm-3 form-label\">partita</div>\r\n\t\t\t\t\t\t\t<div class=\"col-sm-9 form-value\"><strong>{{itemInfo.partita}}</strong></div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"row row-form-entry\">\r\n\t\t\t\t\t\t\t<div class=\"col-sm-3 form-label\">scommessa</div>\r\n\t\t\t\t\t\t\t<div class=\"col-sm-9 form-value\"><strong>{{itemInfo.scommessa}}</strong></div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t</div>\r\n\t<div class=\"modal-footer\">\r\n\t\t<button class=\"btn btn-default\" type=\"button\" (click)=\"close()\"><span translate=\"MODAL_TEXT.BUTTON_CLOSE\"></span></button>\r\n\t</div>\r\n</div>";
+module.exports = "<div>\r\n\t<div class=\"modal-header\">\r\n\t\t<button type=\"button\" class=\"close\" (click)=\"close()\"><span>x</span></button>\r\n\t\t<div class=\"dropdown\" [ngClass]=\"{open: showDropdown}\">\r\n\t\t\t<button class=\"btn btn-default btn-xs dropdown-toggle\" type=\"button\" (click)=\"toggleDropdown()\" (blur)=\"toggleDropdown()\">\r\n\t\t\t\t<span class=\"glyphicon glyphicon-menu-down\" aria-hidden=\"true\"></span> <span translate=\"LABEL_TEXT.ACTIONS\"></span>\r\n\t\t\t</button>\r\n\t\t\t<ul class=\"dropdown-menu dropdown-menu-right\">\r\n\t\t\t\t<li><a (click)=\"editItemPopup()\">\r\n\t\t\t\t\t<span class=\"icon icon-edit\" aria-hidden=\"true\"></span> <span translate=\"BUTTON_TEXT.EDIT_TITLE\"></span>\r\n\t\t\t\t</a></li>\r\n\t\t\t</ul>\r\n\t\t</div>\r\n\t\t<h3 class=\"modal-title panel-view-title\" translate=\"MODAL_TEXT.TITLE_VIEW\" translate-values='{\"title\":\"Dati\"}'></h3>\r\n\t</div>\r\n\t<div class=\"modal-body\">\r\n\t\t<div class=\"panel panel-default panel-view\">\t\t\t\r\n\t\t\t<div class=\"panel-body panel-body-custom\">\r\n\t\t\t\t<div class=\"row row-form-grid\">\r\n\t\t\t\t\t<div class=\"col-sm-12 col-section\">\r\n\t\t\t\t\t\t<div class=\"row row-form-entry\">\r\n\t\t\t\t\t\t\t<div class=\"col-sm-3 form-label\">competizione</div>\r\n\t\t\t\t\t\t\t<div class=\"col-sm-9 form-value\"><strong>{{itemInfo.competition.value}}</strong></div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"row row-form-entry\">\r\n\t\t\t\t\t\t\t<div class=\"col-sm-3 form-label\">partita</div>\r\n\t\t\t\t\t\t\t<div class=\"col-sm-9 form-value\"><strong>{{itemInfo.match.value}}</strong></div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"row row-form-entry\">\r\n\t\t\t\t\t\t\t<div class=\"col-sm-3 form-label\">scommessa</div>\r\n\t\t\t\t\t\t\t<div class=\"col-sm-9 form-value\"><strong>{{itemInfo.scommessa.value}}</strong></div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t</div>\r\n\t<div class=\"modal-footer\">\r\n\t\t<button class=\"btn btn-default\" type=\"button\" (click)=\"close()\"><span translate=\"MODAL_TEXT.BUTTON_CLOSE\"></span></button>\r\n\t</div>\r\n</div>";
 
 /***/ }),
 

@@ -10,19 +10,26 @@
 				<div class="row row-form-grid">
 					<div class="col-md-12 col-section">
 						<div class="row row-form-entry">
+							<div class="col-md-3 form-label">competizione</div>
+							<div class="col-md-9 form-value">
+								<ui-autocomplete [ac-items]="scommesseService.competitionsMap" (ac-item-selected-change)="onCompetitionChange($event)"
+									[ac-item-selected]="editItem.competition" ac-not-found="competizione inserita errata!" ac-hide-des="true"
+									ac-select-on-match="true" ac-input-name="competizione" class="form-input" validate [model]="[editItem]"></ui-autocomplete>
+							</div>
+						</div>
+						<div class="row row-form-entry">
 							<div class="col-md-3 form-label">partita</div>
 							<div class="col-md-9 form-value">
-								<ui-autocomplete [ac-items]="scommesseService.scommesseList" [ac-item-selected]="{value: editItem.partita, des: ''}"
-									(ac-item-selected-change)="editItem.partita = $event ? $event.value : ''"
-									ac-not-found="partita inserita errata!" ac-select-on-match="true" ac-input-name="partita" class="form-input"
-									validate [model]="[editItem]"></ui-autocomplete>
+								<ui-autocomplete [ac-items]="filterMatches" (ac-item-selected-change)="editItem.match = $event ? $event : ''"
+									[ac-item-selected]="editItem.match" ac-not-found="partita inserita errata!" ac-hide-des="true"
+									ac-select-on-match="true" ac-input-name="match" class="form-input" validate [model]="[editItem]"></ui-autocomplete>
 							</div>
 						</div>
 						<div class="row row-form-entry">
 							<div class="col-md-3 form-label">scommessa</div>
 							<div class="col-md-9 form-value">
-								<ui-autocomplete [ac-items]="scommesseService.scommesseList" [ac-item-selected]="{value: editItem.scommessa, des: ''}"
-									(ac-item-selected-change)="editItem.scommessa = $event ? $event.value : ''"
+								<ui-autocomplete [ac-items]="scommesseService.scommesseList" [ac-item-selected]="editItem.scommessa"
+									(ac-item-selected-change)="editItem.scommessa = $event ? $event : ''" ac-hide-des="true"
 									ac-not-found="scommessa inserita errata!" ac-select-on-match="true" ac-input-name="scommessa" class="form-input"
 									validate [model]="[editItem]"></ui-autocomplete>
 							</div>

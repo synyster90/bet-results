@@ -101,6 +101,7 @@ export class Home implements OnInit {
                 if ( editItem ) {
                     // TEST
                     $this.scommesseList[index] = editItem
+                    this.cookieService.put( 'scommessePartiteTableData', JSON.stringify( this.scommesseList ) );
                     $this.listChanged = true
                     $this.changeDetectorRef.markForCheck()
                 }
@@ -113,16 +114,17 @@ export class Home implements OnInit {
             controller: InsertModalCtrl
         }).subscribe(( newItem ) => {
             if ( newItem ) {
-                var itemList: any = {}
-                itemList.id = newItem.id;
-                itemList.competition_id = newItem.competition.des;
-                itemList.match_id = newItem.match.des;
-                itemList.home = newItem.match.value.split( ' - ' )[0];
-                itemList.away = newItem.match.value.split( ' - ' )[1];
-                itemList.bet.id = newItem.scommessa.des;
-                itemList.bet.text = newItem.scommessa.value;
-                // TEST
-                this.scommesseList.unshift( itemList )
+                this.scommesseList.unshift( {
+                    id: newItem.id,
+                    competition_id: newItem.competition.des,
+                    match_id: newItem.match.des,
+                    home: newItem.match.value.split( ' - ' )[0],
+                    away: newItem.match.value.split( ' - ' )[1],
+                    bet: {
+                        id: newItem.scommessa.des,
+                        text: newItem.scommessa.value
+                    }
+                })
                 this.cookieService.put( 'scommessePartiteTableData', JSON.stringify( this.scommesseList ) );
                 this.listChanged = true
                 this.changeDetectorRef.markForCheck()
