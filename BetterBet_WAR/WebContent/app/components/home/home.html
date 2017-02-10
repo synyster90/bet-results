@@ -38,7 +38,7 @@
 				<td>{{item.result}}</td>
 				<td>{{item.away}}</td>
 				<td>{{item.time}}</td>
-				<td>{{item.bet}}</td>
+				<td>{{item.bet.text}}</td>
 			</tr>
 			<tr *ngIf="scommesseList.length == 0 || filtered_result.length == 0">
 				<td colspan="5" class="col-no-items" translate="LABEL_TEXT.NO_RESULT"></td>

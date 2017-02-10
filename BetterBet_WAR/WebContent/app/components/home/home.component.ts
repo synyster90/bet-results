@@ -115,9 +115,12 @@ export class Home implements OnInit {
             if ( newItem ) {
                 var itemList: any = {}
                 itemList.id = newItem.id;
-                itemList.home = newItem.match.split( ' - ' )[0];
-                itemList.away = newItem.match.split( ' - ' )[1];
-                itemList.bet = newItem.scommessa;
+                itemList.competition_id = newItem.competition.des;
+                itemList.match_id = newItem.match.des;
+                itemList.home = newItem.match.value.split( ' - ' )[0];
+                itemList.away = newItem.match.value.split( ' - ' )[1];
+                itemList.bet.id = newItem.scommessa.des;
+                itemList.bet.text = newItem.scommessa.value;
                 // TEST
                 this.scommesseList.unshift( itemList )
                 this.cookieService.put( 'scommessePartiteTableData', JSON.stringify( this.scommesseList ) );
@@ -161,24 +164,26 @@ export class Home implements OnInit {
         return menuOptions
     }
 
-    getLiveData( scommessa ): any {
-        this.httpClient.post( '', {
-
-        })
-        return {}
-    }
-
     refreshPartiteLive() {
+        var matches = '';
         for ( var i = 0; i < this.scommesseList.length; i++ ) {
-            var scommessa: Object = this.scommesseList[i];
-            var liveData = this.getLiveData( scommessa );
-            scommessa['time'] = liveData.time;
-            scommessa['result'] = liveData.result;
+            var scommessa: any = this.scommesseList[i];
+            if ( i > 0 )
+                matches += ','
+            matches += scommessa.match_id;
         }
+        if ( matches != '' )
+            this.httpClient.get( 'http://www.goal.com/feed/matches/scores?matchId=' + matches + '&edition=it&format=guest' ).subscribe(( liveData: any ) => {
+                console.log( liveData )
+                // scommessa['time'] = liveData.time;
+                // scommessa['result'] = liveData.result;
+            })
     }
 
     ngOnInit() {
         this.sampleRefresh()
-        this.refreshPartiteLive();
+        window.setInterval(() => {
+            this.refreshPartiteLive();
+        }, 5000 )
     }
 }
