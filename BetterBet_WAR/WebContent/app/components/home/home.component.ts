@@ -114,8 +114,9 @@ export class Home implements OnInit {
         }).subscribe(( newItem ) => {
             if ( newItem ) {
                 var itemList: any = {}
-                itemList.home = newItem.match.split(' - ')[0];
-                itemList.away = newItem.match.split(' - ')[1];
+                itemList.id = newItem.id;
+                itemList.home = newItem.match.split( ' - ' )[0];
+                itemList.away = newItem.match.split( ' - ' )[1];
                 itemList.bet = newItem.scommessa;
                 // TEST
                 this.scommesseList.unshift( itemList )
@@ -160,7 +161,24 @@ export class Home implements OnInit {
         return menuOptions
     }
 
+    getLiveData( scommessa ): any {
+        this.httpClient.post( '', {
+
+        })
+        return {}
+    }
+
+    refreshPartiteLive() {
+        for ( var i = 0; i < this.scommesseList.length; i++ ) {
+            var scommessa: Object = this.scommesseList[i];
+            var liveData = this.getLiveData( scommessa );
+            scommessa['time'] = liveData.time;
+            scommessa['result'] = liveData.result;
+        }
+    }
+
     ngOnInit() {
         this.sampleRefresh()
+        this.refreshPartiteLive();
     }
 }
