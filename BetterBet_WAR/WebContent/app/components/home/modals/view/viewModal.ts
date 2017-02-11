@@ -48,4 +48,10 @@ export class ViewModalCtrl implements OnInit {
             'action': 'edit'
         });
     }
+
+    deleteItemPopup() {
+        this.modalDialogService.hide( {
+            'action': 'delete'
+        });
+    }
 };

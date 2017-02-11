@@ -85,6 +85,8 @@ export class Home implements OnInit {
                 if ( response )
                     if ( response.action == 'edit' )
                         $this.editItem( index );
+                    else if ( response.action == 'delete' )
+                        $this.deleteItem( index );
             })
         });
     }
@@ -136,6 +138,13 @@ export class Home implements OnInit {
         })
     }
 
+    deleteItem( index ) {
+        this.modalDialogService.confirm( '<div class="panel-body-custom" translate="MODAL_TEXT.MESSAGE_DELETE"></div>', function( result ) {
+            if ( result == true )
+                this.scommesseList.splice( index, 1 );
+        });
+    }
+
     getAbilOperations(): Object[] {
         var menuOptions: Object[] = []
 
@@ -166,6 +175,20 @@ export class Home implements OnInit {
             this.editItem( index );
         })
         menuOptions.push( optionEdit );
+
+        var optionDelete = {
+            icon: 'icon icon-delete',
+            text: '',
+            clickEvent: new EventEmitter<number>(),
+            isActive: true
+        }
+        this.translateService.get( 'BUTTON_TEXT.DELETE_TITLE' ).subscribe( value => {
+            optionDelete.text = value;
+        })
+        optionDelete.clickEvent.subscribe( index => {
+            this.deleteItem( index );
+        })
+        menuOptions.push( optionDelete );
 
         return menuOptions
     }
