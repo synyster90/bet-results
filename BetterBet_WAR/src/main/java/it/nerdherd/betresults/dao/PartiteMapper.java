@@ -119,9 +119,9 @@ public class PartiteMapper {
 			FindIterable<Document> matches = dbColl.find();
 			for (Document matchDoc : matches) {
 				DBMatch matchDB = MongoDBDao.fromDocument(DBMatch.class, matchDoc);
-				Matches match = new Matches(matchDB.getCompetition_id(), matchDB.getId(),
-						matchDB.getDate_time_utc_moment(), matchDB.getTeam_A_id(), matchDB.getTeam_A_title(),
-						matchDB.getTeam_B_id(), matchDB.getTeam_B_title());
+				Matches match = new Matches(matchDB.getCompetition_id(), matchDB.getId(), matchDB.getDate_time_moment(),
+						matchDB.getTeam_A_id(), matchDB.getTeam_A_title(), matchDB.getTeam_B_id(),
+						matchDB.getTeam_B_title());
 				matchesList.add(match);
 			}
 			System.out.println("	BET RESULTS - getDBMatches END.");
@@ -184,7 +184,7 @@ public class PartiteMapper {
 				DBMatch matchDB = new DBMatch();
 				matchDB.setId(match.getMatch_id());
 				matchDB.setCompetition_id(match.getCompetition_id());
-				matchDB.setDate_time_utc_moment(match.getDate_time_utc_moment());
+				matchDB.setDate_time_moment(match.getDate_time_moment());
 				matchDB.setTeam_A_id(match.getTeam_A_id());
 				matchDB.setTeam_A_title(match.getTeam_A_title());
 				matchDB.setTeam_B_id(match.getTeam_B_id());

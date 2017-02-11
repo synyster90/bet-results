@@ -68,7 +68,7 @@ public class DataFactoryService {
 		HttpURLConnection conn = null;
 		try {
 			URL url = new URL(FEED_SOURCE_BASE_URL + "gsm/competition-fixtures?competitionId=" + competition_id
-					+ "&format=guest");
+					+ "&format=guest&edition=it");
 			conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty("Accept", "application/json");
@@ -100,8 +100,8 @@ public class DataFactoryService {
 
 			PartiteJson filteredMatchesList = new PartiteJson();
 			for (Matches match : matchesList.getMatches())
-				if (Long.valueOf(match.getDate_time_utc_moment()) >= tre_giorni_fa
-						&& Long.valueOf(match.getDate_time_utc_moment()) <= fra_giorni_fa) {
+				if (Long.valueOf(match.getDate_time_moment()) >= tre_giorni_fa
+						&& Long.valueOf(match.getDate_time_moment()) <= fra_giorni_fa) {
 					match.setCompetition_id(competition_id);
 					filteredMatchesList.getMatches().add(match);
 				}

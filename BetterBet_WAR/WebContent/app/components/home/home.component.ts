@@ -215,7 +215,7 @@ export class Home implements OnInit {
                         for ( var j = 0; j < liveData.matches.length; j++ )
                             if ( liveData.matches[j].id == this.scommesseList[i]['match_id'] ) {
                                 if ( liveData.matches[j].status == 'fixture' )
-                                    this.scommesseList[i]['time'] = this.scommesseService.getMatchInfo(liveData.matches[j].id)['date_time_utc_moment'];
+                                    this.scommesseList[i]['time'] = new Date(this.scommesseService.getMatchInfo(liveData.matches[j].id)['date_time_moment']);
                                 else
                                     this.scommesseList[i]['time'] = liveData.matches[j].period;
 

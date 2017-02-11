@@ -702,7 +702,7 @@ var Home = (function () {
                         for (var j = 0; j < liveData.matches.length; j++)
                             if (liveData.matches[j].id == _this.scommesseList[i]['match_id']) {
                                 if (liveData.matches[j].status == 'fixture')
-                                    _this.scommesseList[i]['time'] = _this.scommesseService.getMatchInfo(liveData.matches[j].id)['date_time_utc_moment'];
+                                    _this.scommesseList[i]['time'] = new Date(_this.scommesseService.getMatchInfo(liveData.matches[j].id)['date_time_moment']);
                                 else
                                     _this.scommesseList[i]['time'] = liveData.matches[j].period;
                                 if (liveData.matches[j].has_score)
