@@ -62,6 +62,20 @@ export class ScommesseService {
         }
     }
 
+    public getCompetitionInfo( competition_id ) {
+        for ( var i = 0; i < this.competitions.length; i++ ) {
+            if ( this.competitions[i]['competition_id'] == competition_id )
+                return this.competitions[i]
+        }
+    }
+
+    public getMatchInfo( match_id ) {
+        for ( var i = 0; i < this.matches.length; i++ ) {
+            if ( this.matches[i]['match_id'] == match_id )
+                return this.matches[i]
+        }
+    }
+
     // Array -> Map conversion (value, des)
     public arrayToMap( array ) {
         return array.map( function( item ) {

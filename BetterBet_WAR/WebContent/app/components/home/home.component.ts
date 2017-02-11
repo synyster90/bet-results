@@ -115,33 +115,36 @@ export class Home implements OnInit {
     }
 
     editItem( index ) {
-        var $this = this
-        $this.modalDialogService.dialog( {
+        this.modalDialogService.dialog( {
             controller: EditModalCtrl,
             locals: {
                 'item': this.filtered_result[index]
             }
         }).subscribe(( editItem ) => {
             if ( editItem ) {
-                $this.scommesseList[index]['competition_id'] = editItem.competition.des
-                $this.scommesseList[index]['match_id'] = editItem.match.des
-                $this.scommesseList[index]['home'] = editItem.match.value.split( ' - ' )[0]
-                $this.scommesseList[index]['away'] = editItem.match.value.split( ' - ' )[1]
-                $this.scommesseList[index]['bet'] = {
+                this.scommesseList[index]['competition_id'] = editItem.competition.des
+                this.scommesseList[index]['match_id'] = editItem.match.des
+                this.scommesseList[index]['home'] = editItem.match.value.split( ' - ' )[0]
+                this.scommesseList[index]['away'] = editItem.match.value.split( ' - ' )[1]
+                this.scommesseList[index]['bet'] = {
                     id: editItem.scommessa.des,
                     text: editItem.scommessa.value
                 }
                 this.cookieService.put( 'scommessePartiteTableData', JSON.stringify( this.scommesseList ) );
-                $this.listChanged = true
-                $this.changeDetectorRef.markForCheck()
+                this.listChanged = true
+                this.changeDetectorRef.markForCheck()
             }
         })
     }
 
     deleteItem( index ) {
         this.modalDialogService.confirm( '<div class="panel-body-custom" translate="MODAL_TEXT.MESSAGE_DELETE"></div>', ( result ) => {
-            if ( result == true )
+            if ( result == true ) {
                 this.scommesseList.splice( index, 1 );
+                this.cookieService.put( 'scommessePartiteTableData', JSON.stringify( this.scommesseList ) );
+                this.listChanged = true
+                this.changeDetectorRef.markForCheck()
+            }
         });
     }
 
@@ -210,9 +213,9 @@ export class Home implements OnInit {
                 if ( liveData && liveData.matches && liveData.matches.length > 0 ) {
                     for ( var i = 0; i < this.scommesseList.length; i++ )
                         for ( var j = 0; j < liveData.matches.length; j++ )
-                            if ( liveData.matches[j].id == scommessa.match_id ) {
+                            if ( liveData.matches[j].id == this.scommesseList[i]['match_id'] ) {
                                 if ( liveData.matches[j].status == 'fixture' )
-                                    this.scommesseList[i]['time'] = liveData.matches[j].mobile.state;
+                                    this.scommesseList[i]['time'] = this.scommesseService.getMatchInfo(liveData.matches[j].id)['date_time_utc_moment'];
                                 else
                                     this.scommesseList[i]['time'] = liveData.matches[j].period;
 

@@ -78,6 +78,18 @@ var ScommesseService = (function () {
                 return this.matchesMap[i];
         }
     };
+    ScommesseService.prototype.getCompetitionInfo = function (competition_id) {
+        for (var i = 0; i < this.competitions.length; i++) {
+            if (this.competitions[i]['competition_id'] == competition_id)
+                return this.competitions[i];
+        }
+    };
+    ScommesseService.prototype.getMatchInfo = function (match_id) {
+        for (var i = 0; i < this.matches.length; i++) {
+            if (this.matches[i]['match_id'] == match_id)
+                return this.matches[i];
+        }
+    };
     // Array -> Map conversion (value, des)
     ScommesseService.prototype.arrayToMap = function (array) {
         return array.map(function (item) {
@@ -569,30 +581,6 @@ var Home = (function () {
             });
         });
     };
-    Home.prototype.editItem = function (index) {
-        var _this = this;
-        var $this = this;
-        $this.modalDialogService.dialog({
-            controller: editModal_1.EditModalCtrl,
-            locals: {
-                'item': this.filtered_result[index]
-            }
-        }).subscribe(function (editItem) {
-            if (editItem) {
-                $this.scommesseList[index]['competition_id'] = editItem.competition.des;
-                $this.scommesseList[index]['match_id'] = editItem.match.des;
-                $this.scommesseList[index]['home'] = editItem.match.value.split(' - ')[0];
-                $this.scommesseList[index]['away'] = editItem.match.value.split(' - ')[1];
-                $this.scommesseList[index]['bet'] = {
-                    id: editItem.scommessa.des,
-                    text: editItem.scommessa.value
-                };
-                _this.cookieService.put('scommessePartiteTableData', JSON.stringify(_this.scommesseList));
-                $this.listChanged = true;
-                $this.changeDetectorRef.markForCheck();
-            }
-        });
-    };
     Home.prototype.addItem = function () {
         var _this = this;
         this.modalDialogService.dialog({
@@ -616,11 +604,38 @@ var Home = (function () {
             }
         });
     };
+    Home.prototype.editItem = function (index) {
+        var _this = this;
+        this.modalDialogService.dialog({
+            controller: editModal_1.EditModalCtrl,
+            locals: {
+                'item': this.filtered_result[index]
+            }
+        }).subscribe(function (editItem) {
+            if (editItem) {
+                _this.scommesseList[index]['competition_id'] = editItem.competition.des;
+                _this.scommesseList[index]['match_id'] = editItem.match.des;
+                _this.scommesseList[index]['home'] = editItem.match.value.split(' - ')[0];
+                _this.scommesseList[index]['away'] = editItem.match.value.split(' - ')[1];
+                _this.scommesseList[index]['bet'] = {
+                    id: editItem.scommessa.des,
+                    text: editItem.scommessa.value
+                };
+                _this.cookieService.put('scommessePartiteTableData', JSON.stringify(_this.scommesseList));
+                _this.listChanged = true;
+                _this.changeDetectorRef.markForCheck();
+            }
+        });
+    };
     Home.prototype.deleteItem = function (index) {
         var _this = this;
         this.modalDialogService.confirm('<div class="panel-body-custom" translate="MODAL_TEXT.MESSAGE_DELETE"></div>', function (result) {
-            if (result == true)
+            if (result == true) {
                 _this.scommesseList.splice(index, 1);
+                _this.cookieService.put('scommessePartiteTableData', JSON.stringify(_this.scommesseList));
+                _this.listChanged = true;
+                _this.changeDetectorRef.markForCheck();
+            }
         });
     };
     Home.prototype.getAbilOperations = function () {
@@ -685,9 +700,9 @@ var Home = (function () {
                 if (liveData && liveData.matches && liveData.matches.length > 0) {
                     for (var i = 0; i < _this.scommesseList.length; i++)
                         for (var j = 0; j < liveData.matches.length; j++)
-                            if (liveData.matches[j].id == scommessa.match_id) {
+                            if (liveData.matches[j].id == _this.scommesseList[i]['match_id']) {
                                 if (liveData.matches[j].status == 'fixture')
-                                    _this.scommesseList[i]['time'] = liveData.matches[j].mobile.state;
+                                    _this.scommesseList[i]['time'] = _this.scommesseService.getMatchInfo(liveData.matches[j].id)['date_time_utc_moment'];
                                 else
                                     _this.scommesseList[i]['time'] = liveData.matches[j].period;
                                 if (liveData.matches[j].has_score)
