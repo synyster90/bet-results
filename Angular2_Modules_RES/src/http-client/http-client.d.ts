@@ -23,8 +23,8 @@ export declare class HttpClient {
     propagateException(): void;
     private interceptors;
     addInterceptor(func: any): void;
-    get(url: string): Observable<Object>;
-    post(url: string, data: any): Observable<Object>;
+    get(url: string, noLoadingWheel?: boolean): Observable<Object>;
+    post(url: string, data: any, noLoadingWheel?: boolean): Observable<Object>;
     private showSpinnerOverlay();
     private hideSpinnerOverlay();
 }

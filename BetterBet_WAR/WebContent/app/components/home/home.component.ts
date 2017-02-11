@@ -178,9 +178,11 @@ export class Home implements OnInit {
         if ( matches != '' )
             this.httpClient.post( 'rest/live', {
                 matches: matches
-            }).subscribe(( liveData: any ) => {
+            }, true).subscribe(( liveData: any ) => {
                 console.log( liveData )
-                if ( liveData && liveData.matches && liveData.matches.length > 0 )
+                //test
+                clearInterval( timer );
+                if ( liveData && liveData.matches && liveData.matches.length > 0 ) {
                     for ( var i = 0; i < this.scommesseList.length; i++ )
                         for ( var i = 0; i < liveData.matches.length; i++ )
                             if ( liveData.matches[i].id == scommessa.match_id ) {
@@ -193,6 +195,8 @@ export class Home implements OnInit {
                                     this.scommesseList[i]['result'] = liveData.matches[i].score.home + ' - ' + liveData.matches[i].score.away;
                                 break;
                             }
+                    this.changeDetectorRef.markForCheck()
+                }
             }, err => {
                 if ( timer )
                     clearInterval( timer );

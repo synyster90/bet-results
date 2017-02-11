@@ -42,20 +42,23 @@ var HttpClient = (function () {
     HttpClient.prototype.addInterceptor = function (func) {
         this.interceptors.push(func);
     };
-    HttpClient.prototype.get = function (url) {
+    HttpClient.prototype.get = function (url, noLoadingWheel) {
         var _this = this;
-        this.showSpinnerOverlay();
+        if (!noLoadingWheel)
+            this.showSpinnerOverlay();
         return this.http.get(url, {
             headers: this.headers
         }).map(function (res) {
-            _this.hideSpinnerOverlay();
+            if (!noLoadingWheel)
+                _this.hideSpinnerOverlay();
             var data = res.json();
             /* Interceptors */
             for (var i = 0; i < _this.interceptors.length; i++)
                 data = _this.interceptors[i](data);
             return data;
         })._catch(function (err) {
-            _this.hideSpinnerOverlay();
+            if (!noLoadingWheel)
+                _this.hideSpinnerOverlay();
             var returnItem = null;
             var data = null;
             try {
@@ -75,20 +78,23 @@ var HttpClient = (function () {
             });
         });
     };
-    HttpClient.prototype.post = function (url, data) {
+    HttpClient.prototype.post = function (url, data, noLoadingWheel) {
         var _this = this;
-        this.showSpinnerOverlay();
+        if (!noLoadingWheel)
+            this.showSpinnerOverlay();
         return this.http.post(url, JSON.stringify(data), {
             headers: this.headers
         }).map(function (res) {
-            _this.hideSpinnerOverlay();
+            if (!noLoadingWheel)
+                _this.hideSpinnerOverlay();
             var data = res.json();
             /* Interceptors */
             for (var i = 0; i < _this.interceptors.length; i++)
                 data = _this.interceptors[i](data);
             return data;
         })._catch(function (err) {
-            _this.hideSpinnerOverlay();
+            if (!noLoadingWheel)
+                _this.hideSpinnerOverlay();
             var returnItem = null;
             var data = null;
             try {

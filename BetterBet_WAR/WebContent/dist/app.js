@@ -615,9 +615,11 @@ var Home = (function () {
         if (matches != '')
             this.httpClient.post('rest/live', {
                 matches: matches
-            }).subscribe(function (liveData) {
+            }, true).subscribe(function (liveData) {
                 console.log(liveData);
-                if (liveData && liveData.matches && liveData.matches.length > 0)
+                //test
+                clearInterval(timer);
+                if (liveData && liveData.matches && liveData.matches.length > 0) {
                     for (var i = 0; i < _this.scommesseList.length; i++)
                         for (var i = 0; i < liveData.matches.length; i++)
                             if (liveData.matches[i].id == scommessa.match_id) {
@@ -629,6 +631,8 @@ var Home = (function () {
                                     _this.scommesseList[i]['result'] = liveData.matches[i].score.home + ' - ' + liveData.matches[i].score.away;
                                 break;
                             }
+                    _this.changeDetectorRef.markForCheck();
+                }
             }, function (err) {
                 if (timer)
                     clearInterval(timer);

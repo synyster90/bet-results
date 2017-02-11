@@ -47,26 +47,29 @@ export class HttpClient {
         this.interceptors.push( func );
     }
 
-    public get( url: string ): Observable<Object> {
-        this.showSpinnerOverlay()
+    public get( url: string, noLoadingWheel?: boolean ): Observable<Object> {
+        if ( !noLoadingWheel )
+            this.showSpinnerOverlay()
         return this.http.get( url, {
             headers: this.headers
-        }).map((res: Response) => {
-            this.hideSpinnerOverlay()
+        }).map(( res: Response ) => {
+            if ( !noLoadingWheel )
+                this.hideSpinnerOverlay()
             var data = res.json()
             /* Interceptors */
             for ( var i = 0; i < this.interceptors.length; i++ )
                 data = this.interceptors[i]( data )
             return data
-        })._catch(err => {
-            this.hideSpinnerOverlay()
+        })._catch( err => {
+            if ( !noLoadingWheel )
+                this.hideSpinnerOverlay()
             var returnItem = null
             var data = null
             try {
                 data = JSON.parse( err._body )
                 if ( data.hasOwnProperty( 'errResponse' ) )
                     returnItem = JSON.parse( data.errResponse )
-            } catch (ex) {
+            } catch ( ex ) {
                 data = err._body
                 returnItem = err
             }
@@ -75,30 +78,33 @@ export class HttpClient {
             return Observable.throw( {
                 exception: data,
                 item: returnItem
-            })        
+            })
         });
     }
 
-    public post( url: string, data ): Observable<Object> {
-        this.showSpinnerOverlay()
+    public post( url: string, data, noLoadingWheel?: boolean ): Observable<Object> {
+        if ( !noLoadingWheel )
+            this.showSpinnerOverlay()
         return this.http.post( url, JSON.stringify( data ), {
             headers: this.headers
-        }).map((res: Response) => {
-            this.hideSpinnerOverlay()
+        }).map(( res: Response ) => {
+            if ( !noLoadingWheel )
+                this.hideSpinnerOverlay()
             var data = res.json()
             /* Interceptors */
             for ( var i = 0; i < this.interceptors.length; i++ )
                 data = this.interceptors[i]( data )
             return data
-        })._catch(err => {
-            this.hideSpinnerOverlay()
+        })._catch( err => {
+            if ( !noLoadingWheel )
+                this.hideSpinnerOverlay()
             var returnItem = null
             var data = null
             try {
                 data = JSON.parse( err._body )
                 if ( data.hasOwnProperty( 'errResponse' ) )
                     returnItem = JSON.parse( data.errResponse )
-            } catch (ex) {
+            } catch ( ex ) {
                 data = err._body
                 returnItem = err
             }
@@ -107,10 +113,10 @@ export class HttpClient {
             return Observable.throw( {
                 exception: data,
                 item: returnItem
-            })        
+            })
         });
     }
-    
+
     private showSpinnerOverlay() {
         this.count++
         this.spinnerOverlayService.showSpinnerOverlay()

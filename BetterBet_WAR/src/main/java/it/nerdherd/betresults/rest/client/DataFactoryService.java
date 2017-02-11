@@ -125,7 +125,6 @@ public class DataFactoryService {
 		try {
 			URL url = new URL(FEED_SOURCE_BASE_URL + "matches/scores?matchId=" + matchesList
 					+ "&edition=it&format=goal&context=live-scores");
-			System.out.println("	BET RESULTS - goal.com liveScores at " + url);
 			conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty("Accept", "application/json");
