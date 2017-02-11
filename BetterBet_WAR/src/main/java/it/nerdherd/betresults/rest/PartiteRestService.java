@@ -32,6 +32,6 @@ public class PartiteRestService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public LivePartiteJson live(LivePartiteRequestJson input) {
-		return DataFactoryService.getInstance().liveScores("");
+		return DataFactoryService.getInstance().liveScores(input.getMatches());
 	}
 }
