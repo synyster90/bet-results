@@ -10,7 +10,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LivePartiteJson {
 
-	@JsonProperty("Matches")
+	@JsonProperty("matches")
 	private List<Matches> matches = new ArrayList<>();
 
 	@JsonIgnoreProperties(ignoreUnknown = true)
