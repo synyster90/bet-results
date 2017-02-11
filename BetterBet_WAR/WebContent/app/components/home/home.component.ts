@@ -91,28 +91,26 @@ export class Home implements OnInit {
 
     editItem( index ) {
         var $this = this
-        this.getItemData( index, function( item ) {
-            $this.modalDialogService.dialog( {
-                controller: EditModalCtrl,
-                locals: {
-                    'item': item
+        $this.modalDialogService.dialog( {
+            controller: EditModalCtrl,
+            locals: {
+                'item': this.filtered_result[index]
+            }
+        }).subscribe(( editItem ) => {
+            if ( editItem ) {
+                $this.scommesseList[index]['competition_id'] = editItem.competition.des
+                $this.scommesseList[index]['match_id'] = editItem.match.des
+                $this.scommesseList[index]['home'] = editItem.match.value.split( ' - ' )[0]
+                $this.scommesseList[index]['away'] = editItem.match.value.split( ' - ' )[1]
+                $this.scommesseList[index]['bet'] = {
+                    id: editItem.scommessa.des,
+                    text: editItem.scommessa.value
                 }
-            }).subscribe(( editItem ) => {
-                if ( editItem ) {
-                    $this.scommesseList[index]['competition_id'] = editItem.competition.des
-                    $this.scommesseList[index]['match_id'] = editItem.match.des
-                    $this.scommesseList[index]['home'] = editItem.match.value.split( ' - ' )[0]
-                    $this.scommesseList[index]['away'] = editItem.match.value.split( ' - ' )[1]
-                    $this.scommesseList[index]['bet'] = {
-                        id: editItem.scommessa.des,
-                        text: editItem.scommessa.value
-                    }
-                    this.cookieService.put( 'scommessePartiteTableData', JSON.stringify( this.scommesseList ) );
-                    $this.listChanged = true
-                    $this.changeDetectorRef.markForCheck()
-                }
-            })
-        });
+                this.cookieService.put( 'scommessePartiteTableData', JSON.stringify( this.scommesseList ) );
+                $this.listChanged = true
+                $this.changeDetectorRef.markForCheck()
+            }
+        })
     }
 
     addItem() {

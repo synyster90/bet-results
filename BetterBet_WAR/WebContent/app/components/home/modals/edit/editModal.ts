@@ -24,7 +24,7 @@ export class EditModalCtrl implements OnInit {
             id: this.locals['item'].id,
             competition: this.scommesseService.getCompetition(this.locals['item'].competition_id),
             match: this.scommesseService.getMatch(this.locals['item'].match_id),
-            bet: {
+            scommessa: {
                 value: this.locals['item'].bet.text,
                 des: this.locals['item'].bet.id
             }

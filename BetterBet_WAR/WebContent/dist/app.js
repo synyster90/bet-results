@@ -550,29 +550,27 @@ var Home = (function () {
         });
     };
     Home.prototype.editItem = function (index) {
+        var _this = this;
         var $this = this;
-        this.getItemData(index, function (item) {
-            var _this = this;
-            $this.modalDialogService.dialog({
-                controller: editModal_1.EditModalCtrl,
-                locals: {
-                    'item': item
-                }
-            }).subscribe(function (editItem) {
-                if (editItem) {
-                    $this.scommesseList[index]['competition_id'] = editItem.competition.des;
-                    $this.scommesseList[index]['match_id'] = editItem.match.des;
-                    $this.scommesseList[index]['home'] = editItem.match.value.split(' - ')[0];
-                    $this.scommesseList[index]['away'] = editItem.match.value.split(' - ')[1];
-                    $this.scommesseList[index]['bet'] = {
-                        id: editItem.scommessa.des,
-                        text: editItem.scommessa.value
-                    };
-                    _this.cookieService.put('scommessePartiteTableData', JSON.stringify(_this.scommesseList));
-                    $this.listChanged = true;
-                    $this.changeDetectorRef.markForCheck();
-                }
-            });
+        $this.modalDialogService.dialog({
+            controller: editModal_1.EditModalCtrl,
+            locals: {
+                'item': this.filtered_result[index]
+            }
+        }).subscribe(function (editItem) {
+            if (editItem) {
+                $this.scommesseList[index]['competition_id'] = editItem.competition.des;
+                $this.scommesseList[index]['match_id'] = editItem.match.des;
+                $this.scommesseList[index]['home'] = editItem.match.value.split(' - ')[0];
+                $this.scommesseList[index]['away'] = editItem.match.value.split(' - ')[1];
+                $this.scommesseList[index]['bet'] = {
+                    id: editItem.scommessa.des,
+                    text: editItem.scommessa.value
+                };
+                _this.cookieService.put('scommessePartiteTableData', JSON.stringify(_this.scommesseList));
+                $this.listChanged = true;
+                $this.changeDetectorRef.markForCheck();
+            }
         });
     };
     Home.prototype.addItem = function () {
@@ -719,7 +717,7 @@ var EditModalCtrl = (function () {
             id: this.locals['item'].id,
             competition: this.scommesseService.getCompetition(this.locals['item'].competition_id),
             match: this.scommesseService.getMatch(this.locals['item'].match_id),
-            bet: {
+            scommessa: {
                 value: this.locals['item'].bet.text,
                 des: this.locals['item'].bet.id
             }
@@ -939,7 +937,7 @@ var ViewModalCtrl = (function () {
             id: this.locals['item'].id,
             competition: this.scommesseService.getCompetition(this.locals['item'].competition_id),
             match: this.scommesseService.getMatch(this.locals['item'].match_id),
-            bet: {
+            scommessa: {
                 value: this.locals['item'].bet.text,
                 des: this.locals['item'].bet.id
             }
