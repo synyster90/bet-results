@@ -10,6 +10,7 @@ import java.util.Calendar;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
+import it.nerdherd.betresults.rest.model.LivePartiteJson;
 import it.nerdherd.betresults.rest.model.PartiteJson;
 import it.nerdherd.betresults.rest.model.PartiteJson.Matches;
 
@@ -18,13 +19,13 @@ public class DataFactoryService {
 
 	private static DataFactoryService INSTANCE = null;
 
-	private DataFactoryService() {
-	}
-
 	public static DataFactoryService getInstance() {
 		if (INSTANCE == null)
 			INSTANCE = new DataFactoryService();
 		return INSTANCE;
+	}
+
+	private DataFactoryService() {
 	}
 
 	public PartiteJson getCompetitions() throws RuntimeException {
@@ -107,6 +108,40 @@ public class DataFactoryService {
 			System.out.println("	BET RESULTS - goal.com Loaded Matches filtered by date: "
 					+ filteredMatchesList.getMatches().size());
 			return filteredMatchesList;
+		} catch (MalformedURLException e) {
+			throw new RuntimeException(e);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null)
+				conn.disconnect();
+		}
+	}
+
+	public LivePartiteJson liveScores(String matchesList) throws RuntimeException {
+		System.out.println("	BET RESULTS - goal.com liveScores START.. ");
+		ObjectMapper mapper = new ObjectMapper();
+		HttpURLConnection conn = null;
+		try {
+			URL url = new URL(FEED_SOURCE_BASE_URL + "matches/scores?matchId=" + matchesList
+					+ "&edition=it&format=goal&context=live-scores");
+			conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("GET");
+			conn.setRequestProperty("Accept", "application/json");
+
+			if (conn.getResponseCode() != 200)
+				throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+
+			BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+
+			String output = "";
+			String line;
+			while ((line = br.readLine()) != null)
+				output += line;
+
+			LivePartiteJson liveMatchesStats = mapper.readValue(output, LivePartiteJson.class);
+			System.out.println("	BET RESULTS - goal.com liveScores END.");
+			return liveMatchesStats;
 		} catch (MalformedURLException e) {
 			throw new RuntimeException(e);
 		} catch (IOException e) {

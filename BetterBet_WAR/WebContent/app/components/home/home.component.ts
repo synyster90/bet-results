@@ -166,26 +166,43 @@ export class Home implements OnInit {
         return menuOptions
     }
 
-    refreshPartiteLive() {
+    refreshPartiteLive( timer?) {
         var matches = '';
         for ( var i = 0; i < this.scommesseList.length; i++ ) {
             var scommessa: any = this.scommesseList[i];
-            if ( i > 0 )
-                matches += ','
-            matches += scommessa.match_id;
+            if ( scommessa.time != 'FIN' )
+                matches += ',' + scommessa.match_id;
         }
+        if ( matches.charAt( 0 ) == ',' )
+            matches = matches.substr( 1 )
         if ( matches != '' )
-            this.httpClient.get( 'http://www.goal.com/feed/matches/scores?matchId=' + matches + '&edition=it&format=guest' ).subscribe(( liveData: any ) => {
+            this.httpClient.post( 'rest/live', {
+                matches: matches
+            }).subscribe(( liveData: any ) => {
                 console.log( liveData )
-                // scommessa['time'] = liveData.time;
-                // scommessa['result'] = liveData.result;
+                if ( liveData && liveData.matches && liveData.matches.length > 0 )
+                    for ( var i = 0; i < this.scommesseList.length; i++ )
+                        for ( var i = 0; i < liveData.matches.length; i++ )
+                            if ( liveData.matches[i].id == scommessa.match_id ) {
+                                if ( liveData.matches[i].status == 'fixture' )
+                                    this.scommesseList[i]['time'] = liveData.matches[i].mobile.state;
+                                else
+                                    this.scommesseList[i]['time'] = liveData.matches[i].period;
+
+                                if ( liveData.matches[i].has_score )
+                                    this.scommesseList[i]['result'] = liveData.matches[i].score.home + ' - ' + liveData.matches[i].score.away;
+                                break;
+                            }
+            }, err => {
+                if ( timer )
+                    clearInterval( timer );
             })
     }
 
     ngOnInit() {
         this.sampleRefresh()
-        window.setInterval(() => {
-            this.refreshPartiteLive();
+        var timer = window.setInterval(() => {
+            this.refreshPartiteLive( timer );
         }, 5000 )
     }
 }

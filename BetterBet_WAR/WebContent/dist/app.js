@@ -602,26 +602,43 @@ var Home = (function () {
         menuOptions.push(optionEdit);
         return menuOptions;
     };
-    Home.prototype.refreshPartiteLive = function () {
+    Home.prototype.refreshPartiteLive = function (timer) {
+        var _this = this;
         var matches = '';
         for (var i = 0; i < this.scommesseList.length; i++) {
             var scommessa = this.scommesseList[i];
-            if (i > 0)
-                matches += ',';
-            matches += scommessa.match_id;
+            if (scommessa.time != 'FIN')
+                matches += ',' + scommessa.match_id;
         }
+        if (matches.charAt(0) == ',')
+            matches = matches.substr(1);
         if (matches != '')
-            this.httpClient.get('http://www.goal.com/feed/matches/scores?matchId=' + matches + '&edition=it&format=guest').subscribe(function (liveData) {
+            this.httpClient.post('rest/live', {
+                matches: matches
+            }).subscribe(function (liveData) {
                 console.log(liveData);
-                // scommessa['time'] = liveData.time;
-                // scommessa['result'] = liveData.result;
+                if (liveData && liveData.matches && liveData.matches.length > 0)
+                    for (var i = 0; i < _this.scommesseList.length; i++)
+                        for (var i = 0; i < liveData.matches.length; i++)
+                            if (liveData.matches[i].id == scommessa.match_id) {
+                                if (liveData.matches[i].status == 'fixture')
+                                    _this.scommesseList[i]['time'] = liveData.matches[i].mobile.state;
+                                else
+                                    _this.scommesseList[i]['time'] = liveData.matches[i].period;
+                                if (liveData.matches[i].has_score)
+                                    _this.scommesseList[i]['result'] = liveData.matches[i].score.home + ' - ' + liveData.matches[i].score.away;
+                                break;
+                            }
+            }, function (err) {
+                if (timer)
+                    clearInterval(timer);
             });
     };
     Home.prototype.ngOnInit = function () {
         var _this = this;
         this.sampleRefresh();
-        window.setInterval(function () {
-            _this.refreshPartiteLive();
+        var timer = window.setInterval(function () {
+            _this.refreshPartiteLive(timer);
         }, 5000);
     };
     Home = __decorate([
