@@ -28,7 +28,7 @@
 						<div class="row row-form-entry">
 							<div class="col-md-3 form-label">scommessa</div>
 							<div class="col-md-9 form-value">
-								<ui-autocomplete [ac-items]="scommesseService.scommesseList" [ac-item-selected]="{value: insertItem.scommessa, des: ''}"
+								<ui-autocomplete [ac-items]="scommesseService.scommesseList" [ac-item-selected]="{value: '', des: ''}"
 									(ac-item-selected-change)="insertItem.scommessa = $event ? $event : ''" ac-hide-des="true"
 									ac-not-found="scommessa inserita errata!" ac-select-on-match="true" ac-input-name="scommessa" class="form-input"
 									validate [model]="[insertItem]"></ui-autocomplete>

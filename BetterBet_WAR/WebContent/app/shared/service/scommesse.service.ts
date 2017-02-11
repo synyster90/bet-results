@@ -14,7 +14,6 @@ export class ScommesseService {
     public competitionsMap: Object[] = null
     public matchesMap: Object[] = null
 
-    public scommesseList: Object[] = this.arrayToMap( ["1", "X", "2"] )
     public scommesseListFilter: Object[] = null
 
     public setFilterList( arraySampleElenco ) {
@@ -72,4 +71,23 @@ export class ScommesseService {
             };
         });
     };
+    public reverseAarrayToMap( array ) {
+        return array.map( function( item ) {
+            return {
+                value: typeof item == 'string' ? item : item.des,
+                des: typeof item == 'string' ? '' : item.value
+            };
+        });
+    };
+
+    public scommesseList: Object[] = this.reverseAarrayToMap( [{
+        value: '1',
+        des: '1'
+    }, {
+        value: 'x',
+        des: 'X'
+    }, {
+        value: '2',
+        des: '2'
+    }] )
 }
