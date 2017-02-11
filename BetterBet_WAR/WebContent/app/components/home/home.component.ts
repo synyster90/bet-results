@@ -1,4 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, EventEmitter } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { Response } from '@angular/http';
 import { TranslateService } from 'ng2-translate/ng2-translate';
 
@@ -39,7 +40,7 @@ export class Home implements OnInit {
     currentPage: number = 1;
 
     constructor( private utilService: UtilService, private modalDialogService: ModalDialogService, private scommesseService: ScommesseService, private httpClient: HttpClient,
-        private translateService: TranslateService, private changeDetectorRef: ChangeDetectorRef, private cookieService: CookieService ) {
+        private translateService: TranslateService, private changeDetectorRef: ChangeDetectorRef, private cookieService: CookieService, private datePipe: DatePipe ) {
         this.httpClient.exceptionPropagationEvent.subscribe( ex => {
             this.exception = ex
             changeDetectorRef.markForCheck()
@@ -214,9 +215,11 @@ export class Home implements OnInit {
                     for ( var i = 0; i < this.scommesseList.length; i++ )
                         for ( var j = 0; j < liveData.matches.length; j++ )
                             if ( liveData.matches[j].id == this.scommesseList[i]['match_id'] ) {
-                                if ( liveData.matches[j].status == 'fixture' )
-                                    this.scommesseList[i]['time'] = new Date(this.scommesseService.getMatchInfo(liveData.matches[j].id)['date_time_moment']);
-                                else
+                                if ( liveData.matches[j].status == 'fixture' ) {
+                                    var datePipe = new DatePipe('it');
+                                    var timestamp = parseInt( this.scommesseService.getMatchInfo( liveData.matches[j].id )['date_time_moment'] );
+                                    this.scommesseList[i]['time'] = datePipe.transform( timestamp, 'dd/MM/yyyy' );
+                                } else
                                     this.scommesseList[i]['time'] = liveData.matches[j].period;
 
                                 if ( liveData.matches[j].has_score )
