@@ -1,23 +1,7 @@
 /*! Web Application */
 webpackJsonp([1],{
 
-/***/ 1260:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var platform_browser_dynamic_1 = __webpack_require__(223);
-var core_1 = __webpack_require__(1);
-var app_module_1 = __webpack_require__(649);
-if (false) {
-    core_1.enableProdMode();
-}
-platform_browser_dynamic_1.platformBrowserDynamic().bootstrapModule(app_module_1.AppModule);
-
-
-/***/ }),
-
-/***/ 153:
+/***/ 116:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64,6 +48,27 @@ var ScommesseService = (function () {
         });
     };
     ;
+    ScommesseService.prototype.matchesToMap = function (array) {
+        return array.map(function (item) {
+            return {
+                value: item.team_A_title + ' - ' + item.team_B_title,
+                des: item.match_id
+            };
+        });
+    };
+    ;
+    ScommesseService.prototype.getCompetition = function (competition_id) {
+        for (var i = 0; i < this.competitionsMap.length; i++) {
+            if (this.competitionsMap[i]['des'] == competition_id)
+                return this.competitionsMap[i];
+        }
+    };
+    ScommesseService.prototype.getMatch = function (match_id) {
+        for (var i = 0; i < this.matchesMap.length; i++) {
+            if (this.matchesMap[i]['des'] == match_id)
+                return this.matchesMap[i];
+        }
+    };
     // Array -> Map conversion (value, des)
     ScommesseService.prototype.arrayToMap = function (array) {
         return array.map(function (item) {
@@ -82,6 +87,22 @@ var ScommesseService = (function () {
     var _a;
 }());
 exports.ScommesseService = ScommesseService;
+
+
+/***/ }),
+
+/***/ 1260:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var platform_browser_dynamic_1 = __webpack_require__(223);
+var core_1 = __webpack_require__(1);
+var app_module_1 = __webpack_require__(649);
+if (false) {
+    core_1.enableProdMode();
+}
+platform_browser_dynamic_1.platformBrowserDynamic().bootstrapModule(app_module_1.AppModule);
 
 
 /***/ }),
@@ -460,7 +481,7 @@ var core_2 = __webpack_require__(441);
 var utils_1 = __webpack_require__(39);
 var http_client_1 = __webpack_require__(72);
 var dialogs_1 = __webpack_require__(71);
-var scommesse_service_1 = __webpack_require__(153);
+var scommesse_service_1 = __webpack_require__(116);
 var viewModal_1 = __webpack_require__(448);
 var editModal_1 = __webpack_require__(446);
 var insertModal_1 = __webpack_require__(447);
@@ -539,8 +560,14 @@ var Home = (function () {
                 }
             }).subscribe(function (editItem) {
                 if (editItem) {
-                    // TEST
-                    $this.scommesseList[index] = editItem;
+                    $this.scommesseList[index]['competition_id'] = editItem.competition.des;
+                    $this.scommesseList[index]['match_id'] = editItem.match.des;
+                    $this.scommesseList[index]['home'] = editItem.match.value.split(' - ')[0];
+                    $this.scommesseList[index]['away'] = editItem.match.value.split(' - ')[1];
+                    $this.scommesseList[index]['bet'] = {
+                        id: editItem.scommessa.des,
+                        text: editItem.scommessa.value
+                    };
                     _this.cookieService.put('scommessePartiteTableData', JSON.stringify(_this.scommesseList));
                     $this.listChanged = true;
                     $this.changeDetectorRef.markForCheck();
@@ -607,18 +634,16 @@ var Home = (function () {
         var matches = '';
         for (var i = 0; i < this.scommesseList.length; i++) {
             var scommessa = this.scommesseList[i];
-            if (scommessa.time != 'FIN')
-                matches += ',' + scommessa.match_id;
+            if (scommessa.time != 'FIN') {
+                if (i > 0 && matches != '')
+                    matches += ',';
+                matches += scommessa.match_id;
+            }
         }
-        if (matches.charAt(0) == ',')
-            matches = matches.substr(1);
         if (matches != '')
             this.httpClient.post('rest/live', {
                 matches: matches
             }, true).subscribe(function (liveData) {
-                console.log(liveData);
-                //test
-                clearInterval(timer);
                 if (liveData && liveData.matches && liveData.matches.length > 0) {
                     for (var i = 0; i < _this.scommesseList.length; i++)
                         for (var i = 0; i < liveData.matches.length; i++)
@@ -679,7 +704,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = __webpack_require__(1);
 var dialogs_1 = __webpack_require__(71);
 var utils_1 = __webpack_require__(39);
-var scommesse_service_1 = __webpack_require__(153);
+var scommesse_service_1 = __webpack_require__(116);
 var http_client_1 = __webpack_require__(72);
 var EditModalCtrl = (function () {
     function EditModalCtrl(utilService, scommesseService, modalDialogService, httpClient) {
@@ -690,7 +715,16 @@ var EditModalCtrl = (function () {
         this.filterMatches = [];
     }
     EditModalCtrl.prototype.ngOnInit = function () {
-        this.editItem = JSON.parse(JSON.stringify(this.locals['item']));
+        this.origItem = {
+            id: this.locals['item'].id,
+            competition: this.scommesseService.getCompetition(this.locals['item'].competition_id),
+            match: this.scommesseService.getMatch(this.locals['item'].match_id),
+            bet: {
+                value: this.locals['item'].bet.text,
+                des: this.locals['item'].bet.id
+            }
+        };
+        this.editItem = JSON.parse(JSON.stringify(this.origItem));
     };
     EditModalCtrl.prototype.onCompetitionChange = function (competitionSelect) {
         if (competitionSelect) {
@@ -722,9 +756,9 @@ var EditModalCtrl = (function () {
     };
     ;
     EditModalCtrl.prototype.checkClose = function () {
-        if ((this.editItem.competition && this.editItem.competition.des && this.editItem.competition.des != this.locals['item'].competition.des)
-            || (this.editItem.match && this.editItem.match.des && this.editItem.match.des != this.locals['item'].match.des)
-            || (this.editItem.scommessa && this.editItem.scommessa.des && this.editItem.scommessa.des != this.locals['item'].scommessa.des))
+        if ((this.editItem.competition && this.editItem.competition.des && this.editItem.competition.des != this.origItem.competition.des)
+            || (this.editItem.match && this.editItem.match.des && this.editItem.match.des != this.origItem.match.des)
+            || (this.editItem.scommessa && this.editItem.scommessa.des && this.editItem.scommessa.des != this.origItem.scommessa.des))
             return true;
         return false;
     };
@@ -742,23 +776,23 @@ var EditModalCtrl = (function () {
     EditModalCtrl.prototype.checkEdit = function () {
         var changeNotify = '';
         if (this.editItem.competition && this.editItem.competition != '') {
-            if (this.editItem.competition.des != this.locals['item'].competition.des)
-                changeNotify += '<li><strong>Competizione</strong>: ' + this.locals['item'].competition.value + ' --> ' + this.editItem.competition.value + '</li>';
+            if (this.editItem.competition.des != this.origItem.competition.des)
+                changeNotify += '<li><strong>Competizione</strong>: ' + this.origItem.competition_id + ' --> ' + this.editItem.competition.value + '</li>';
         }
         else
-            changeNotify += '<li><strong>Competizione</strong>: ' + this.locals['item'].competition.value + ' --> null</li>';
+            changeNotify += '<li><strong>Competizione</strong>: ' + this.origItem.competition_id + ' --> null</li>';
         if (this.editItem.match && this.editItem.match != '') {
-            if (this.editItem.match.des != this.locals['item'].match.des)
-                changeNotify += '<li><strong>Partita</strong>: ' + this.locals['item'].match.value + ' --> ' + this.editItem.match.value + '</li>';
+            if (this.editItem.match.des != this.origItem.match.des)
+                changeNotify += '<li><strong>Partita</strong>: ' + this.origItem.match.value + ' --> ' + this.editItem.match.value + '</li>';
         }
         else
-            changeNotify += '<li><strong>Partita</strong>: ' + this.locals['item'].match.value + ' --> null</li>';
+            changeNotify += '<li><strong>Partita</strong>: ' + this.origItem.match.value + ' --> null</li>';
         if (this.editItem.scommessa && this.editItem.scommessa != '') {
-            if (this.editItem.scommessa.des != this.locals['item'].scommessa.des)
-                changeNotify += '<li><strong>Scommessa</strong>: ' + this.locals['item'].scommessa.value + ' --> ' + this.editItem.scommessa.value + '</li>';
+            if (this.editItem.scommessa.des != this.origItem.scommessa.des)
+                changeNotify += '<li><strong>Scommessa</strong>: ' + this.origItem.scommessa.value + ' --> ' + this.editItem.scommessa.value + '</li>';
         }
         else
-            changeNotify += '<li><strong>Scommessa</strong>: ' + this.locals['item'].scommessa.value + ' --> null</li>';
+            changeNotify += '<li><strong>Scommessa</strong>: ' + this.origItem.scommessa.value + ' --> null</li>';
         return changeNotify;
     };
     EditModalCtrl = __decorate([
@@ -794,7 +828,7 @@ var core_1 = __webpack_require__(1);
 var core_2 = __webpack_require__(441);
 var dialogs_1 = __webpack_require__(71);
 var utils_1 = __webpack_require__(39);
-var scommesse_service_1 = __webpack_require__(153);
+var scommesse_service_1 = __webpack_require__(116);
 var http_client_1 = __webpack_require__(72);
 var InsertModalCtrl = (function () {
     function InsertModalCtrl(utilService, scommesseService, modalDialogService, httpClient, cookieService) {
@@ -883,9 +917,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = __webpack_require__(1);
 var dialogs_1 = __webpack_require__(71);
 var utils_1 = __webpack_require__(39);
+var scommesse_service_1 = __webpack_require__(116);
 var ViewModalCtrl = (function () {
-    function ViewModalCtrl(utilService, modalDialogService) {
+    function ViewModalCtrl(utilService, scommesseService, modalDialogService) {
         this.utilService = utilService;
+        this.scommesseService = scommesseService;
         this.modalDialogService = modalDialogService;
         this.showDropdown = false;
     }
@@ -899,7 +935,15 @@ var ViewModalCtrl = (function () {
             this.showDropdown = !this.showDropdown;
     };
     ViewModalCtrl.prototype.ngOnInit = function () {
-        this.itemInfo = this.locals['item'];
+        this.itemInfo = {
+            id: this.locals['item'].id,
+            competition: this.scommesseService.getCompetition(this.locals['item'].competition_id),
+            match: this.scommesseService.getMatch(this.locals['item'].match_id),
+            bet: {
+                value: this.locals['item'].bet.text,
+                des: this.locals['item'].bet.id
+            }
+        };
     };
     ViewModalCtrl.prototype.close = function () {
         this.modalDialogService.cancel();
@@ -915,10 +959,10 @@ var ViewModalCtrl = (function () {
             selector: 'modal-content',
             template: __webpack_require__(957)
         }), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof utils_1.UtilService !== 'undefined' && utils_1.UtilService) === 'function' && _a) || Object, (typeof (_b = typeof dialogs_1.ModalDialogService !== 'undefined' && dialogs_1.ModalDialogService) === 'function' && _b) || Object])
+        __metadata('design:paramtypes', [(typeof (_a = typeof utils_1.UtilService !== 'undefined' && utils_1.UtilService) === 'function' && _a) || Object, (typeof (_b = typeof scommesse_service_1.ScommesseService !== 'undefined' && scommesse_service_1.ScommesseService) === 'function' && _b) || Object, (typeof (_c = typeof dialogs_1.ModalDialogService !== 'undefined' && dialogs_1.ModalDialogService) === 'function' && _c) || Object])
     ], ViewModalCtrl);
     return ViewModalCtrl;
-    var _a, _b;
+    var _a, _b, _c;
 }());
 exports.ViewModalCtrl = ViewModalCtrl;
 ;
@@ -943,7 +987,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = __webpack_require__(1);
 var platform_browser_1 = __webpack_require__(36);
 var forms_1 = __webpack_require__(111);
-var http_1 = __webpack_require__(129);
+var http_1 = __webpack_require__(130);
 var ng2_translate_1 = __webpack_require__(102);
 var cookies_service_1 = __webpack_require__(444);
 /* Directives, Components & Providers */
@@ -1026,7 +1070,7 @@ var ng2_translate_1 = __webpack_require__(102);
 var components_1 = __webpack_require__(105);
 var utils_1 = __webpack_require__(39);
 var http_client_1 = __webpack_require__(72);
-var scommesse_service_1 = __webpack_require__(153);
+var scommesse_service_1 = __webpack_require__(116);
 var AppComponent = (function () {
     function AppComponent(router, httpClient, location, utilService, sideMenuService, changeDetectorRef, viewContainerRef, translate, scommesseService) {
         this.router = router;
@@ -1049,6 +1093,7 @@ var AppComponent = (function () {
             _this.scommesseService.competitions = data.competitions;
             _this.scommesseService.matches = data.Matches;
             _this.scommesseService.competitionsMap = _this.scommesseService.competitionsToMap(data.competitions);
+            _this.scommesseService.matchesMap = _this.scommesseService.matchesToMap(data.Matches);
             _this.changeDetectorRef.markForCheck();
         }, function (err) {
             console.log(err);
@@ -1153,7 +1198,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = __webpack_require__(1);
 var platform_browser_1 = __webpack_require__(36);
 var forms_1 = __webpack_require__(111);
-var http_1 = __webpack_require__(129);
+var http_1 = __webpack_require__(130);
 var ng2_translate_1 = __webpack_require__(102);
 var components_1 = __webpack_require__(105);
 var dialogs_1 = __webpack_require__(71);
@@ -1162,7 +1207,7 @@ var pipes_1 = __webpack_require__(167);
 var translate_1 = __webpack_require__(106);
 var utils_1 = __webpack_require__(39);
 var filterModal_1 = __webpack_require__(780);
-var scommesse_service_1 = __webpack_require__(153);
+var scommesse_service_1 = __webpack_require__(116);
 var SharedModule = (function () {
     function SharedModule() {
     }

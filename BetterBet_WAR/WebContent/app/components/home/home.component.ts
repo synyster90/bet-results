@@ -99,8 +99,14 @@ export class Home implements OnInit {
                 }
             }).subscribe(( editItem ) => {
                 if ( editItem ) {
-                    // TEST
-                    $this.scommesseList[index] = editItem
+                    $this.scommesseList[index]['competition_id'] = editItem.competition.des
+                    $this.scommesseList[index]['match_id'] = editItem.match.des
+                    $this.scommesseList[index]['home'] = editItem.match.value.split( ' - ' )[0]
+                    $this.scommesseList[index]['away'] = editItem.match.value.split( ' - ' )[1]
+                    $this.scommesseList[index]['bet'] = {
+                        id: editItem.scommessa.des,
+                        text: editItem.scommessa.value
+                    }
                     this.cookieService.put( 'scommessePartiteTableData', JSON.stringify( this.scommesseList ) );
                     $this.listChanged = true
                     $this.changeDetectorRef.markForCheck()
@@ -170,18 +176,16 @@ export class Home implements OnInit {
         var matches = '';
         for ( var i = 0; i < this.scommesseList.length; i++ ) {
             var scommessa: any = this.scommesseList[i];
-            if ( scommessa.time != 'FIN' )
-                matches += ',' + scommessa.match_id;
+            if ( scommessa.time != 'FIN' ) {
+                if ( i > 0 && matches != '' )
+                    matches += ','
+                matches += scommessa.match_id;
+            }
         }
-        if ( matches.charAt( 0 ) == ',' )
-            matches = matches.substr( 1 )
         if ( matches != '' )
             this.httpClient.post( 'rest/live', {
                 matches: matches
-            }, true).subscribe(( liveData: any ) => {
-                console.log( liveData )
-                //test
-                clearInterval( timer );
+            }, true ).subscribe(( liveData: any ) => {
                 if ( liveData && liveData.matches && liveData.matches.length > 0 ) {
                     for ( var i = 0; i < this.scommesseList.length; i++ )
                         for ( var i = 0; i < liveData.matches.length; i++ )

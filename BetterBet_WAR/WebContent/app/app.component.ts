@@ -35,6 +35,7 @@ export class AppComponent implements OnInit {
             this.scommesseService.matches = data.Matches;
             
             this.scommesseService.competitionsMap = this.scommesseService.competitionsToMap(data.competitions);
+            this.scommesseService.matchesMap = this.scommesseService.matchesToMap(data.Matches);
             
             this.changeDetectorRef.markForCheck()
         }, err => {
