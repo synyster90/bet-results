@@ -683,14 +683,14 @@ var Home = (function () {
             }, true).subscribe(function (liveData) {
                 if (liveData && liveData.matches && liveData.matches.length > 0) {
                     for (var i = 0; i < _this.scommesseList.length; i++)
-                        for (var i = 0; i < liveData.matches.length; i++)
-                            if (liveData.matches[i].id == scommessa.match_id) {
-                                if (liveData.matches[i].status == 'fixture')
-                                    _this.scommesseList[i]['time'] = liveData.matches[i].mobile.state;
+                        for (var j = 0; j < liveData.matches.length; j++)
+                            if (liveData.matches[j].id == scommessa.match_id) {
+                                if (liveData.matches[j].status == 'fixture')
+                                    _this.scommesseList[i]['time'] = liveData.matches[j].mobile.state;
                                 else
-                                    _this.scommesseList[i]['time'] = liveData.matches[i].period;
-                                if (liveData.matches[i].has_score)
-                                    _this.scommesseList[i]['result'] = liveData.matches[i].score.home + ' - ' + liveData.matches[i].score.away;
+                                    _this.scommesseList[i]['time'] = liveData.matches[j].period;
+                                if (liveData.matches[j].has_score)
+                                    _this.scommesseList[i]['result'] = liveData.matches[j].score.home + ' - ' + liveData.matches[j].score.away;
                                 break;
                             }
                     _this.changeDetectorRef.markForCheck();
