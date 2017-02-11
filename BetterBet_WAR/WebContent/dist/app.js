@@ -617,9 +617,10 @@ var Home = (function () {
         });
     };
     Home.prototype.deleteItem = function (index) {
+        var _this = this;
         this.modalDialogService.confirm('<div class="panel-body-custom" translate="MODAL_TEXT.MESSAGE_DELETE"></div>', function (result) {
             if (result == true)
-                this.scommesseList.splice(index, 1);
+                _this.scommesseList.splice(index, 1);
         });
     };
     Home.prototype.getAbilOperations = function () {

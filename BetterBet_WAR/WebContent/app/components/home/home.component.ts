@@ -91,6 +91,29 @@ export class Home implements OnInit {
         });
     }
 
+    addItem() {
+        this.modalDialogService.dialog( {
+            controller: InsertModalCtrl
+        }).subscribe(( newItem ) => {
+            if ( newItem ) {
+                this.scommesseList.unshift( {
+                    id: newItem.id,
+                    competition_id: newItem.competition.des,
+                    match_id: newItem.match.des,
+                    home: newItem.match.value.split( ' - ' )[0],
+                    away: newItem.match.value.split( ' - ' )[1],
+                    bet: {
+                        id: newItem.scommessa.des,
+                        text: newItem.scommessa.value
+                    }
+                })
+                this.cookieService.put( 'scommessePartiteTableData', JSON.stringify( this.scommesseList ) );
+                this.listChanged = true
+                this.changeDetectorRef.markForCheck()
+            }
+        })
+    }
+
     editItem( index ) {
         var $this = this
         $this.modalDialogService.dialog( {
@@ -115,31 +138,8 @@ export class Home implements OnInit {
         })
     }
 
-    addItem() {
-        this.modalDialogService.dialog( {
-            controller: InsertModalCtrl
-        }).subscribe(( newItem ) => {
-            if ( newItem ) {
-                this.scommesseList.unshift( {
-                    id: newItem.id,
-                    competition_id: newItem.competition.des,
-                    match_id: newItem.match.des,
-                    home: newItem.match.value.split( ' - ' )[0],
-                    away: newItem.match.value.split( ' - ' )[1],
-                    bet: {
-                        id: newItem.scommessa.des,
-                        text: newItem.scommessa.value
-                    }
-                })
-                this.cookieService.put( 'scommessePartiteTableData', JSON.stringify( this.scommesseList ) );
-                this.listChanged = true
-                this.changeDetectorRef.markForCheck()
-            }
-        })
-    }
-
     deleteItem( index ) {
-        this.modalDialogService.confirm( '<div class="panel-body-custom" translate="MODAL_TEXT.MESSAGE_DELETE"></div>', function( result ) {
+        this.modalDialogService.confirm( '<div class="panel-body-custom" translate="MODAL_TEXT.MESSAGE_DELETE"></div>', ( result ) => {
             if ( result == true )
                 this.scommesseList.splice( index, 1 );
         });
