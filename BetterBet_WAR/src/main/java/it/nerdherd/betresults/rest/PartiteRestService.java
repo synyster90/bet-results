@@ -13,6 +13,7 @@ import it.nerdherd.betresults.rest.model.LivePartiteJson;
 import it.nerdherd.betresults.rest.model.LivePartiteRequestJson;
 import it.nerdherd.betresults.rest.model.PartiteJson;
 
+@Path("/")
 public class PartiteRestService {
 
 	@GET
