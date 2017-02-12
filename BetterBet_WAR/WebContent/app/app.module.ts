@@ -53,7 +53,7 @@ export function createTranslateLoader( http: Http ) {
     ],
     providers: [
         appRoutingProviders,
-        Title, DatePipe,
+        Title,
         CookieService
     ],
     bootstrap: [AppComponent]

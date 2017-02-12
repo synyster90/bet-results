@@ -40,7 +40,7 @@ export class Home implements OnInit {
     currentPage: number = 1;
 
     constructor( private utilService: UtilService, private modalDialogService: ModalDialogService, private scommesseService: ScommesseService, private httpClient: HttpClient,
-        private translateService: TranslateService, private changeDetectorRef: ChangeDetectorRef, private cookieService: CookieService, private datePipe: DatePipe ) {
+        private translateService: TranslateService, private changeDetectorRef: ChangeDetectorRef, private cookieService: CookieService ) {
         this.httpClient.exceptionPropagationEvent.subscribe( ex => {
             this.exception = ex
             changeDetectorRef.markForCheck()
@@ -216,7 +216,7 @@ export class Home implements OnInit {
                         for ( var j = 0; j < liveData.matches.length; j++ )
                             if ( liveData.matches[j].id == this.scommesseList[i]['match_id'] ) {
                                 if ( liveData.matches[j].status == 'fixture' ) {
-                                    var datePipe = new DatePipe('it');
+                                    var datePipe = new DatePipe('it-IT');
                                     var timestamp = parseInt( this.scommesseService.getMatchInfo( liveData.matches[j].id )['date_time_moment'] );
                                     this.scommesseList[i]['time'] = datePipe.transform( timestamp, 'dd/MM/yyyy' );
                                 } else

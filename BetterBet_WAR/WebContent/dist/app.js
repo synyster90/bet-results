@@ -217,7 +217,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var common_1 = __webpack_require__(47);
+var common_1 = __webpack_require__(59);
 var core_1 = __webpack_require__(1);
 /** @private */
 var CookieOptions = (function () {
@@ -506,7 +506,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = __webpack_require__(1);
-var common_1 = __webpack_require__(47);
+var common_1 = __webpack_require__(59);
 var ng2_translate_1 = __webpack_require__(102);
 var core_2 = __webpack_require__(441);
 var utils_1 = __webpack_require__(39);
@@ -517,7 +517,7 @@ var viewModal_1 = __webpack_require__(448);
 var editModal_1 = __webpack_require__(446);
 var insertModal_1 = __webpack_require__(447);
 var Home = (function () {
-    function Home(utilService, modalDialogService, scommesseService, httpClient, translateService, changeDetectorRef, cookieService, datePipe) {
+    function Home(utilService, modalDialogService, scommesseService, httpClient, translateService, changeDetectorRef, cookieService) {
         var _this = this;
         this.utilService = utilService;
         this.modalDialogService = modalDialogService;
@@ -526,7 +526,6 @@ var Home = (function () {
         this.translateService = translateService;
         this.changeDetectorRef = changeDetectorRef;
         this.cookieService = cookieService;
-        this.datePipe = datePipe;
         this.$this = this;
         this.filtered_result = [];
         this.filtered = [];
@@ -704,7 +703,7 @@ var Home = (function () {
                         for (var j = 0; j < liveData.matches.length; j++)
                             if (liveData.matches[j].id == _this.scommesseList[i]['match_id']) {
                                 if (liveData.matches[j].status == 'fixture') {
-                                    var datePipe = new common_1.DatePipe('it');
+                                    var datePipe = new common_1.DatePipe('it-IT');
                                     var timestamp = parseInt(_this.scommesseService.getMatchInfo(liveData.matches[j].id)['date_time_moment']);
                                     _this.scommesseList[i]['time'] = datePipe.transform(timestamp, 'dd/MM/yyyy');
                                 }
@@ -734,10 +733,10 @@ var Home = (function () {
             template: __webpack_require__(954),
             changeDetection: core_1.ChangeDetectionStrategy.OnPush
         }), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof utils_1.UtilService !== 'undefined' && utils_1.UtilService) === 'function' && _a) || Object, (typeof (_b = typeof dialogs_1.ModalDialogService !== 'undefined' && dialogs_1.ModalDialogService) === 'function' && _b) || Object, (typeof (_c = typeof scommesse_service_1.ScommesseService !== 'undefined' && scommesse_service_1.ScommesseService) === 'function' && _c) || Object, (typeof (_d = typeof http_client_1.HttpClient !== 'undefined' && http_client_1.HttpClient) === 'function' && _d) || Object, (typeof (_e = typeof ng2_translate_1.TranslateService !== 'undefined' && ng2_translate_1.TranslateService) === 'function' && _e) || Object, (typeof (_f = typeof core_1.ChangeDetectorRef !== 'undefined' && core_1.ChangeDetectorRef) === 'function' && _f) || Object, (typeof (_g = typeof core_2.CookieService !== 'undefined' && core_2.CookieService) === 'function' && _g) || Object, (typeof (_h = typeof common_1.DatePipe !== 'undefined' && common_1.DatePipe) === 'function' && _h) || Object])
+        __metadata('design:paramtypes', [(typeof (_a = typeof utils_1.UtilService !== 'undefined' && utils_1.UtilService) === 'function' && _a) || Object, (typeof (_b = typeof dialogs_1.ModalDialogService !== 'undefined' && dialogs_1.ModalDialogService) === 'function' && _b) || Object, (typeof (_c = typeof scommesse_service_1.ScommesseService !== 'undefined' && scommesse_service_1.ScommesseService) === 'function' && _c) || Object, (typeof (_d = typeof http_client_1.HttpClient !== 'undefined' && http_client_1.HttpClient) === 'function' && _d) || Object, (typeof (_e = typeof ng2_translate_1.TranslateService !== 'undefined' && ng2_translate_1.TranslateService) === 'function' && _e) || Object, (typeof (_f = typeof core_1.ChangeDetectorRef !== 'undefined' && core_1.ChangeDetectorRef) === 'function' && _f) || Object, (typeof (_g = typeof core_2.CookieService !== 'undefined' && core_2.CookieService) === 'function' && _g) || Object])
     ], Home);
     return Home;
-    var _a, _b, _c, _d, _e, _f, _g, _h;
+    var _a, _b, _c, _d, _e, _f, _g;
 }());
 exports.Home = Home;
 
@@ -1048,7 +1047,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = __webpack_require__(1);
-var common_1 = __webpack_require__(47);
 var platform_browser_1 = __webpack_require__(36);
 var forms_1 = __webpack_require__(111);
 var http_1 = __webpack_require__(130);
@@ -1099,7 +1097,7 @@ var AppModule = (function () {
             ],
             providers: [
                 app_routes_1.appRoutingProviders,
-                platform_browser_2.Title, common_1.DatePipe,
+                platform_browser_2.Title,
                 cookies_service_1.CookieService
             ],
             bootstrap: [app_component_1.AppComponent]
@@ -1129,7 +1127,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = __webpack_require__(1);
 var router_1 = __webpack_require__(168);
-var common_1 = __webpack_require__(47);
+var common_1 = __webpack_require__(59);
 var ng2_translate_1 = __webpack_require__(102);
 var components_1 = __webpack_require__(105);
 var utils_1 = __webpack_require__(39);
