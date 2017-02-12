@@ -217,8 +217,8 @@ export class Home implements OnInit {
                             if ( liveData.matches[j].id == this.scommesseList[i]['match_id'] ) {
                                 if ( liveData.matches[j].status == 'fixture' ) {
                                     var datePipe = new DatePipe('it');
-                                    var timestamp = parseInt( this.scommesseService.getMatchInfo( liveData.matches[j].id )['date_time_moment'] );
-                                    this.scommesseList[i]['time'] = datePipe.transform( timestamp, 'dd/MM/yyyy' );
+                                    //var timestamp = parseInt( this.scommesseService.getMatchInfo( liveData.matches[j].id )['date_time_moment'] );
+                                    //this.scommesseList[i]['time'] = datePipe.transform( timestamp, 'dd/MM/yyyy' );
                                 } else
                                     this.scommesseList[i]['time'] = liveData.matches[j].period;
 

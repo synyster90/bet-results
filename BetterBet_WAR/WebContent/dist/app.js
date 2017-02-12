@@ -705,8 +705,6 @@ var Home = (function () {
                             if (liveData.matches[j].id == _this.scommesseList[i]['match_id']) {
                                 if (liveData.matches[j].status == 'fixture') {
                                     var datePipe = new common_1.DatePipe('it');
-                                    var timestamp = parseInt(_this.scommesseService.getMatchInfo(liveData.matches[j].id)['date_time_moment']);
-                                    _this.scommesseList[i]['time'] = datePipe.transform(timestamp, 'dd/MM/yyyy');
                                 }
                                 else
                                     _this.scommesseList[i]['time'] = liveData.matches[j].period;
