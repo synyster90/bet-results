@@ -9,8 +9,8 @@ public class DBMatch {
 	@JsonProperty("competition_id")
 	private String competition_id;
 
-	@JsonProperty("date_time_moment")
-	private String date_time_moment;
+	@JsonProperty("date_time_utc_moment")
+	private String date_time_utc_moment;
 
 	@JsonProperty("team_A_id")
 	private String team_A_id;
@@ -40,12 +40,12 @@ public class DBMatch {
 		this.competition_id = competition_id;
 	}
 
-	public String getDate_time_moment() {
-		return date_time_moment;
+	public String getDate_time_utc_moment() {
+		return date_time_utc_moment;
 	}
 
-	public void setDate_time_moment(String date_time_moment) {
-		this.date_time_moment = date_time_moment;
+	public void setDate_time_utc_moment(String date_time_utc_moment) {
+		this.date_time_utc_moment = date_time_utc_moment;
 	}
 
 	public String getTeam_A_id() {

@@ -100,8 +100,8 @@ public class DataFactoryService {
 
 			PartiteJson filteredMatchesList = new PartiteJson();
 			for (Matches match : matchesList.getMatches())
-				if (Long.valueOf(match.getDate_time_moment()) >= tre_giorni_fa
-						&& Long.valueOf(match.getDate_time_moment()) <= fra_giorni_fa) {
+				if (Long.valueOf(match.getDate_time_utc_moment()) >= tre_giorni_fa
+						&& Long.valueOf(match.getDate_time_utc_moment()) <= fra_giorni_fa) {
 					match.setCompetition_id(competition_id);
 					filteredMatchesList.getMatches().add(match);
 				}

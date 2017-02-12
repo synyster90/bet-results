@@ -101,19 +101,19 @@ public class PartiteJson {
 	public static class Matches {
 		private String competition_id;
 		private String match_id;
-		private String date_time_moment;
+		private String date_time_utc_moment;
 		private String team_A_id;
 		private String team_A_title;
 		private String team_B_id;
 		private String team_B_title;
 
 		public Matches(@JsonProperty("competition_id") String competition_id, @JsonProperty("match_id") String match_id,
-				@JsonProperty("date_time_moment") String date_time_moment, @JsonProperty("team_A_id") String team_A_id,
+				@JsonProperty("date_time_utc_moment") String date_time_utc_moment, @JsonProperty("team_A_id") String team_A_id,
 				@JsonProperty("team_A_title") String team_A_title, @JsonProperty("team_B_id") String team_B_id,
 				@JsonProperty("team_B_title") String team_B_title) {
 			this.competition_id = competition_id;
 			this.match_id = match_id;
-			this.setDate_time_moment(date_time_moment);
+			this.setDate_time_utc_moment(date_time_utc_moment);
 			this.team_A_id = team_A_id;
 			this.team_A_title = team_A_title;
 			this.team_B_id = team_B_id;
@@ -168,12 +168,12 @@ public class PartiteJson {
 			this.team_B_title = team_B_title;
 		}
 
-		public String getDate_time_moment() {
-			return date_time_moment;
+		public String getDate_time_utc_moment() {
+			return date_time_utc_moment;
 		}
 
-		public void setDate_time_moment(String date_time_moment) {
-			this.date_time_moment = date_time_moment;
+		public void setDate_time_utc_moment(String date_time_utc_moment) {
+			this.date_time_utc_moment = date_time_utc_moment;
 		}
 
 	}

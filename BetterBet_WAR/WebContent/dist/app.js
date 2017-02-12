@@ -704,7 +704,7 @@ var Home = (function () {
                             if (liveData.matches[j].id == _this.scommesseList[i]['match_id']) {
                                 if (liveData.matches[j].status == 'fixture') {
                                     var datePipe = new common_1.DatePipe('it-IT');
-                                    var timestamp = parseInt(_this.scommesseService.getMatchInfo(liveData.matches[j].id)['date_time_moment']);
+                                    var timestamp = parseInt(_this.scommesseService.getMatchInfo(liveData.matches[j].id)['date_time_utc_moment']);
                                     _this.scommesseList[i]['time'] = datePipe.transform(new Date(timestamp * 1000), 'dd/MM/yyyy hh:mm');
                                 }
                                 else
