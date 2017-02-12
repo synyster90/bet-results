@@ -217,7 +217,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var common_1 = __webpack_require__(59);
+var common_1 = __webpack_require__(47);
 var core_1 = __webpack_require__(1);
 /** @private */
 var CookieOptions = (function () {
@@ -506,7 +506,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = __webpack_require__(1);
-var common_1 = __webpack_require__(59);
+var common_1 = __webpack_require__(47);
 var ng2_translate_1 = __webpack_require__(102);
 var core_2 = __webpack_require__(441);
 var utils_1 = __webpack_require__(39);
@@ -1046,6 +1046,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = __webpack_require__(1);
+var common_1 = __webpack_require__(47);
 var platform_browser_1 = __webpack_require__(36);
 var forms_1 = __webpack_require__(111);
 var http_1 = __webpack_require__(130);
@@ -1096,7 +1097,7 @@ var AppModule = (function () {
             ],
             providers: [
                 app_routes_1.appRoutingProviders,
-                platform_browser_2.Title,
+                platform_browser_2.Title, common_1.DatePipe,
                 cookies_service_1.CookieService
             ],
             bootstrap: [app_component_1.AppComponent]
@@ -1126,7 +1127,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = __webpack_require__(1);
 var router_1 = __webpack_require__(168);
-var common_1 = __webpack_require__(59);
+var common_1 = __webpack_require__(47);
 var ng2_translate_1 = __webpack_require__(102);
 var components_1 = __webpack_require__(105);
 var utils_1 = __webpack_require__(39);

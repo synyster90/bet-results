@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { FormsModule } from '@angular/forms';
@@ -52,7 +53,7 @@ export function createTranslateLoader( http: Http ) {
     ],
     providers: [
         appRoutingProviders,
-        Title,
+        Title, DatePipe,
         CookieService
     ],
     bootstrap: [AppComponent]
